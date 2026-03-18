@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>طلبات الاشتراك - لوحة التحكم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* نفس التنسيقات السابقة */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Tajawal',sans-serif;
+            background:#0f0a1f;
+            color:#fff;
+            min-height:100vh;
+            direction:rtl;
+            padding:20px;
+        }
+        .container { max-width:1400px; margin:0 auto; }
+        .header {
+            background:#1a1330;
+            padding:20px 30px;
+            border-radius:24px;
+            margin-bottom:30px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border:1px solid #2d224a;
+        }
+        .logo {
+            display:flex;
+            align-items:center;
+            gap:15px;
+        }
+        .logo i {
+            color:#6d4fc7;
+            font-size:28px;
+            background:rgba(109,79,199,0.2);
+            padding:12px;
+            border-radius:16px;
+        }
+        .admin-badge {
+            background:#6d4fc7;
+            padding:8px 20px;
+            border-radius:40px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .tabs {
+            display:flex;
+            gap:10px;
+            margin-bottom:25px;
+            background:#1a1330;
+            padding:15px;
+            border-radius:50px;
+        }
+        .tab {
+            padding:12px 30px;
+            background:transparent;
+            border:1px solid transparent;
+            border-radius:40px;
+            color:#b1a4c2;
+            cursor:pointer;
+            transition:all 0.3s;
+            font-weight:600;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            text-decoration:none;
+        }
+        .tab:hover { background:rgba(109,79,199,0.1); color:#fff; }
+        .tab.active { background:#6d4fc7; color:#fff; }
+        .stats-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+            gap:20px;
+            margin-bottom:30px;
+        }
+        .stat-card {
+            background:#1a1330;
+            border-radius:24px;
+            padding:20px;
+            border:1px solid #2d224a;
+            display:flex;
+            align-items:center;
+            gap:15px;
+        }
+        .stat-icon {
+            width:60px;
+            height:60px;
+            background:rgba(109,79,199,0.15);
+            border-radius:18px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:28px;
+            color:#6d4fc7;
+        }
+        .filter-section {
+            display:flex;
+            align-items:center;
+            gap:15px;
+            margin-bottom:20px;
+            background:#1a1330;
+            padding:15px;
+            border-radius:40px;
+        }
+        .filter-buttons {
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+        }
+        .filter-btn {
+            padding:8px20px;
+            background:#0f0a1f;
+            border:1px solid #2d224a;
+            border-radius:30px;
+            color:#b1a4c2;
+            cursor:pointer;
+            font-size:13px;
+        }
+        .filter-btn.active { background:#6d4fc7; color:#fff; }
+        .table-responsive { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; }
+        th {
+            text-align:right;
+            padding:15px10px;
+            color:#b1a4c2;
+            border-bottom:2px solid #2d224a;
+        }
+        td {
+            padding:15px10px;
+            border-bottom:1px solid #2d224a;
+            color:#fff;
+        }
+        tr:hover td { background:rgba(109,79,199,0.1); }
+        .status-badge {
+            padding:6px15px;
+            border-radius:40px;
+            font-size:12px;
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
+        }
+        .status-pending { background:#3b2a1f; color:#ffb347; }
+        .status-active { background:#1b3b2a; color:#a0e6c0; }
+        .status-cancelled { background:#3b1f2a; color:#ff9b9b; }
+        .action-btn {
+            width:36px;
+            height:36px;
+            border-radius:10px;
+            border:none;
+            background:#0f0a1f;
+            color:#b1a4c2;
+            cursor:pointer;
+        }
+        .action-btn:hover { background:#6d4fc7; color:#fff; }
+        .hidden { display:none; }
+        .message {
+            position:fixed;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            padding:16px30px;
+            border-radius:50px;
+            z-index:2000;
+            animation:slideDown0.3s;
+        }
+        .message.success { background:#1b3b2a; border:1px solid #2e8b57; color:#a0e6c0; }
+        .message.error { background:#3b1f2a; border:1px solid #c44545; color:#ff9b9b; }
+        @keyframes slideDown {
+            from { top:-100px; opacity:0; }
+            to { top:20px; opacity:1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="successMessage" class="message success hidden">
+        <i class="fas fa-check-circle"></i>
+        <span id="messageText"></span>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <h1>طلبات الاشتراك</h1>
+            </div>
+            <div class="admin-badge" id="adminInfo">
+                <i class="fas fa-user-shield"></i>
+                <span>جاري التحقق...</span>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <a href="dashboard.html" class="tab">
+                <i class="fas fa-edit"></i>
+                إدارة المحتوى
+            </a>
+            <a href="order.html" class="tab active">
+                <i class="fas fa-shopping-cart"></i>
+                طلبات الاشتراك
+            </a>
+        </div>
+
+        <div class="stats-grid" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div>
+                    <h3>قيد المراجعة</h3>
+                    <p id="pendingCount">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <h3>مفعلة</h3>
+                    <p id="activeCount">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                <div>
+                    <h3>ملغية</h3>
+                    <p id="cancelledCount">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div>
+                    <h3>إجمالي الطلاب</h3>
+                    <p id="totalStudents">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <span><i class="fas fa-filter"></i> تصفية:</span>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="pending">قيد المراجعة</button>
+                <button class="filter-btn" data-filter="active">مفعلة</button>
+                <button class="filter-btn" data-filter="cancelled">ملغية</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الطالب</th>
+                        <th>الهاتف</th>
+                        <th>الباقة</th>
+                        <th>المبلغ</th>
+                        <th>التاريخ</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:50px;">
+                            <i class="fas fa-spinner fa-spin" style="font-size:30px; color:#6d4fc7;"></i>
+                            <p>جاري التحميل...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            getDoc,
+            updateDoc,
+            doc, 
+            query, 
+            where, 
+            orderBy,
+            writeBatch,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // عناصر الصفحة
+        const adminInfo = document.getElementById('adminInfo');
+        const successMessage = document.getElementById('successMessage');
+        const messageText = document.getElementById('messageText');
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        const pendingCount = document.getElementById('pendingCount');
+        const activeCount = document.getElementById('activeCount');
+        const cancelledCount = document.getElementById('cancelledCount');
+        const totalStudents = document.getElementById('totalStudents');
+
+        let allOrders = [];
+        let currentFilter = 'all';
+        let currentAdmin = null;
+
+        // ==================== نظام التحقق من الأدمن ====================
+        const checkAdminAuth = async () => {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.replace('index.html');
+                        return;
+                    }
+
+                    try {
+                        const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                        
+                        if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+                            await signOut(auth);
+                            window.location.replace('index.html');
+                            return;
+                        }
+
+                        currentAdmin = { uid: user.uid, ...userDoc.data() };
+                        adminInfo.innerHTML = `
+                            <i class="fas fa-user-shield"></i>
+                            <span>مرحباً، ${currentAdmin.name || 'Admin'}</span>
+                        `;
+                        resolve(true);
+                    } catch (error) {
+                        console.error(error);
+                        window.location.replace('index.html');
+                    }
+                });
+            });
+        };
+
+        function showMessage(text, isSuccess = true) {
+            messageText.textContent = text;
+            successMessage.classList.remove('hidden');
+            successMessage.className = isSuccess ? 'message success' : 'message error';
+            setTimeout(() => successMessage.classList.add('hidden'), 3000);
+        }
+
+        // حساب تاريخ الانتهاء
+        function calculateExpiryDate(duration) {
+            const date = new Date();
+            if (duration.includes('3') || duration.includes('ثلاث')) date.setMonth(date.getMonth() + 3);
+            else if (duration.includes('6') || duration.includes('ستة')) date.setMonth(date.getMonth() + 6);
+            else if (duration.includes('سنة') || duration.includes('12')) date.setFullYear(date.getFullYear() + 1);
+            else date.setMonth(date.getMonth() + 1);
+            return date.toISOString();
+        }
+
+        // ==================== دوال الطلبات ====================
+        async function loadOrders() {
+            try {
+                const ordersRef = collection(db, 'PAY_requests');
+                const q = query(ordersRef, orderBy('createdAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                allOrders = [];
+                querySnapshot.forEach(doc => {
+                    allOrders.push({ id: doc.id, ...doc.data() });
+                });
+
+                updateStats();
+                filterOrders(currentFilter);
+
+            } catch (error) {
+                console.error(error);
+                ordersTableBody.innerHTML = '<tr><td colspan="7">حدث خطأ في التحميل</td></tr>';
+            }
+        }
+
+        function updateStats() {
+            const pending = allOrders.filter(o => o.status === 'قيد المراجعة').length;
+            const active = allOrders.filter(o => o.status === 'مفعل').length;
+            const cancelled = allOrders.filter(o => o.status === 'ملغي').length;
+            const uniqueStudents = new Set(allOrders.map(o => o.userId)).size;
+
+            pendingCount.textContent = pending;
+            activeCount.textContent = active;
+            cancelledCount.textContent = cancelled;
+            totalStudents.textContent = uniqueStudents;
+        }
+
+        function filterOrders(filter) {
+            currentFilter = filter;
+            let filtered = allOrders;
+            if (filter === 'pending') filtered = allOrders.filter(o => o.status === 'قيد المراجعة');
+            else if (filter === 'active') filtered = allOrders.filter(o => o.status === 'مفعل');
+            else if (filter === 'cancelled') filtered = allOrders.filter(o => o.status === 'ملغي');
+            displayOrders(filtered);
+        }
+
+        function displayOrders(orders) {
+            if (orders.length === 0) {
+                ordersTableBody.innerHTML = '<tr><td colspan="7">لا توجد طلبات</td></tr>';
+                return;
+            }
+
+            let html = '';
+            orders.forEach(order => {
+                const statusClass = 
+                    order.status === 'قيد المراجعة' ? 'status-pending' :
+                    order.status === 'مفعل' ? 'status-active' : 'status-cancelled';
+                const statusIcon = 
+                    order.status === 'قيد المراجعة' ? 'fa-clock' :
+                    order.status === 'مفعل' ? 'fa-check-circle' : 'fa-times-circle';
+                const date = order.createdAt ? new Date(order.createdAt) : new Date();
+
+                html += `
+                    <tr data-id="${order.id}">
+                        <td>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div><i class="fas fa-user-graduate" style="color:#6d4fc7;"></i></div>
+                                <div>
+                                    <div>${order.userName || 'غير معروف'}</div>
+                                    <div style="font-size:11px; color:#b1a4c2;">${order.userPhone}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${order.userPhone}</td>
+                        <td><span class="status-badge" style="background:#0f0a1f;">${order.packageName || 'باقة'}</span></td>
+                        <td>${order.packagePrice || 0} جنيه</td>
+                        <td>${date.toLocaleDateString('ar-EG')}</td>
+                        <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${order.status}</span></td>
+                        <td>
+                            <div style="display:flex; gap:5px;">
+                                ${order.status === 'قيد المراجعة' ? `
+                                    <button class="action-btn" onclick="approveOrder('${order.id}', '${order.userId}', '${order.packageId}')" style="color:#2e8b57;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="rejectOrder('${order.id}')" style="color:#c44545;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                ` : ''}
+                                <button class="action-btn" onclick="viewOrder('${order.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            ordersTableBody.innerHTML = html;
+        }
+
+        // ==================== Denormalization: تفعيل الاشتراك ====================
+        window.approveOrder = async (orderId, userId, packageId) => {
+            if (!confirm('هل أنت متأكد من تفعيل هذا الاشتراك؟')) return;
+
+            try {
+                const orderDoc = await getDoc(doc(db, 'PAY_requests', orderId));
+                if (!orderDoc.exists()) return;
+
+                const orderData = orderDoc.data();
+                const batch = writeBatch(db);
+
+                // تحديث حالة الطلب
+                batch.update(doc(db, 'PAY_requests', orderId), {
+                    status: 'مفعل',
+                    activatedAt: serverTimestamp(),
+                    activatedBy: currentAdmin?.uid
+                });
+
+                // إضافة الباقة إلى activePackages للطالب
+                const userRef = doc(db, 'STU_users', userId);
+                batch.update(userRef, {
+                    [`activePackages.${packageId}`]: {
+                        packageId: packageId,
+                        packageName: orderData.packageName,
+                        packagePrice: orderData.packagePrice,
+                        activatedAt: new Date().toISOString(),
+                        expiresAt: calculateExpiryDate(orderData.packageDuration),
+                        status: 'active',
+                        orderId: orderId
+                    }
+                });
+
+                await batch.commit();
+
+                showMessage('تم تفعيل الاشتراك وإضافته للطالب', true);
+                loadOrders();
+
+            } catch (error) {
+                console.error(error);
+                showMessage('حدث خطأ في التفعيل', false);
+            }
+        };
+
+        window.rejectOrder = async (orderId) => {
+            if (!confirm('هل أنت متأكد من رفض هذا الاشتراك؟')) return;
+
+            try {
+                await updateDoc(doc(db, 'PAY_requests', orderId), {
+                    status: 'ملغي',
+                    rejectedAt: serverTimestamp(),
+                    rejectedBy: currentAdmin?.uid
+                });
+                showMessage('تم رفض الاشتراك', true);
+                loadOrders();
+            } catch (error) {
+                showMessage('حدث خطأ', false);
+            }
+        };
+
+        window.viewOrder = (orderId) => {
+            const order = allOrders.find(o => o.id === orderId);
+            if (order) {
+                alert(`تفاصيل الطلب:\nالطالب: ${order.userName}\nالهاتف: ${order.userPhone}\nالباقة: ${order.packageName}\nالمبلغ: ${order.packagePrice} جنيه\nالحالة: ${order.status}`);
+            }
+        };
+
+        // أحداث الفلتر
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterOrders(btn.dataset.filter);
+            });
+        });
+
+        // بدء التطبيق
+        const start = async () => {
+            await checkAdminAuth();
+            await loadOrders();
+        };
+        start();
+    </script>
+</body>
+</html>

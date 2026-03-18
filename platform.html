@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>منصة الباقة - تعلم البرمجة</title>
+    <!-- خط Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0f0a1f;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        /* الهيدر */
+        .header {
+            background: #1a1330;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #2d224a;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            background: #0f0a1f;
+            border: 1px solid #2d224a;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b1a4c2;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #6d4fc7;
+            color: white;
+            border-color: #6d4fc7;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-info h1 {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 4px;
+            color: white;
+        }
+
+        .header-info p {
+            font-size: 13px;
+            color: #b1a4c2;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .package-tag {
+            background: #6d4fc7;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* المحتوى الرئيسي */
+        .content {
+            padding: 20px 16px;
+            padding-bottom: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Skeleton Loading */
+        .skeleton-lesson {
+            background: #1a1330;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #2d224a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-lesson::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(109, 79, 199, 0.1), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .skeleton-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .skeleton-number {
+            width: 50px;
+            height: 50px;
+            background: #2d224a;
+            border-radius: 18px;
+        }
+
+        .skeleton-title {
+            flex: 1;
+            height: 50px;
+            background: #2d224a;
+            border-radius: 12px;
+        }
+
+        .skeleton-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .skeleton-action {
+            flex: 1;
+            height: 45px;
+            background: #2d224a;
+            border-radius: 40px;
+        }
+
+        /* بطاقة الدرس */
+        .lesson-card {
+            background: #1a1330;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #2d224a;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lesson-card.active {
+            border-color: #6d4fc7;
+            box-shadow: 0 0 0 2px rgba(109, 79, 199, 0.3);
+            background: #221a38;
+        }
+
+        .lesson-card.active::before {
+            content: '🔴 جاري الآن';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #c44545;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6d4fc7, #8a6cff);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 22px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
+        }
+
+        .lesson-title {
+            flex: 1;
+        }
+
+        .lesson-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .lesson-title .date {
+            font-size: 13px;
+            color: #b1a4c2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lesson-title .date i {
+            color: #6d4fc7;
+            font-size: 12px;
+        }
+
+        .lesson-badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-live {
+            background: #c44545;
+            color: white;
+        }
+
+        .badge-recorded {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .badge-exam {
+            background: #b49aff;
+            color: #1a1330;
+        }
+
+        .badge-upcoming {
+            background: #4a4a6a;
+            color: #d0c2e6;
+        }
+
+        /* أزرار الدرس */
+        .lesson-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #2d224a;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 120px;
+            background: #0f0a1f;
+            border: 1.5px solid #2d224a;
+            border-radius: 40px;
+            padding: 12px 8px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #b1a4c2;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .action-btn.active {
+            background: #6d4fc7;
+            border-color: #6d4fc7;
+            color: white;
+            box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
+        }
+
+        .action-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(109, 79, 199, 0.4);
+        }
+
+        .action-btn.active:active {
+            transform: translateY(0);
+        }
+
+        .action-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .action-btn i {
+            font-size: 14px;
+        }
+
+        /* حالة الدرس */
+        .lesson-status {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #b1a4c2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #0f0a1f;
+            border-radius: 40px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4a4a6a;
+        }
+
+        .status-dot.live {
+            background: #c44545;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-dot.available {
+            background: #2e8b57;
+        }
+
+        /* رسائل الخطأ */
+        .error-box {
+            background: #1a1330;
+            border: 1px solid #c44545;
+            color: #ff9b9b;
+            padding: 40px 20px;
+            border-radius: 30px;
+            text-align: center;
+            margin: 20px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-box i {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .error-box .retry-btn {
+            background: #6d4fc7;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 40px;
+            margin-top: 20px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #8a6cff;
+        }
+
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0f0a1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2d224a;
+            border-top-color: #6d4fc7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #b1a4c2;
+            background: #1a1330;
+            border-radius: 30px;
+            border: 1px dashed #2d224a;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #2d224a;
+        }
+
+        /* تذييل */
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #4a3b62;
+        }
+
+        /* رسالة نجاح */
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1b3b2a;
+            border: 1px solid #2e8b57;
+            color: #a0e6c0;
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                bottom: -100px;
+                opacity: 0;
+            }
+            to {
+                bottom: 20px;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة تحميل -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toastMessage" class="toast-message hidden">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <!-- الهيدر -->
+    <div class="header">
+        <a href="pay.html" class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <div class="header-info">
+            <h1 id="packageName">جاري التحميل...</h1>
+            <p id="packageMeta">
+                <i class="fas fa-calendar"></i>
+                <span>منصة التعلم التفاعلية</span>
+            </p>
+        </div>
+        <div class="package-tag" id="packagePrice">
+            <i class="fas fa-crown"></i>
+            <span>...</span>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="content" id="content">
+        <!-- Skeleton Loader -->
+        <div id="skeletonLoader">
+            <div class="skeleton-lesson">
+                <div class="skeleton-header">
+                    <div class="skeleton-number"></div>
+                    <div class="skeleton-title"></div>
+                </div>
+                <div class="skeleton-actions">
+                    <div class="skeleton-action"></div>
+                    <div class="skeleton-action"></div>
+                </div>
+            </div>
+            <div class="skeleton-lesson">
+                <div class="skeleton-header">
+                    <div class="skeleton-number"></div>
+                    <div class="skeleton-title"></div>
+                </div>
+                <div class="skeleton-actions">
+                    <div class="skeleton-action"></div>
+                    <div class="skeleton-action"></div>
+                </div>
+            </div>
+            <div class="skeleton-lesson">
+                <div class="skeleton-header">
+                    <div class="skeleton-number"></div>
+                    <div class="skeleton-title"></div>
+                </div>
+                <div class="skeleton-actions">
+                    <div class="skeleton-action"></div>
+                    <div class="skeleton-action"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الفعلي (مخفي في البداية) -->
+        <div id="actualContent" class="hidden"></div>
+    </div>
+
+    <!-- تذييل -->
+    <div class="footer-note">
+        منصة البرمجة - تعلم بالعربية
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy, 
+            doc, 
+            getDoc,
+            Timestamp,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+        // ==================== تهيئة Firebase ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ==================== عناصر الصفحة ====================
+        const loadingScreen = document.getElementById('loadingScreen');
+        const backBtn = document.getElementById('backBtn');
+        const packageNameEl = document.getElementById('packageName');
+        const packageMeta = document.getElementById('packageMeta');
+        const packagePrice = document.getElementById('packagePrice');
+        const content = document.getElementById('content');
+        const skeletonLoader = document.getElementById('skeletonLoader');
+        const actualContent = document.getElementById('actualContent');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+
+        // ==================== متغيرات عامة ====================
+        let currentUser = null;
+        let serverTimeOffset = 0; // لحساب الفرق بين وقت العميل والسيرفر
+
+        // ==================== التحقق من المستخدم ====================
+        const checkAuth = () => {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    // جلب بيانات المستخدم من localStorage أولاً (سرعة)
+                    const localUser = localStorage.getItem('edu_user');
+                    if (localUser) {
+                        try {
+                            currentUser = JSON.parse(localUser);
+                            resolve(currentUser);
+                        } catch (e) {
+                            // تجاهل الخطأ واستمر في جلب من Firebase
+                        }
+                    }
+
+                    // تحديث من Firebase
+                    try {
+                        const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                        if (userDoc.exists()) {
+                            currentUser = {
+                                uid: user.uid,
+                                ...userDoc.data()
+                            };
+                            resolve(currentUser);
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    } catch (error) {
+                        console.error('خطأ في جلب بيانات المستخدم:', error);
+                        reject(error);
+                    }
+                });
+            });
+        };
+
+        // ==================== دالة عرض الرسائل ====================
+        function showToast(text, isSuccess = true) {
+            toastText.textContent = text;
+            toastMessage.classList.remove('hidden');
+            toastMessage.className = isSuccess ? 'toast-message' : 'toast-message';
+            if (!isSuccess) {
+                toastMessage.style.background = '#3b1f2a';
+                toastMessage.style.borderColor = '#c44545';
+                toastMessage.style.color = '#ff9b9b';
+            }
+            
+            setTimeout(() => {
+                toastMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        // ==================== الحصول على وقت السيرفر ====================
+        async function getServerTime() {
+            try {
+                // استخدام Timestamp.now() من Firestore (هذا هو وقت السيرفر)
+                const serverTime = Timestamp.now();
+                return serverTime.toDate();
+            } catch (error) {
+                console.error('خطأ في جلب وقت السيرفر:', error);
+                // في حالة الفشل، نستخدم وقت العميل مع تسجيل تحذير
+                console.warn('⚠️ استخدام وقت العميل كحل بديل');
+                return new Date();
+            }
+        }
+
+        // ==================== التحقق من الاشتراك (Read-Optimized) ====================
+        async function checkSubscription(userId, packageId) {
+            try {
+                // قراءة وثيقة الطالب مباشرة (Read واحد فقط)
+                const userDoc = await getDoc(doc(db, 'STU_users', userId));
+                
+                if (!userDoc.exists()) {
+                    return false;
+                }
+
+                const userData = userDoc.data();
+                
+                // التحقق من وجود activePackages
+                if (!userData.activePackages) {
+                    return false;
+                }
+
+                // التحقق من وجود packageId في activePackages
+                const activePackage = userData.activePackages[packageId];
+                
+                if (!activePackage) {
+                    return false;
+                }
+
+                // التحقق من أن الاشتراك لا يزال ساري المفعول
+                const now = await getServerTime();
+                const expiryDate = new Date(activePackage.expiresAt);
+                
+                if (expiryDate < now) {
+                    // الاشتراك منتهي الصلاحية
+                    return false;
+                }
+
+                return true;
+
+            } catch (error) {
+                console.error('خطأ في التحقق من الاشتراك:', error);
+                return false;
+            }
+        }
+
+        // ==================== جلب معلومات الباقة ====================
+        async function getPackageInfo(packageId) {
+            try {
+                const packageRef = doc(db, 'PKG_packages', packageId);
+                const packageSnap = await getDoc(packageRef);
+                return packageSnap.exists() ? packageSnap.data() : null;
+            } catch (error) {
+                console.error('خطأ في جلب معلومات الباقة:', error);
+                return null;
+            }
+        }
+
+        // ==================== حساب حالة الزر بناءً على وقت السيرفر ====================
+        async function getButtonStatus(lesson, type) {
+            const now = await getServerTime();
+            
+            // تحويل وقت الدرس من النص إلى كائن Date
+            const lessonDateTime = new Date(`${lesson.date}T${lesson.time}:00`);
+            
+            // وقت بداية المحاضرة (باستخدام وقت السيرفر كمرجع)
+            const lessonStart = lessonDateTime;
+            
+            // وقت نهاية المحاضرة (بعد ساعتين)
+            const lessonEnd = new Date(lessonStart.getTime() + 2 * 60 * 60 * 1000);
+            
+            // وقت فتح الامتحان (إذا وجد)
+            const examOpen = lesson.examOpenTime ? new Date(lesson.examOpenTime) : null;
+
+            if (type === 'meet') {
+                // رابط الميت: متاح قبل المحاضرة بربع ساعة وأثناء المحاضرة
+                const meetAvailable = new Date(lessonStart.getTime() - 15 * 60 * 1000);
+                
+                if (lesson.meetLink && now >= meetAvailable && now <= lessonEnd) {
+                    return { 
+                        active: true, 
+                        text: '🔴 حضور مباشر', 
+                        disabled: false,
+                        link: lesson.meetLink
+                    };
+                } else if (now < meetAvailable) {
+                    const diffMinutes = Math.floor((meetAvailable - now) / (1000 * 60));
+                    return { 
+                        active: false, 
+                        text: `⏳ يبدأ بعد ${diffMinutes} دقيقة`, 
+                        disabled: true 
+                    };
+                } else {
+                    return { 
+                        active: false, 
+                        text: '⏰ انتهت', 
+                        disabled: true 
+                    };
+                }
+            } else if (type === 'recording') {
+                // التسجيل: متاح بعد المحاضرة بنصف ساعة
+                const recordingAvailable = new Date(lessonEnd.getTime() - 30 * 60 * 1000);
+                
+                if (lesson.recordingLink && now >= recordingAvailable) {
+                    return { 
+                        active: true, 
+                        text: '📹 مشاهدة التسجيل', 
+                        disabled: false,
+                        link: lesson.recordingLink
+                    };
+                } else if (now < recordingAvailable) {
+                    const diffMinutes = Math.floor((recordingAvailable - now) / (1000 * 60));
+                    if (diffMinutes < 60) {
+                        return { 
+                            active: false, 
+                            text: `⏳ التسجيل بعد ${diffMinutes} دقيقة`, 
+                            disabled: true 
+                        };
+                    } else {
+                        const diffHours = Math.floor(diffMinutes / 60);
+                        return { 
+                            active: false, 
+                            text: `⏳ التسجيل بعد ${diffHours} ساعة`, 
+                            disabled: true 
+                        };
+                    }
+                } else {
+                    return { 
+                        active: false, 
+                        text: '📹 التسجيل', 
+                        disabled: true 
+                    };
+                }
+            } else if (type === 'exam') {
+                // الامتحان: حسب الموعد المحدد
+                if (examOpen && now >= examOpen && lesson.examLink) {
+                    return { 
+                        active: true, 
+                        text: '📝 دخول الامتحان', 
+                        disabled: false,
+                        link: lesson.examLink
+                    };
+                } else if (examOpen && now < examOpen) {
+                    const diffHours = Math.floor((examOpen - now) / (1000 * 60 * 60));
+                    if (diffHours < 24) {
+                        return { 
+                            active: false, 
+                            text: `⏳ يفتح بعد ${diffHours} ساعة`, 
+                            disabled: true 
+                        };
+                    } else {
+                        const diffDays = Math.floor(diffHours / 24);
+                        return { 
+                            active: false, 
+                            text: `⏳ يفتح بعد ${diffDays} يوم`, 
+                            disabled: true 
+                        };
+                    }
+                } else {
+                    return { 
+                        active: false, 
+                        text: '📝 لا يوجد امتحان', 
+                        disabled: true 
+                    };
+                }
+            }
+        }
+
+        // ==================== تحميل الدروس ====================
+        async function loadLessons() {
+            try {
+                // إظهار skeleton loader
+                skeletonLoader.classList.remove('hidden');
+                actualContent.classList.add('hidden');
+
+                // جلب packageId من الرابط
+                const urlParams = new URLSearchParams(window.location.search);
+                const packageId = urlParams.get('packageId');
+
+                if (!packageId) {
+                    throw new Error('لم يتم تحديد الباقة');
+                }
+
+                // التحقق من المستخدم
+                await checkAuth();
+                
+                if (!currentUser) {
+                    throw new Error('المستخدم غير موجود');
+                }
+
+                // التحقق من الاشتراك باستخدام activePackages (Read واحد فقط)
+                const isSubscribed = await checkSubscription(currentUser.uid, packageId);
+                
+                if (!isSubscribed) {
+                    actualContent.innerHTML = `
+                        <div class="error-box">
+                            <i class="fas fa-lock"></i>
+                            <h3 style="margin-bottom: 10px;">غير مشترك</h3>
+                            <p>أنت غير مشترك في هذه الباقة أو اشتراكك منتهي الصلاحية</p>
+                            <button class="retry-btn" onclick="window.location.href='pay.html'">
+                                <i class="fas fa-arrow-right"></i> الذهاب لاشتراكاتي
+                            </button>
+                        </div>
+                    `;
+                    skeletonLoader.classList.add('hidden');
+                    actualContent.classList.remove('hidden');
+                    loadingScreen.classList.add('hidden');
+                    return;
+                }
+
+                // جلب معلومات الباقة
+                const packageInfo = await getPackageInfo(packageId);
+                if (packageInfo) {
+                    packageNameEl.textContent = packageInfo.name || 'الباقة';
+                    packageMeta.innerHTML = `
+                        <i class="fas fa-calendar"></i>
+                        <span>تبدأ: ${packageInfo.startDate || 'غير محدد'} • ${packageInfo.duration || 'شهر'}</span>
+                    `;
+                    packagePrice.innerHTML = `
+                        <i class="fas fa-crown"></i>
+                        <span>${packageInfo.price || 0} جنيه</span>
+                    `;
+                }
+
+                // جلب الدروس
+                const lessonsRef = collection(db, 'LESS_lessons');
+                const q = query(
+                    lessonsRef,
+                    where('packageId', '==', packageId),
+                    orderBy('lessonNumber', 'asc')
+                );
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    actualContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-video-slash"></i>
+                            <h3 style="margin-bottom: 10px;">لا توجد دروس بعد</h3>
+                            <p>سيتم إضافة المحتوى قريباً</p>
+                        </div>
+                    `;
+                    skeletonLoader.classList.add('hidden');
+                    actualContent.classList.remove('hidden');
+                    loadingScreen.classList.add('hidden');
+                    return;
+                }
+
+                // بناء HTML للدروس
+                let html = '';
+                const now = await getServerTime();
+
+                for (const doc of querySnapshot.docs) {
+                    const lesson = doc.data();
+                    
+                    // تحديد نوع الدرس
+                    let typeBadge = '';
+                    let typeText = '';
+                    if (lesson.type === 'live') {
+                        typeBadge = 'badge-live';
+                        typeText = '🔴 مباشرة';
+                    } else if (lesson.type === 'recorded') {
+                        typeBadge = 'badge-recorded';
+                        typeText = '📹 مسجلة';
+                    } else if (lesson.type === 'exam') {
+                        typeBadge = 'badge-exam';
+                        typeText = '📝 امتحان';
+                    }
+
+                    // هل الدرس نشط الآن؟
+                    const lessonDateTime = new Date(`${lesson.date}T${lesson.time}:00`);
+                    const lessonEnd = new Date(lessonDateTime.getTime() + 2 * 60 * 60 * 1000);
+                    const isActive = (now >= lessonDateTime && now <= lessonEnd);
+
+                    // حالة الأزرار (باستخدام وقت السيرفر)
+                    const meetStatus = await getButtonStatus(lesson, 'meet');
+                    const recordingStatus = await getButtonStatus(lesson, 'recording');
+                    const examStatus = await getButtonStatus(lesson, 'exam');
+
+                    html += `
+                        <div class="lesson-card ${isActive ? 'active' : ''}">
+                            <div class="lesson-header">
+                                <div class="lesson-number">${lesson.lessonNumber}</div>
+                                <div class="lesson-title">
+                                    <h3>${lesson.title || 'بدون عنوان'}</h3>
+                                    <div class="date">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>${lesson.date}</span>
+                                        <i class="fas fa-clock" style="margin-right: 10px;"></i>
+                                        <span>${lesson.time}</span>
+                                    </div>
+                                </div>
+                                <div class="lesson-badge ${typeBadge}">${typeText}</div>
+                            </div>
+
+                            <div class="lesson-actions">
+                                ${lesson.meetLink && meetStatus.active ? `
+                                <a href="${meetStatus.link}" target="_blank" class="action-btn active">
+                                    <i class="fab fa-google"></i>
+                                    ${meetStatus.text}
+                                </a>
+                                ` : lesson.meetLink ? `
+                                <button class="action-btn disabled" disabled>
+                                    <i class="fab fa-google"></i>
+                                    ${meetStatus.text}
+                                </button>
+                                ` : ''}
+
+                                ${lesson.recordingLink && recordingStatus.active ? `
+                                <a href="${recordingStatus.link}" target="_blank" class="action-btn active">
+                                    <i class="fas fa-video"></i>
+                                    ${recordingStatus.text}
+                                </a>
+                                ` : lesson.recordingLink ? `
+                                <button class="action-btn disabled" disabled>
+                                    <i class="fas fa-video"></i>
+                                    ${recordingStatus.text}
+                                </button>
+                                ` : ''}
+
+                                ${lesson.examLink && examStatus.active ? `
+                                <a href="${examStatus.link}" target="_blank" class="action-btn active">
+                                    <i class="fas fa-file-alt"></i>
+                                    ${examStatus.text}
+                                </a>
+                                ` : lesson.examLink ? `
+                                <button class="action-btn disabled" disabled>
+                                    <i class="fas fa-file-alt"></i>
+                                    ${examStatus.text}
+                                </button>
+                                ` : ''}
+                            </div>
+
+                            ${isActive ? `
+                            <div class="lesson-status">
+                                <span class="status-dot live"></span>
+                                <span>البث المباشر نشط الآن - يمكنك الحضور</span>
+                            </div>
+                            ` : ''}
+                            
+                            ${(!isActive && lesson.type === 'live' && lesson.recordingLink && recordingStatus.active) ? `
+                            <div class="lesson-status">
+                                <span class="status-dot available"></span>
+                                <span>التسجيل متاح للمشاهدة</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+
+                actualContent.innerHTML = html;
+
+                // إخفاء skeleton وإظهار المحتوى
+                skeletonLoader.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('خطأ في تحميل الدروس:', error);
+                
+                actualContent.innerHTML = `
+                    <div class="error-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3 style="margin-bottom: 10px;">حدث خطأ</h3>
+                        <p>${error.message || 'يرجى المحاولة مرة أخرى'}</p>
+                        <button class="retry-btn" onclick="location.reload()">
+                            <i class="fas fa-redo-alt"></i> إعادة المحاولة
+                        </button>
+                    </div>
+                `;
+                
+                skeletonLoader.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+            } finally {
+                loadingScreen.classList.add('hidden');
+            }
+        }
+
+        // ==================== تشغيل التطبيق ====================
+        const startApp = async () => {
+            try {
+                await loadLessons();
+            } catch (error) {
+                console.error('خطأ في بدء التطبيق:', error);
+                loadingScreen.classList.add('hidden');
+            }
+        };
+
+        startApp();
+
+        // ==================== تحديث الحالة كل دقيقة ====================
+        setInterval(async () => {
+            // إعادة تحميل الصفحة لتحديث حالة الأزرار
+            // هذا يضمن تحديث حالة "نشط الآن" بدون إعادة تحميل يدوي
+            if (!document.hidden) { // فقط إذا كانت الصفحة مفتوحة
+                await loadLessons();
+            }
+        }, 60000); // كل دقيقة
+
+    </script>
+</body>
+</html>

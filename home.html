@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>الرئيسية - منصة البرمجة</title>
+    <!-- خط Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        /* جميع التنسيقات السابقة تبقى كما هي مع إضافة التنسيقات التالية */
+        
+        /* Skeleton تحسين */
+        .skeleton-post {
+            background: rgba(26, 19, 48, 0.8);
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-post::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(109, 79, 199, 0.1), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        .skeleton-post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .skeleton-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(109, 79, 199, 0.3);
+            border-radius: 16px;
+        }
+
+        .skeleton-title {
+            width: 60%;
+            height: 20px;
+            background: rgba(109, 79, 199, 0.3);
+            border-radius: 8px;
+        }
+
+        .skeleton-date {
+            width: 40%;
+            height: 16px;
+            background: rgba(109, 79, 199, 0.2);
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .skeleton-content {
+            width: 100%;
+            height: 60px;
+            background: rgba(109, 79, 199, 0.2);
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        /* زر عرض المزيد */
+        .load-more-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6d4fc7, #8a6cff);
+            border: none;
+            color: white;
+            padding: 16px;
+            border-radius: 30px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 20px 0 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(109, 79, 199, 0.3);
+        }
+
+        .load-more-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(109, 79, 199, 0.5);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #4a3a6b;
+        }
+
+        .load-more-btn i {
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .load-more-btn:hover:not(:disabled) i {
+            transform: rotate(180deg);
+        }
+
+        /* Post card */
+        .post-item {
+            background: rgba(26, 19, 48, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(109, 79, 199, 0.2);
+            margin-bottom: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .post-item:hover {
+            transform: translateX(-6px) translateY(-2px);
+            border-color: #6d4fc7;
+            background: rgba(26, 19, 48, 0.95);
+            box-shadow: 0 15px 30px rgba(109, 79, 199, 0.2);
+        }
+
+        .post-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6d4fc7, #b49aff);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .post-item:hover::before {
+            opacity: 1;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .post-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #6d4fc7, #8a6cff);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 10px 20px rgba(109, 79, 199, 0.3);
+            transition: all 0.3s;
+        }
+
+        .post-item:hover .post-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .post-title {
+            flex: 1;
+        }
+
+        .post-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .post-date {
+            font-size: 12px;
+            color: #9b8ab0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-date i {
+            color: #6d4fc7;
+            font-size: 10px;
+        }
+
+        .post-content {
+            color: #d0c2e6;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            padding-right: 72px;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 72px;
+        }
+
+        .post-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #9b8ab0;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .post-stat:hover {
+            color: #6d4fc7;
+        }
+
+        .post-stat i {
+            font-size: 14px;
+        }
+
+        .post-read-more {
+            color: #6d4fc7;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+        }
+
+        .post-item:hover .post-read-more {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: rgba(26, 19, 48, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 40px 24px;
+            text-align: center;
+            border: 1px dashed rgba(109, 79, 199, 0.3);
+            margin: 20px 0;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #6d4fc7;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #9b8ab0;
+            font-size: 14px;
+        }
+
+        /* Feed container */
+        .feed-container {
+            margin-top: 24px;
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .feed-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feed-title i {
+            color: #6d4fc7;
+            background: rgba(109, 79, 199, 0.2);
+            padding: 10px;
+            border-radius: 14px;
+            font-size: 18px;
+        }
+
+        .feed-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .feed-badge {
+            background: rgba(109, 79, 199, 0.2);
+            color: #b49aff;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(109, 79, 199, 0.3);
+        }
+
+        /* Skeleton grid */
+        .skeleton-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* تحسين infinite scroll indicator */
+        .infinite-scroll-trigger {
+            height: 20px;
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .infinite-loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(109, 79, 199, 0.2);
+            border-top-color: #6d4fc7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* تحسين skeleton للباقات */
+        .package-skeleton {
+            height: 380px;
+            width: 280px;
+            background: rgba(26, 19, 48, 0.8);
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(109, 79, 199, 0.1), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- جزيئات متحركة -->
+    <div class="particles" id="particles"></div>
+
+    <!-- شاشة تحميل -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- التابات -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <div class="tab active" id="tabHome">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </div>
+            <div class="tab" id="tabMySubs">
+                <i class="fas fa-crown"></i>
+                <span>اشتراكاتي</span>
+            </div>
+            <div class="tab" id="tabTry">
+                <i class="fas fa-code"></i>
+                <span>درب نفسك</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="content" id="mainContent">
+        <!-- Skeleton Loading الرئيسي -->
+        <div id="skeletonLoader" class="skeleton-wrapper">
+            <div class="skeleton-header"></div>
+            
+            <!-- Skeleton للباقات -->
+            <div style="margin: 20px 0;">
+                <div class="section-header" style="margin-bottom: 16px;">
+                    <div style="width: 150px; height: 30px; background: rgba(109,79,199,0.2); border-radius: 20px;"></div>
+                </div>
+                <div style="display: flex; gap: 16px; overflow: hidden;">
+                    <div class="package-skeleton"></div>
+                    <div class="package-skeleton"></div>
+                    <div class="package-skeleton"></div>
+                </div>
+            </div>
+            
+            <!-- Skeleton للأخبار -->
+            <div style="margin-top: 30px;">
+                <div class="section-header" style="margin-bottom: 16px;">
+                    <div style="width: 120px; height: 30px; background: rgba(109,79,199,0.2); border-radius: 20px;"></div>
+                </div>
+                <div class="skeleton-grid">
+                    <div class="skeleton-post"></div>
+                    <div class="skeleton-post"></div>
+                    <div class="skeleton-post"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- المحتوى الفعلي (مخفي في البداية) -->
+        <div id="actualContent" class="hidden">
+            <!-- سيتم ملؤها بالجافاسكريبت -->
+        </div>
+    </div>
+
+    <!-- زر العودة للأعلى -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Firebase SDK (مودرن V9) -->
+    <script type="import">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, query, orderBy, limit, startAfter, where, Timestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+
+        // ==================== تهيئة Firebase ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ==================== DOM Elements ====================
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const skeletonLoader = document.getElementById('skeletonLoader');
+        const actualContent = document.getElementById('actualContent');
+        const tabHome = document.getElementById('tabHome');
+        const tabMySubs = document.getElementById('tabMySubs');
+        const tabTry = document.getElementById('tabTry');
+        const backToTop = document.getElementById('backToTop');
+        const particlesContainer = document.getElementById('particles');
+
+        // ==================== متغيرات عامة ====================
+        let currentUser = null;
+        let userData = null;
+        let lastPostDoc = null; // آخر مستند في الصفحة الحالية (لـ pagination)
+        let isLoadingMore = false;
+        let hasMorePosts = true;
+        let postsCache = []; // تخزين مؤقت للمنشورات
+        
+        // إعدادات pagination
+        const POSTS_PER_PAGE = 5;
+
+        // ==================== نظام التحقق من الهوية المتقدم ====================
+        
+        // 1. قراءة بيانات المستخدم من localStorage أولاً (سرعة فائقة)
+        const loadUserFromLocal = () => {
+            try {
+                const localUser = localStorage.getItem('edu_user');
+                if (localUser) {
+                    const parsed = JSON.parse(localUser);
+                    // التحقق من timestamp (صلاحية 24 ساعة)
+                    const now = Date.now();
+                    if (parsed.timestamp && (now - parsed.timestamp) < 24 * 60 * 60 * 1000) {
+                        console.log("✅ تم تحميل بيانات المستخدم من localStorage");
+                        return parsed;
+                    } else {
+                        localStorage.removeItem('edu_user');
+                    }
+                }
+            } catch (e) {
+                console.warn("خطأ في قراءة localStorage:", e);
+            }
+            return null;
+        };
+
+        // 2. التحقق من الجلسة مع Firebase
+        const checkAuth = async () => {
+            // تجربة قراءة البيانات المحلية أولاً
+            const localUser = loadUserFromLocal();
+            
+            return new Promise((resolve) => {
+                onAuthStateChanged(auth, async (firebaseUser) => {
+                    if (!firebaseUser) {
+                        // لا يوجد مستخدم في Firebase
+                        console.log("❌ لا يوجد مستخدم، توجيه إلى index.html");
+                        window.location.replace('index.html');
+                        return;
+                    }
+
+                    // يوجد مستخدم في Firebase
+                    currentUser = firebaseUser;
+                    
+                    if (localUser && localUser.uid === firebaseUser.uid) {
+                        // استخدام البيانات المحلية مؤقتاً
+                        userData = {
+                            name: localUser.name || '',
+                            phone: localUser.phone || '',
+                            uid: localUser.uid
+                        };
+                        console.log("✅ استخدام البيانات المحلية:", userData);
+                        
+                        // تحديث البيانات من Firestore في الخلفية
+                        fetchFreshUserData(firebaseUser.uid);
+                        resolve(true);
+                    } else {
+                        // جلب البيانات من Firestore
+                        try {
+                            await fetchFreshUserData(firebaseUser.uid);
+                            resolve(true);
+                        } catch (error) {
+                            console.error("خطأ في جلب بيانات المستخدم:", error);
+                            window.location.replace('index.html');
+                        }
+                    }
+                });
+            });
+        };
+
+        // 3. جلب بيانات محدثة من Firestore
+        const fetchFreshUserData = async (uid) => {
+            try {
+                const userDocRef = doc(db, 'STU_users', uid);
+                const userDocSnap = await getDoc(userDocRef);
+                
+                if (userDocSnap.exists()) {
+                    userData = userDocSnap.data();
+                    // تحديث localStorage
+                    localStorage.setItem('edu_user', JSON.stringify({
+                        uid: userData.uid,
+                        name: userData.name,
+                        phone: userData.phone,
+                        timestamp: Date.now()
+                    }));
+                    console.log("✅ تم تحديث بيانات المستخدم من Firestore");
+                } else {
+                    console.error("بيانات المستخدم غير موجودة في Firestore");
+                    throw new Error("User data not found");
+                }
+            } catch (error) {
+                console.error("خطأ في جلب بيانات المستخدم:", error);
+                throw error;
+            }
+        };
+
+        // ==================== دوال مساعدة ====================
+        
+        // إنشاء جزيئات متحركة
+        function createParticles() {
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = `rgba(109, 79, 199, ${Math.random() * 0.5})`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // دالة عرض الخطأ
+        function showError(message, showRetry = true) {
+            skeletonLoader.classList.add('hidden');
+            actualContent.classList.add('hidden');
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-box';
+            errorDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <p style="font-size: 16px; margin-bottom: 10px;">${message}</p>
+                <p style="font-size: 14px; color: #b1a4c2; margin-bottom: 20px;">يرجى المحاولة مرة أخرى</p>
+                ${showRetry ? `
+                    <button onclick="location.reload()">
+                        <i class="fas fa-redo-alt"></i> إعادة المحاولة
+                    </button>
+                ` : ''}
+            `;
+            
+            mainContent.innerHTML = '';
+            mainContent.appendChild(errorDiv);
+        }
+
+        // تنسيق التاريخ
+        function formatPostDate(timestamp) {
+            if (!timestamp) return 'تاريخ غير محدد';
+            
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            if (days > 0) {
+                return `منذ ${days} يوم`;
+            } else if (hours > 0) {
+                return `منذ ${hours} ساعة`;
+            } else if (minutes > 0) {
+                return `منذ ${minutes} دقيقة`;
+            } else {
+                return 'الآن';
+            }
+        }
+
+        // ==================== نظام جلب المنشورات المتقدم (مع Pagination) ====================
+        
+        // جلب المنشورات من Firestore مع Pagination
+        async function fetchPosts(loadMore = false) {
+            try {
+                // بناء الـ query
+                let postsQuery = query(
+                    collection(db, 'POSTS_feed'),
+                    orderBy('createdAt', 'desc'),
+                    limit(POSTS_PER_PAGE)
+                );
+                
+                // إذا كنا نجلب المزيد، نبدأ من آخر مستند
+                if (loadMore && lastPostDoc) {
+                    postsQuery = query(
+                        collection(db, 'POSTS_feed'),
+                        orderBy('createdAt', 'desc'),
+                        startAfter(lastPostDoc),
+                        limit(POSTS_PER_PAGE)
+                    );
+                }
+                
+                const querySnapshot = await getDocs(postsQuery);
+                
+                // تحديث آخر مستند للـ pagination التالي
+                if (!querySnapshot.empty) {
+                    lastPostDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+                    
+                    // التحقق من وجود المزيد
+                    const checkMoreQuery = query(
+                        collection(db, 'POSTS_feed'),
+                        orderBy('createdAt', 'desc'),
+                        startAfter(lastPostDoc),
+                        limit(1)
+                    );
+                    const checkMore = await getDocs(checkMoreQuery);
+                    hasMorePosts = !checkMore.empty;
+                } else {
+                    hasMorePosts = false;
+                }
+                
+                // تحويل البيانات
+                const posts = querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        title: data.title || 'عنوان المنشور',
+                        content: data.content || '',
+                        icon: data.icon || 'fa-newspaper',
+                        createdAt: data.createdAt || Timestamp.now(),
+                        likes: data.likes || 0,
+                        comments: data.comments || 0,
+                        author: data.author || 'الإدارة'
+                    };
+                });
+                
+                return posts;
+                
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+                throw error;
+            }
+        }
+
+        // عرض المنشورات في HTML
+        function renderPosts(posts, append = false) {
+            const feedContainer = document.getElementById('postsFeed');
+            if (!feedContainer) return;
+            
+            if (!append) {
+                feedContainer.innerHTML = '';
+            }
+            
+            if (posts.length === 0 && !append) {
+                // عرض حالة فارغة
+                feedContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper"></i>
+                        <h3>لا توجد منشورات حالياً</h3>
+                        <p>سوف نضيف محتوى جديد قريباً، تابعنا!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postDate = formatPostDate(post.createdAt);
+                const postHTML = `
+                    <div class="post-item" data-post-id="${post.id}" data-aos="fade-up">
+                        <div class="post-header">
+                            <div class="post-icon">
+                                <i class="fas ${post.icon}"></i>
+                            </div>
+                            <div class="post-title">
+                                <h3>${post.title}</h3>
+                                <div class="post-date">
+                                    <i class="fas fa-clock"></i>
+                                    <span>${postDate}</span>
+                                    <span style="margin-right: 8px;">• بواسطة ${post.author}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            ${post.content}
+                        </div>
+                        
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <div class="post-stat">
+                                    <i class="fas fa-heart"></i>
+                                    <span>${post.likes}</span>
+                                </div>
+                                <div class="post-stat">
+                                    <i class="fas fa-comment"></i>
+                                    <span>${post.comments}</span>
+                                </div>
+                            </div>
+                            <div class="post-read-more">
+                                قراءة المزيد <i class="fas fa-arrow-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                feedContainer.insertAdjacentHTML('beforeend', postHTML);
+            });
+            
+            // إعادة تهيئة AOS للمنشورات الجديدة
+            if (window.AOS) {
+                AOS.refresh();
+            }
+            
+            // إضافة event listeners للمنشورات
+            document.querySelectorAll('.post-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const postId = item.dataset.postId;
+                    // يمكن فتح المنشور في صفحة منفصلة أو عرض نافذة منبثقة
+                    console.log('فتح المنشور:', postId);
+                    // window.location.href = `post.html?id=${postId}`;
+                });
+            });
+        }
+
+        // تحميل المزيد من المنشورات (Infinite Scroll)
+        async function loadMorePosts() {
+            if (isLoadingMore || !hasMorePosts) return;
+            
+            isLoadingMore = true;
+            
+            // إضافة مؤشر تحميل
+            const feedContainer = document.getElementById('postsFeed');
+            const loaderHTML = `
+                <div class="infinite-scroll-trigger" id="infiniteLoader">
+                    <div class="infinite-loader"></div>
+                </div>
+            `;
+            
+            // إزالة أي مؤشر تحميل سابق
+            const existingLoader = document.getElementById('infiniteLoader');
+            if (existingLoader) existingLoader.remove();
+            
+            feedContainer.insertAdjacentHTML('beforeend', loaderHTML);
+            
+            try {
+                const newPosts = await fetchPosts(true);
+                
+                // إزالة مؤشر التحميل
+                document.getElementById('infiniteLoader')?.remove();
+                
+                if (newPosts.length > 0) {
+                    renderPosts(newPosts, true);
+                    
+                    // تحديث حالة hasMorePosts
+                    if (!hasMorePosts) {
+                        // عرض رسالة نهاية المحتوى
+                        const endMessage = `
+                            <div style="text-align: center; padding: 20px; color: #9b8ab0;">
+                                <i class="fas fa-check-circle" style="color: #6d4fc7; font-size: 24px; margin-bottom: 10px;"></i>
+                                <p>لقد وصلت إلى نهاية المنشورات</p>
+                            </div>
+                        `;
+                        feedContainer.insertAdjacentHTML('beforeend', endMessage);
+                    }
+                } else {
+                    hasMorePosts = false;
+                }
+                
+            } catch (error) {
+                console.error('Error loading more posts:', error);
+                document.getElementById('infiniteLoader')?.remove();
+                
+                // عرض رسالة خطأ
+                const errorHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <button class="load-more-btn" onclick="window.loadMorePosts()">
+                            <i class="fas fa-redo-alt"></i> إعادة المحاولة
+                        </button>
+                    </div>
+                `;
+                feedContainer.insertAdjacentHTML('beforeend', errorHTML);
+                
+            } finally {
+                isLoadingMore = false;
+            }
+        }
+
+        // ==================== تحميل الباقات ====================
+        async function loadPackages() {
+            try {
+                const packagesRef = collection(db, 'PKG_packages');
+                const q = query(packagesRef, orderBy('createdAt', 'desc'), limit(10));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    return `
+                        <div class="swiper-slide">
+                            <div style="text-align: center; padding: 40px; color: #b1a4c2;">
+                                <i class="fas fa-box-open" style="font-size: 50px; margin-bottom: 15px; color: #6d4fc7;"></i>
+                                <p>لا توجد باقات حالياً</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let packagesHTML = '';
+                querySnapshot.forEach(doc => {
+                    const pkg = doc.data();
+                    const features = pkg.features ? pkg.features.split(',').map(f => f.trim()) : [];
+                    
+                    packagesHTML += `
+                        <div class="swiper-slide">
+                            <div class="package-card">
+                                <div class="package-badge">${pkg.badge || 'باقة مميزة'}</div>
+                                <h3 class="package-name">${pkg.name || 'باقة غير مسماة'}</h3>
+                                <div class="package-price">
+                                    ${pkg.price || '0'} <small>جنيه / ${pkg.duration || 'شهر'}</small>
+                                </div>
+                                <div class="package-features">
+                                    ${features.map(f => `
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>${f}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="package-date">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>تبدأ: ${pkg.startDate || 'غير محدد'}</span>
+                                </div>
+                                <button class="subscribe-btn" data-package-id="${doc.id}" data-package-name="${pkg.name}">
+                                    <i class="fas fa-crown"></i>
+                                    اشترك الآن
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                return packagesHTML;
+            } catch (error) {
+                console.error('Error loading packages:', error);
+                throw error;
+            }
+        }
+
+        // ==================== تحميل الصفحة الرئيسية بالكامل ====================
+        async function loadHomePage() {
+            try {
+                // إظهار skeleton loader
+                skeletonLoader.classList.remove('hidden');
+                actualContent.classList.add('hidden');
+
+                // جلب الباقات
+                const packagesHTML = await loadPackages();
+
+                // بناء المحتوى الأساسي
+                actualContent.innerHTML = `
+                    <div class="welcome-section" data-aos="fade-down">
+                        <h2 class="welcome-title">
+                            أهلاً، <span>${userData?.name || 'بشمهندس'}</span> 👋
+                            <span class="user-badge">
+                                <i class="fas fa-check-circle"></i>
+                                ${userData?.phone || ''}
+                            </span>
+                        </h2>
+                        <div class="welcome-sub">
+                            <i class="fas fa-code"></i>
+                            <span>مستعد تتعلم حاجة جديدة النهاردة؟</span>
+                        </div>
+                    </div>
+
+                    <div class="section-header" data-aos="fade-left">
+                        <div class="section-title">
+                            <i class="fas fa-cubes"></i>
+                            <span>الباقات المميزة</span>
+                        </div>
+                        <div class="section-link" onclick="window.location.href='packages.html'">
+                            عرض الكل <i class="fas fa-arrow-left"></i>
+                        </div>
+                    </div>
+
+                    <div class="packages-swiper" data-aos="fade-up">
+                        <div class="swiper packagesSwiper">
+                            <div class="swiper-wrapper">
+                                ${packagesHTML}
+                            </div>
+                            <div class="scroll-indicator">
+                                <div class="scroll-dot active"></div>
+                                <div class="scroll-dot"></div>
+                                <div class="scroll-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feed-container">
+                        <div class="feed-header">
+                            <div class="feed-title">
+                                <i class="fas fa-rss"></i>
+                                <h2>آخر الأخبار</h2>
+                            </div>
+                            <span class="feed-badge">جديد</span>
+                        </div>
+
+                        <div id="postsFeed" class="posts-feed">
+                            <!-- Skeleton للمنشورات -->
+                            <div class="skeleton-grid" id="postsSkeleton">
+                                <div class="skeleton-post"></div>
+                                <div class="skeleton-post"></div>
+                                <div class="skeleton-post"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- زر عرض المزيد (سيظهر عند التمرير) -->
+                        <div id="loadMoreTrigger" style="text-align: center; margin: 10px 0; display: none;">
+                            <button class="load-more-btn" id="loadMoreBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                عرض المزيد
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // إخفاء skeleton وإظهار المحتوى
+                skeletonLoader.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+
+                // تهيئة Swiper
+                setTimeout(() => {
+                    try {
+                        const swiper = new Swiper('.packagesSwiper', {
+                            slidesPerView: 'auto',
+                            spaceBetween: 16,
+                            centeredSlides: false,
+                            rtl: true,
+                            on: {
+                                slideChange: function() {
+                                    const dots = document.querySelectorAll('.scroll-dot');
+                                    dots.forEach((dot, index) => {
+                                        if (index === this.activeIndex) {
+                                            dot.classList.add('active');
+                                        } else {
+                                            dot.classList.remove('active');
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Swiper init error:', e);
+                    }
+                }, 100);
+
+                // جلب المنشورات
+                try {
+                    // إعادة تعيين متغيرات pagination
+                    lastPostDoc = null;
+                    hasMorePosts = true;
+                    
+                    const initialPosts = await fetchPosts(false);
+                    
+                    // إخفاء skeleton وإظهار المنشورات
+                    const postsSkeleton = document.getElementById('postsSkeleton');
+                    if (postsSkeleton) {
+                        postsSkeleton.remove();
+                    }
+                    
+                    renderPosts(initialPosts, false);
+                    
+                    // إعداد Infinite Scroll
+                    setupInfiniteScroll();
+                    
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                    const postsFeed = document.getElementById('postsFeed');
+                    if (postsFeed) {
+                        postsFeed.innerHTML = `
+                            <div class="error-box" style="margin: 10px 0;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>حدث خطأ في تحميل المنشورات</p>
+                                <button onclick="location.reload()">
+                                    <i class="fas fa-redo-alt"></i> إعادة المحاولة
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+
+                // إضافة event listeners لأزرار الاشتراك
+                setTimeout(() => {
+                    document.querySelectorAll('.subscribe-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const packageId = btn.dataset.packageId;
+                            const packageName = btn.dataset.packageName;
+                            
+                            // تأثير بصري
+                            btn.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                btn.style.transform = '';
+                            }, 200);
+                            
+                            // تخزين البيانات في sessionStorage
+                            sessionStorage.setItem('selectedPackage', JSON.stringify({
+                                id: packageId,
+                                name: packageName,
+                                uid: currentUser?.uid
+                            }));
+                            
+                            // تأخير بسيط للانتقال
+                            setTimeout(() => {
+                                window.location.href = 'payment.html';
+                            }, 300);
+                        });
+                    });
+                }, 200);
+
+            } catch (error) {
+                console.error('Error loading home page:', error);
+                skeletonLoader.classList.add('hidden');
+                showError('حدث خطأ في تحميل الصفحة: ' + error.message);
+            }
+        }
+
+        // ==================== إعداد Infinite Scroll ====================
+        function setupInfiniteScroll() {
+            const postsFeed = document.getElementById('postsFeed');
+            if (!postsFeed) return;
+
+            // Intersection Observer للكشف عن نهاية المحتوى
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && hasMorePosts && !isLoadingMore) {
+                        loadMorePosts();
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '100px'
+            });
+
+            // إضافة عنصر مراقبة في نهاية القائمة
+            const sentinel = document.createElement('div');
+            sentinel.id = 'scrollSentinel';
+            sentinel.style.height = '10px';
+            postsFeed.appendChild(sentinel);
+            observer.observe(sentinel);
+
+            // إضافة زر يدوي للتحميل (كبديل)
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    loadMorePosts();
+                });
+            }
+        }
+
+        // ==================== تشغيل النظام ====================
+        
+        // بدء التحقق من الهوية
+        const startApp = async () => {
+            try {
+                // إنشاء الجزيئات
+                createParticles();
+                
+                // تهيئة AOS
+                if (window.AOS) {
+                    AOS.init({
+                        duration: 800,
+                        once: true,
+                    });
+                }
+
+                // التحقق من الهوية
+                await checkAuth();
+                
+                // إخفاء شاشة التحميل
+                loadingScreen.classList.add('hidden');
+                
+                // تحميل الصفحة الرئيسية
+                await loadHomePage();
+                
+            } catch (error) {
+                console.error("خطأ في تشغيل التطبيق:", error);
+                loadingScreen.classList.add('hidden');
+                showError('حدث خطأ في تشغيل التطبيق');
+            }
+        };
+
+        // بدء التطبيق
+        startApp();
+
+        // ==================== أحداث إضافية ====================
+        
+        // إظهار/إخفاء زر العودة للأعلى
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // تفعيل التابات
+        function activateTab(tabId) {
+            [tabHome, tabMySubs, tabTry].forEach(t => t.classList.remove('active'));
+            
+            if (tabId === 'home') {
+                tabHome.classList.add('active');
+                loadHomePage();
+            } else if (tabId === 'subs') {
+                tabMySubs.classList.add('active');
+                
+                // إظهار skeleton loader
+                skeletonLoader.classList.remove('hidden');
+                actualContent.classList.add('hidden');
+                
+                // محتوى مؤقت مع تحويل
+                setTimeout(() => {
+                    window.location.href = 'pay.html?uid=' + (currentUser?.uid || '');
+                }, 1000);
+                
+            } else if (tabId === 'try') {
+                tabTry.classList.add('active');
+                
+                // إظهار skeleton loader
+                skeletonLoader.classList.remove('hidden');
+                actualContent.classList.add('hidden');
+                
+                // تحويل مع uid
+                setTimeout(() => {
+                    window.location.href = 'try.html?uid=' + (currentUser?.uid || '');
+                }, 1000);
+            }
+        }
+
+        tabHome.addEventListener('click', () => activateTab('home'));
+        tabMySubs.addEventListener('click', () => activateTab('subs'));
+        tabTry.addEventListener('click', () => activateTab('try'));
+
+        // حفظ حالة التمرير
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
+        });
+
+        // استعادة حالة التمرير
+        const savedScroll = sessionStorage.getItem('scrollPosition');
+        if (savedScroll) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(savedScroll));
+                sessionStorage.removeItem('scrollPosition');
+            }, 100);
+        }
+
+        // تصدير دالة loadMorePosts للاستخدام العالمي
+        window.loadMorePosts = loadMorePosts;
+    </script>
+
+    <!-- AOS JS و Swiper JS (CDN) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>
