@@ -422,10 +422,6 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -548,23 +544,25 @@
         </div>
     </div>
 
-    <!-- دالة إظهار/إخفاء كلمة المرور -->
+    <!-- دالة إظهار/إخفاء كلمة المرور (تبقى عامة) -->
     <script>
         function togglePassword(inputId, icon) {
             const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
             }
         }
     </script>
 
-    <!-- Firebase SDK - الإصدار المحسن مع إصلاح ثغرة المصادقة -->
+    <!-- Firebase SDK - الإصدار المحسن مع إصلاح ثغرة التعليق (Top-level await) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
@@ -588,23 +586,19 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ==================== إدارة الجلسة الآمنة ====================
-        
-        // تعيين Persistence إلى LOCAL فوراً
-        await setPersistence(auth, browserLocalPersistence);
-
         // عناصر الصفحة
         const loadingScreen = document.getElementById('loading-screen');
+        const messageContainer = document.getElementById('messageContainer');
 
-        // ==================== التحقق من الجلسة بشكل آمن (المصدر الوحيد للحقيقة) ====================
-        const checkActiveSession = () => {
+        // ==================== إدارة الجلسة بشكل آمن بدون await على المستوى الأعلى ====================
+        // دالة التحقق من الجلسة واخفاء شاشة التحميل - تنفذ فوراً داخل window.onload
+        const checkSessionAndHideLoader = () => {
             return new Promise((resolve) => {
-                // ننتظر رد Firebase الرسمي وليس المتصفح
+                // استخدام onAuthStateChanged الفوري (المصدر الوحيد للحقيقة)
                 onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        // إذا وجد مستخدم، نحدث البيانات المحلية للتأكد من دقتها ثم نوجهه
-                        try {
-                            // حفظ/تحديث البيانات المحلية من المصدر الرسمي
+                    try {
+                        if (user) {
+                            // مستخدم مسجل: حفظ نسخة محلية سريعة (للاستخدام في home)
                             const userData = {
                                 uid: user.uid,
                                 email: user.email || '',
@@ -612,42 +606,46 @@
                                 timestamp: Date.now()
                             };
                             localStorage.setItem('edu_user', JSON.stringify(userData));
-                            
-                            // توجيه المستخدم إلى الصفحة الرئيسية
+                            // توجيه إلى الصفحة الرئيسية
                             window.location.replace('home.html');
-                        } catch (e) {
-                            console.error('خطأ في حفظ البيانات المحلية:', e);
-                            window.location.replace('home.html');
-                        }
-                        resolve(true);
-                    } else {
-                        // إذا لم يوجد مستخدم في Firebase، نمسح أي بيانات وهمية في المتصفح
-                        try {
+                            resolve(true);
+                        } else {
+                            // لا يوجد مستخدم: نمسح أي بيانات قديمة ونتأكد من إخفاء الشاشة
                             localStorage.removeItem('edu_user');
                             sessionStorage.removeItem('edu_user_session');
-                        } catch (e) {
-                            // تجاهل أخطاء التخزين
+                            // إخفاء شاشة التحميل فوراً
+                            if (loadingScreen) loadingScreen.classList.add('hidden');
+                            resolve(false);
                         }
+                    } catch (e) {
+                        console.error('خطأ في معالجة الجلسة:', e);
+                        // في حالة الخطأ نظهر الصفحة أيضاً
+                        if (loadingScreen) loadingScreen.classList.add('hidden');
                         resolve(false);
                     }
                 });
             });
         };
 
-        // ==================== تهيئة الصفحة ====================
-        window.addEventListener('load', async () => {
+        // ==================== تهيئة الصفحة: no top-level await, no hanging ====================
+        window.onload = function() {
+            // 1. نبدأ فوراً بـ setPersistence داخل try/catch (بدون await)
             try {
-                // التحقق من الجلسة - هذا هو المصدر الوحيد للحقيقة
-                await checkActiveSession();
-            } catch (error) {
-                console.error('خطأ في التحقق من الجلسة:', error);
-            } finally {
-                // إخفاء شاشة التحميل بعد التأكد (سواء وجد مستخدم أم لا)
-                if (loadingScreen) {
-                    loadingScreen.classList.add('hidden');
-                }
+                // وعد setPersistence نتعامل معه بشكل غير متزامن لكننا لا ننتظره على المستوى الأعلى
+                setPersistence(auth, browserLocalPersistence).catch(err => {
+                    console.warn("Persistence error (non-blocking):", err);
+                });
+            } catch (e) {
+                console.warn("setPersistence exception (ignored):", e);
             }
-        });
+
+            // 2. التحقق من الجلسة - هذه هي العملية الأساسية التي ستخفي شاشة التحميل أو تعيد التوجيه
+            checkSessionAndHideLoader().catch(error => {
+                console.error('Unexpected error in session check:', error);
+                // نضمن إخفاء شاشة التحميل حتى لو فشل كل شيء
+                if (loadingScreen) loadingScreen.classList.add('hidden');
+            });
+        };
 
         // ==================== المتغيرات العامة ====================
         let isProcessing = false; // منع التكرار
@@ -661,7 +659,6 @@
         const loginForm = document.getElementById('loginForm');
         const switchToLogin = document.getElementById('switchToLogin');
         const switchToSignup = document.getElementById('switchToSignup');
-        const messageContainer = document.getElementById('messageContainer');
         const signupPhoneHint = document.getElementById('signupPhoneHint');
         const loginPhoneHint = document.getElementById('loginPhoneHint');
 
@@ -716,13 +713,12 @@
             messageContainer.className = isSuccess ? 'message message-success' : 'message message-error';
             messageContainer.textContent = text;
             
-            // مسح الرسالة تلقائياً
             setTimeout(() => {
                 messageContainer.classList.add('hidden');
             }, 5000);
         };
 
-        // التحكم بحالة التحميل
+        // التحكم بحالة التحميل (Spinner داخل الأزرار)
         const setButtonLoading = (button, isLoading) => {
             if (isLoading) {
                 button.classList.add('btn-loading');
@@ -737,7 +733,7 @@
             }
         };
 
-        // التحقق من رقم الهاتف
+        // التحقق من رقم الهاتف المصري
         const validateEgyptianPhone = (phone) => {
             return /^01[0-9]{9}$/.test(phone);
         };
@@ -790,7 +786,7 @@
             loginPhoneHint.classList.toggle('show', this.value.length >= 11);
         });
 
-        // منع الأرقام في الاسم والمدرسة
+        // منع الأرقام والرموز في الاسم والمدرسة
         signupName.addEventListener('input', function() {
             this.value = this.value.replace(/[0-9<>]/g, '');
         });
@@ -811,48 +807,38 @@
                 const password = signupPassword.value;
                 const confirm = signupConfirm.value;
 
-                // التحقق من الحقول الفارغة
                 if (!name || !phone || !school || !password || !confirm) {
                     showMessage('جميع الحقول مطلوبة', false);
                     return;
                 }
 
-                // التحقق من صحة الاسم (عربي فقط)
                 if (!/^[\u0600-\u06FF\s]+$/.test(name)) {
                     showMessage('الاسم يجب أن يكون بالعربية فقط', false);
                     return;
                 }
 
-                // التحقق من رقم الهاتف
                 if (!validateEgyptianPhone(phone)) {
                     showMessage('رقم الهاتف غير صحيح (11 رقم يبدأ بـ 01)', false);
                     return;
                 }
 
-                // التحقق من طول كلمة المرور
                 if (password.length < 8) {
                     showMessage('كلمة المرور ٨ أحرف على الأقل', false);
                     return;
                 }
 
-                // التحقق من تطابق كلمة المرور
                 if (password !== confirm) {
                     showMessage('كلمة المرور غير متطابقة', false);
                     return;
                 }
 
-                // قفل العملية
                 isProcessing = true;
                 setButtonLoading(signupBtn, true);
 
-                // تحويل رقم الهاتف إلى بريد
                 const email = formatPhoneToEmail(phone);
-
-                // إنشاء الحساب
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // حفظ البيانات في Firestore
                 const userData = {
                     name,
                     phone,
@@ -866,25 +852,15 @@
 
                 await setDoc(doc(db, 'STU_users', user.uid), userData);
 
-                // حفظ البيانات محلياً (كبيانات مساعدة فقط)
-                saveUserLocally({
-                    uid: user.uid,
-                    phone,
-                    name,
-                    email
-                });
+                // حفظ محلي سريع
+                saveUserLocally({ uid: user.uid, phone, name, email });
 
-                // عرض رسالة النجاح
                 showMessage('✅ تم إنشاء الحساب بنجاح! جاري تحويلك...', true);
 
                 // تفريغ الحقول
-                signupName.value = '';
-                signupPhone.value = '';
-                signupSchool.value = '';
-                signupPassword.value = '';
-                signupConfirm.value = '';
+                signupName.value = ''; signupPhone.value = ''; signupSchool.value = ''; 
+                signupPassword.value = ''; signupConfirm.value = '';
 
-                // الانتقال بعد التأكد
                 setTimeout(() => {
                     window.location.replace('home.html');
                 }, 1500);
@@ -929,7 +905,6 @@
 
                 const email = formatPhoneToEmail(phone);
                 
-                // تسجيل الدخول
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
@@ -941,13 +916,7 @@
                     userName = userDoc.data().name || '';
                 }
 
-                // حفظ البيانات محلياً (كبيانات مساعدة فقط)
-                saveUserLocally({
-                    uid: user.uid,
-                    phone,
-                    name: userName,
-                    email
-                });
+                saveUserLocally({ uid: user.uid, phone, name: userName, email });
 
                 showMessage('✅ تم تسجيل الدخول! جاري التحويل...', true);
                 
@@ -972,8 +941,13 @@
             }
         });
 
-        // إظهار نموذج تسجيل الدخول بشكل افتراضي
-        showLoginForm();
+        // إظهار نموذج تسجيل الدخول بشكل افتراضي (بعد أن تخفى شاشة التحميل)
+        // نؤكد عدم وجود تضارب: يتم فقط إذا لم يحدث توجيه
+        setTimeout(() => {
+            if (!window.location.href.includes('home.html')) {
+                showLoginForm();
+            }
+        }, 100);
     </script>
 </body>
 </html>
