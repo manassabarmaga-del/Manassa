@@ -813,15 +813,16 @@
         let hasUnsavedChanges = false;
         let isRedirecting = false;
         let pendingAction = null;
+        let authCheckCompleted = false;
 
-        // ==================== التحقق من المستخدم (مُحسّن) ====================
+        // ==================== دالة التحقق من المستخدم (مُعدلة) ====================
         const checkAuth = () => {
             return new Promise((resolve, reject) => {
-                // 1. الحصول على uid من الرابط
+                // الحصول على uid من الرابط
                 const urlParams = new URLSearchParams(window.location.search);
                 const urlUid = urlParams.get('uid');
-
-                // 2. التحقق من وجود بيانات محلية (من home.html)
+                
+                // التحقق من وجود بيانات محلية
                 let localUser = null;
                 try {
                     localUser = JSON.parse(localStorage.getItem('edu_user') || 'null');
@@ -829,13 +830,50 @@
                     console.warn("Error parsing local user:", e);
                 }
 
-                // 3. الاستماع لتغيير حالة المصادقة
-                onAuthStateChanged(auth, async (user) => {
+                // مهلة أمان 3 ثوان
+                const timeoutId = setTimeout(() => {
+                    if (!authCheckCompleted) {
+                        console.log("⚠️ Firebase timeout - using local data");
+                        
+                        if (localUser && localUser.uid) {
+                            currentUser = {
+                                uid: localUser.uid,
+                                name: localUser.name || 'مستخدم'
+                            };
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            authCheckCompleted = true;
+                            resolve(currentUser);
+                        } else if (urlUid) {
+                            currentUser = {
+                                uid: urlUid,
+                                name: 'مستخدم'
+                            };
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            authCheckCompleted = true;
+                            resolve(currentUser);
+                        } else {
+                            authCheckCompleted = true;
+                            window.location.href = 'index.html';
+                            reject(new Error('No user found'));
+                        }
+                    }
+                }, 3000);
+
+                // الاستماع لتغيير حالة المصادقة
+                const unsubscribe = onAuthStateChanged(auth, async (user) => {
                     try {
-                        // الحالة 1: يوجد مستخدم في Firebase Auth
+                        clearTimeout(timeoutId);
+                        
+                        if (authCheckCompleted) return;
+
                         if (user) {
                             console.log("✅ User authenticated:", user.uid);
-                            // جلب بيانات المستخدم من Firestore
                             const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
                             let userName = 'مستخدم';
                             
@@ -848,18 +886,57 @@
                                 name: userName
                             };
 
-                            // تحديث واجهة المستخدم
                             userBadge.innerHTML = `
                                 <i class="fas fa-user"></i>
                                 <span>${userName}</span>
                             `;
+
+                            localStorage.setItem('edu_user', JSON.stringify(currentUser));
+                            authCheckCompleted = true;
                             resolve(currentUser);
                             return;
                         }
 
-                        // الحالة 2: لا يوجد مستخدم في Firebase Auth، لكن لدينا uid في الرابط وبيانات محلية
-                        if (urlUid && localUser && localUser.uid === urlUid) {
-                            console.log("⚠️ Using cached user data from localStorage as fallback for uid:", urlUid);
+                        if (localUser && localUser.uid) {
+                            console.log("⚠️ Using cached user data");
+                            currentUser = {
+                                uid: localUser.uid,
+                                name: localUser.name || 'مستخدم'
+                            };
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            authCheckCompleted = true;
+                            resolve(currentUser);
+                            return;
+                        }
+
+                        if (urlUid) {
+                            console.log("⚠️ Using URL uid only");
+                            currentUser = {
+                                uid: urlUid,
+                                name: 'مستخدم'
+                            };
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            authCheckCompleted = true;
+                            resolve(currentUser);
+                            return;
+                        }
+
+                        console.log("❌ No user found");
+                        authCheckCompleted = true;
+                        window.location.href = 'index.html';
+
+                    } catch (error) {
+                        console.error('Auth error:', error);
+                        clearTimeout(timeoutId);
+                        authCheckCompleted = true;
+                        
+                        if (localUser?.uid) {
                             currentUser = {
                                 uid: localUser.uid,
                                 name: localUser.name || 'مستخدم'
@@ -869,16 +946,10 @@
                                 <span>${currentUser.name}</span>
                             `;
                             resolve(currentUser);
-                            return;
+                        } else {
+                            window.location.href = 'index.html';
+                            reject(error);
                         }
-
-                        // الحالة 3: لا يوجد مستخدم ولا بيانات احتياطية صالحة
-                        console.log("❌ No valid user found. Redirecting to index.");
-                        window.location.href = 'index.html';
-
-                    } catch (error) {
-                        console.error('Error in auth state change:', error);
-                        reject(error);
                     }
                 });
             });
@@ -901,7 +972,6 @@
             }, 3000);
         }
 
-        // تحديث ترقيم الأسطر
         function updateLineNumbers() {
             const lines = codeEditor.value.split('\n');
             const lineCount = Math.max(1, lines.length);
@@ -912,7 +982,6 @@
             lineNumbers.innerText = numbers;
         }
 
-        // تحديث التلوين
         function updateSyntaxHighlighting() {
             const code = codeEditor.value;
             let lang = 'html';
@@ -933,7 +1002,6 @@
             updateLineNumbers();
         }
 
-        // مزامنة التمرير
         function syncScroll() {
             if (highlightLayer) {
                 highlightLayer.scrollTop = scrollContainer.scrollTop;
@@ -941,7 +1009,6 @@
             }
         }
 
-        // تحليل الكود
         function analyzeCode() {
             const code = codeEditor.value;
             
@@ -978,11 +1045,8 @@
             }
         }
 
-        // ==================== دالة تشغيل الكود (تم إزالة allow-same-origin) ====================
         function runCode() {
             const code = codeEditor.value;
-            
-            // مسح محتوى النتيجة السابقة
             outputBox.innerHTML = '';
             
             try {
@@ -993,7 +1057,6 @@
                     iframe.style.border = 'none';
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = 'white';
-                    // ✅ تم إزالة allow-same-origin - هذا هو التعديل المهم للأمان
                     iframe.sandbox = 'allow-scripts allow-forms';
                     
                     outputBox.appendChild(iframe);
@@ -1012,7 +1075,6 @@
                     iframe.style.border = 'none';
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = 'white';
-                    // ✅ تم إزالة allow-same-origin
                     iframe.sandbox = 'allow-scripts allow-forms';
                     
                     outputBox.appendChild(iframe);
@@ -1105,7 +1167,6 @@
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = '#1e1e1e';
                     iframe.src = url;
-                    // ✅ تم إزالة allow-same-origin
                     iframe.sandbox = 'allow-scripts allow-forms';
                     
                     outputBox.appendChild(iframe);
@@ -1123,7 +1184,6 @@
             }
         }
 
-        // حفظ الكود (مرتبط بـ UID)
         function saveCode() {
             if (!currentUser) {
                 showToast('❌ المستخدم غير موجود', true);
@@ -1137,7 +1197,6 @@
             showToast('✅ تم حفظ الكود');
         }
 
-        // تحميل الكود المحفوظ
         function loadSavedCode() {
             if (!currentUser) return;
             
@@ -1150,7 +1209,6 @@
             analyzeCode();
         }
 
-        // مسح الكود
         function clearCode() {
             if (codeEditor.value.trim()) {
                 showConfirm(
@@ -1169,7 +1227,6 @@
             }
         }
 
-        // Confirm مخصص
         function showConfirm(title, message, onConfirm, onCancel) {
             confirmMessage.textContent = message;
             confirmDialog.classList.remove('hidden');
@@ -1202,10 +1259,8 @@
             confirmCancel.addEventListener('click', handleCancel);
         }
 
-        // تبديل اللغة
         function switchLanguage(lang) {
             if (hasUnsavedChanges) {
-                // حفظ المؤقت للإجراء
                 pendingAction = () => {
                     currentLang = lang;
                     
@@ -1216,7 +1271,6 @@
                     currentLangLabel.innerText = { html: 'HTML', css: 'CSS', js: 'JavaScript' }[lang];
                     outputBadge.innerText = { html: 'HTML', css: 'CSS', js: 'JavaScript' }[lang];
                     
-                    // تحميل الكود المحفوظ للمستخدم الحالي
                     loadSavedCode();
                 };
                 
@@ -1241,12 +1295,10 @@
                 currentLangLabel.innerText = { html: 'HTML', css: 'CSS', js: 'JavaScript' }[lang];
                 outputBadge.innerText = { html: 'HTML', css: 'CSS', js: 'JavaScript' }[lang];
                 
-                // تحميل الكود المحفوظ للمستخدم الحالي
                 loadSavedCode();
             }
         }
 
-        // العودة للصفحة الرئيسية
         function goHome() {
             if (hasUnsavedChanges && !isRedirecting) {
                 showConfirm(
@@ -1267,7 +1319,6 @@
             }
         }
 
-        // منع الخروج العرضي
         window.addEventListener('beforeunload', (e) => {
             if (hasUnsavedChanges && !isRedirecting) {
                 e.preventDefault();
@@ -1299,7 +1350,6 @@
             }
         });
 
-        // معالج Tab للإندنت
         codeEditor.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 e.preventDefault();
@@ -1325,12 +1375,10 @@
             }
         });
 
-        // أزرار اللغات
         langBtns.forEach(btn => {
             btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
         });
 
-        // أزرار الإجراءات
         runBtn.addEventListener('click', runCode);
         saveBtn.addEventListener('click', saveCode);
         clearBtn.addEventListener('click', clearCode);
