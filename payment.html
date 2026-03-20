@@ -2,13 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>إتمام الدفع - منصة البرمجة</title>
-    <!-- خط Tajawal -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -19,7 +17,7 @@
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background: #0f0a1f;
+            background: linear-gradient(145deg, #0f0a1f 0%, #1a1330 100%);
             color: #ffffff;
             min-height: 100vh;
             direction: rtl;
@@ -31,31 +29,25 @@
 
         .container {
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             margin: 0 auto;
         }
 
-        /* البطاقة الرئيسية */
         .payment-card {
-            background: #1a1330;
+            background: rgba(26, 19, 48, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 40px;
-            padding: 30px 24px;
-            border: 1px solid #2d224a;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            padding: 28px 24px;
+            border: 1px solid rgba(109, 79, 199, 0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
             animation: slideUp 0.5s ease;
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .payment-card::before {
@@ -64,28 +56,27 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #6d4fc7, #b49aff);
+            height: 4px;
+            background: linear-gradient(90deg, #6d4fc7, #ffd700, #6d4fc7);
         }
 
-        /* الهيدر */
         .header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
         .back-btn {
-            width: 44px;
-            height: 44px;
-            background: #0f0a1f;
-            border: 1px solid #2d224a;
-            border-radius: 18px;
+            width: 48px;
+            height: 48px;
+            background: rgba(109, 79, 199, 0.15);
+            border: 1px solid rgba(109, 79, 199, 0.3);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #b1a4c2;
+            color: #ffd700;
             font-size: 20px;
             cursor: pointer;
             transition: all 0.2s;
@@ -95,15 +86,7 @@
         .back-btn:hover {
             background: #6d4fc7;
             color: white;
-            border-color: #6d4fc7;
-        }
-
-        .back-btn:active {
-            transform: scale(0.95);
-        }
-
-        .header-title {
-            flex: 1;
+            transform: scale(0.96);
         }
 
         .header-title h1 {
@@ -118,7 +101,6 @@
             color: #b1a4c2;
         }
 
-        /* شاشة التحميل */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -131,8 +113,9 @@
             justify-content: center;
             z-index: 1000;
             backdrop-filter: blur(10px);
+            transition: opacity 0.3s;
         }
-
+        .loading-screen.hidden { opacity: 0; pointer-events: none; }
         .loading-spinner {
             width: 50px;
             height: 50px;
@@ -142,20 +125,33 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .offline-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #c44545;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 10001;
+            transform: translateY(-100%);
+            transition: transform 0.3s;
         }
+        .offline-banner.show { transform: translateY(0); }
 
-        /* Skeleton Loading */
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         .skeleton-package {
-            background: #1a1330;
+            background: rgba(26, 19, 48, 0.8);
             border-radius: 28px;
             padding: 20px;
             margin-bottom: 25px;
             position: relative;
             overflow: hidden;
         }
-
         .skeleton-package::after {
             content: '';
             position: absolute;
@@ -166,12 +162,10 @@
             background: linear-gradient(90deg, transparent, rgba(109, 79, 199, 0.1), transparent);
             animation: shimmer 1.5s infinite;
         }
-
         @keyframes shimmer {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
-
         .skeleton-line {
             height: 30px;
             width: 60%;
@@ -179,7 +173,6 @@
             border-radius: 15px;
             margin-bottom: 15px;
         }
-
         .skeleton-price {
             height: 50px;
             width: 40%;
@@ -187,20 +180,15 @@
             border-radius: 25px;
         }
 
-        /* تفاصيل الباقة */
         .package-details {
-            background: #0f0a1f;
+            background: rgba(15, 10, 31, 0.6);
             border-radius: 28px;
             padding: 20px;
             margin-bottom: 25px;
-            border: 1px solid #2d224a;
+            border: 1px solid rgba(109, 79, 199, 0.2);
             transition: all 0.3s;
         }
-
-        .package-details:hover {
-            border-color: #6d4fc7;
-        }
-
+        .package-details:hover { border-color: #6d4fc7; }
         .package-name {
             font-size: 22px;
             font-weight: 900;
@@ -208,44 +196,26 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
         .package-name i {
-            color: #6d4fc7;
-            font-size: 20px;
+            color: #ffd700;
+            font-size: 24px;
             background: rgba(109, 79, 199, 0.2);
-            padding: 8px;
-            border-radius: 14px;
+            padding: 10px;
+            border-radius: 16px;
         }
-
         .package-price-row {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px dashed #2d224a;
+            border-bottom: 1px dashed rgba(109, 79, 199, 0.3);
         }
-
-        .price-label {
-            color: #b1a4c2;
-            font-size: 15px;
-        }
-
-        .price-value {
-            font-size: 32px;
-            font-weight: 900;
-            color: #b49aff;
-        }
-
-        .price-value small {
-            font-size: 14px;
-            font-weight: 500;
-            color: #8f7da8;
-            margin-right: 4px;
-        }
-
+        .price-label { color: #b1a4c2; font-size: 15px; }
+        .price-value { font-size: 32px; font-weight: 900; color: #ffd700; }
+        .price-value small { font-size: 14px; font-weight: 500; color: #8f7da8; margin-right: 4px; }
         .package-meta {
             display: flex;
             align-items: center;
@@ -254,85 +224,63 @@
             font-size: 14px;
             flex-wrap: wrap;
         }
+        .package-meta i { color: #6d4fc7; margin-left: 5px; }
 
-        .package-meta i {
-            color: #6d4fc7;
-            margin-left: 5px;
-        }
-
-        /* رقم الدفع */
         .payment-number {
-            background: linear-gradient(145deg, #2d1f47, #1a1330);
+            background: linear-gradient(145deg, rgba(45, 31, 71, 0.8), rgba(26, 19, 48, 0.9));
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 25px;
             text-align: center;
-            border: 1px solid #6d4fc7;
-            transition: all 0.3s;
+            border: 1px solid #ffd700;
         }
-
-        .payment-number:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(109, 79, 199, 0.2);
-        }
-
         .payment-number-label {
             font-size: 14px;
             color: #b1a4c2;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-
         .number-box {
             background: #0f0a1f;
             padding: 16px;
             border-radius: 20px;
             font-size: 24px;
             font-weight: 900;
-            color: #b49aff;
+            color: #ffd700;
             letter-spacing: 2px;
             border: 1px solid #6d4fc7;
             margin-bottom: 12px;
             direction: ltr;
             font-family: monospace;
         }
-
         .copy-btn {
             background: #6d4fc7;
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 12px 25px;
             border-radius: 40px;
             font-family: 'Tajawal', sans-serif;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
         }
+        .copy-btn:active { transform: scale(0.96); }
+        .copy-btn.copied { background: #2e8b57; }
 
-        .copy-btn:active {
-            transform: scale(0.96);
-        }
-
-        .copy-btn.copied {
-            background: #2e8b57;
-        }
-
-        /* تعليمات الدفع */
         .instructions {
-            background: #0f0a1f;
-            border-radius: 20px;
+            background: rgba(15, 10, 31, 0.6);
+            border-radius: 24px;
             padding: 20px;
             margin-bottom: 25px;
-            border: 1px solid #2d224a;
+            border: 1px solid rgba(109, 79, 199, 0.2);
         }
-
         .instructions-title {
             font-size: 16px;
             font-weight: 700;
@@ -340,9 +288,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #b49aff;
+            color: #ffd700;
         }
-
         .instruction-item {
             display: flex;
             align-items: center;
@@ -352,33 +299,26 @@
             color: #d0c2e6;
             padding: 8px;
             border-radius: 12px;
-            transition: background 0.2s;
         }
-
-        .instruction-item:hover {
-            background: rgba(109, 79, 199, 0.1);
-        }
-
         .instruction-item i {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             background: rgba(109, 79, 199, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6d4fc7;
+            color: #ffd700;
             font-size: 12px;
         }
 
-        /* زر أنا دفعت */
         .paid-btn {
             width: 100%;
-            background: linear-gradient(135deg, #6d4fc7, #8a6cff);
+            background: linear-gradient(145deg, #6d4fc7, #8a6cff);
             border: none;
             color: white;
             padding: 18px;
-            border-radius: 30px;
+            border-radius: 40px;
             font-family: 'Tajawal', sans-serif;
             font-size: 18px;
             font-weight: 700;
@@ -389,110 +329,58 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            position: relative;
-            overflow: hidden;
         }
-
-        .paid-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .paid-btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .paid-btn:active {
-            transform: scale(0.97);
-        }
-
+        .paid-btn:active:not(:disabled) { transform: scale(0.98); }
         .paid-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .paid-btn:disabled::before {
-            display: none;
-        }
-
-        /* رسالة الانتظار */
         .waiting-message {
-            background: #1b2a3b;
-            border: 1px solid #2d4f6a;
-            border-radius: 20px;
+            background: rgba(255, 179, 71, 0.1);
+            border: 1px solid #ffb347;
+            border-radius: 24px;
             padding: 25px;
             text-align: center;
             animation: fadeIn 0.5s ease;
         }
-
         .waiting-message i {
             font-size: 50px;
-            color: #6d4fc7;
+            color: #ffb347;
             margin-bottom: 15px;
             animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
         }
+        .waiting-message h3 { font-size: 20px; margin-bottom: 8px; color: #ffb347; }
+        .waiting-message p { color: #b1a4c2; font-size: 14px; line-height: 1.6; }
 
-        .waiting-message h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: white;
+        .success-message {
+            background: rgba(46, 139, 86, 0.2);
+            border: 1px solid #2e8b57;
+            color: #a0e6c0;
+            padding: 20px;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-
-        .waiting-message p {
-            color: #b1a4c2;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* رسائل الخطأ */
         .error-box {
-            background: #2d1f3a;
+            background: rgba(196, 69, 69, 0.15);
             border: 1px solid #c44545;
             border-radius: 24px;
             padding: 30px 20px;
             text-align: center;
             margin: 20px 0;
-            animation: shake 0.5s ease;
         }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .error-box i {
-            font-size: 50px;
-            color: #c44545;
-            margin-bottom: 15px;
-        }
-
-        .error-box h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #ff9b9b;
-        }
-
-        .error-box p {
-            color: #b1a4c2;
-            margin-bottom: 20px;
-        }
-
+        .error-box i { font-size: 50px; color: #c44545; margin-bottom: 15px; }
+        .error-box h3 { font-size: 20px; margin-bottom: 8px; color: #ff9b9b; }
+        .error-box p { color: #b1a4c2; margin-bottom: 20px; }
         .retry-btn {
             background: #6d4fc7;
             border: none;
@@ -500,55 +388,39 @@
             padding: 12px 30px;
             border-radius: 40px;
             font-family: 'Tajawal', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
+        .retry-btn:hover { transform: translateY(-2px); }
 
-        .retry-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(109, 79, 199, 0.3);
-        }
-
-        /* رسالة نجاح */
-        .success-message {
-            background: #1b3b2a;
-            border: 1px solid #2e8b57;
-            color: #a0e6c0;
-            padding: 20px;
+        .wallet-warning {
+            background: rgba(255, 179, 71, 0.15);
+            border: 1px solid #ffb347;
             border-radius: 20px;
-            text-align: center;
+            padding: 15px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            animation: slideIn 0.5s ease;
+            gap: 12px;
+            color: #ffb347;
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        .wallet-warning a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: auto;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Toast Message */
         .toast-message {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: #1b3b2a;
@@ -560,28 +432,19 @@
             align-items: center;
             gap: 10px;
             z-index: 2000;
-            animation: slideUp 0.3s ease;
+            animation: slideUpToast 0.3s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        @keyframes slideUp {
-            from {
-                bottom: -100px;
-                opacity: 0;
-            }
-            to {
-                bottom: 20px;
-                opacity: 1;
-            }
-        }
-
         .toast-message.error {
             background: #3b1f2a;
             border-color: #c44545;
             color: #ff9b9b;
         }
+        @keyframes slideUpToast {
+            from { bottom: -100px; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
 
-        /* مؤشر التحميل داخل الزر */
         .btn-spinner {
             display: inline-block;
             width: 20px;
@@ -591,34 +454,24 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
-    <!-- شاشة تحميل -->
-    <div id="loadingScreen" class="loading-screen">
-        <div class="loading-spinner"></div>
-    </div>
-
-    <!-- Toast Message -->
-    <div id="toastMessage" class="toast-message hidden">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastText"></span>
-    </div>
+    <div id="loadingScreen" class="loading-screen"><div class="loading-spinner"></div></div>
+    <div id="offlineBanner" class="offline-banner"><i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت</div>
 
     <div class="container">
         <div class="payment-card">
-            <!-- الهيدر مع زر الرجوع -->
             <div class="header">
-                <a href="home.html" class="back-btn" id="backBtn">
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="back-btn" id="backBtn"><i class="fas fa-arrow-right"></i></div>
                 <div class="header-title">
                     <h1>إتمام الدفع</h1>
                     <p>خطوة واحدة وتشترك في الباقة</p>
                 </div>
             </div>
 
-            <!-- Skeleton Loader -->
             <div id="skeletonLoader">
                 <div class="skeleton-package">
                     <div class="skeleton-line"></div>
@@ -630,32 +483,19 @@
                 </div>
             </div>
 
-            <!-- المحتوى الفعلي -->
             <div id="paymentContent" class="hidden"></div>
         </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { 
-            getFirestore, 
-            collection, 
-            doc, 
-            getDoc, 
-            addDoc, 
-            query, 
-            where, 
-            getDocs, 
-            serverTimestamp,
-            Timestamp
-        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-        import { 
-            getAuth, 
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+            getFirestore, doc, getDoc, addDoc, query, where, getDocs, 
+            serverTimestamp, collection, updateDoc, Timestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // ==================== تهيئة Firebase ====================
         const firebaseConfig = {
             apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
             authDomain: "manassa-oloom.firebaseapp.com",
@@ -674,101 +514,127 @@
 
         // ==================== عناصر الصفحة ====================
         const loadingScreen = document.getElementById('loadingScreen');
-        const paymentContent = document.getElementById('paymentContent');
+        const offlineBanner = document.getElementById('offlineBanner');
         const skeletonLoader = document.getElementById('skeletonLoader');
-        const toastMessage = document.getElementById('toastMessage');
-        const toastText = document.getElementById('toastText');
+        const paymentContent = document.getElementById('paymentContent');
+        const backBtn = document.getElementById('backBtn');
 
         // ==================== متغيرات عامة ====================
         let currentUser = null;
-        let isProcessing = false; // لمنع العمليات المتكررة
-
-        // ==================== التحقق من المستخدم ====================
-        const checkAuth = () => {
-            return new Promise((resolve, reject) => {
-                onAuthStateChanged(auth, async (user) => {
-                    if (!user) {
-                        window.location.href = 'index.html';
-                        return;
-                    }
-
-                    try {
-                        // جلب بيانات المستخدم من localStorage أولاً (سرعة)
-                        const localUser = localStorage.getItem('edu_user');
-                        if (localUser) {
-                            const parsed = JSON.parse(localUser);
-                            currentUser = parsed;
-                        }
-
-                        // تحديث من Firestore
-                        const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
-                        if (userDoc.exists()) {
-                            currentUser = {
-                                uid: user.uid,
-                                ...userDoc.data()
-                            };
-                            resolve(currentUser);
-                        } else {
-                            window.location.href = 'index.html';
-                        }
-                    } catch (error) {
-                        console.error('خطأ في جلب بيانات المستخدم:', error);
-                        reject(error);
-                    }
-                });
-            });
-        };
+        let userData = null;
+        let isProcessing = false;
 
         // ==================== دوال مساعدة ====================
-        
-        // عرض رسالة Toast
         function showToast(text, isError = false) {
-            toastText.textContent = text;
-            toastMessage.classList.remove('hidden');
-            toastMessage.className = isError ? 'toast-message error' : 'toast-message';
+            const existingToast = document.querySelector('.toast-message');
+            if (existingToast) existingToast.remove();
             
-            setTimeout(() => {
-                toastMessage.classList.add('hidden');
-            }, 3000);
+            const toast = document.createElement('div');
+            toast.className = `toast-message ${isError ? 'error' : ''}`;
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i><span>${text}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
 
-        // جلب packageId من الرابط
-        function getPackageIdFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('packageId');
+        function checkOnlineStatus() {
+            if (!navigator.onLine) {
+                offlineBanner.classList.add('show');
+                return false;
+            }
+            offlineBanner.classList.remove('show');
+            return true;
         }
 
-        // جلب رقم المحفظة من الإعدادات
+        function formatDate(timestamp) {
+            if (!timestamp) return 'غير محدد';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                return date.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch { return 'غير محدد'; }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // ==================== جلب رقم المحفظة النشط من ADMIN_wallets ====================
         async function getWalletNumber() {
             try {
-                const settingsRef = collection(db, 'ADMIN_settings');
-                const q = query(settingsRef, where('key', '==', 'walletNumber'));
+                // أولاً: البحث في ADMIN_wallets عن رقم نشط
+                const walletsRef = collection(db, 'ADMIN_wallets');
+                const q = query(walletsRef, where('active', '==', true));
                 const querySnapshot = await getDocs(q);
                 
                 if (!querySnapshot.empty) {
-                    return querySnapshot.docs[0].data().value;
+                    // أخذ أول رقم نشط
+                    const wallet = querySnapshot.docs[0].data();
+                    return { 
+                        success: true, 
+                        number: wallet.number, 
+                        name: wallet.name || '',
+                        type: wallet.type || 'etisalat'
+                    };
                 }
                 
-                // رقم افتراضي إذا لم يتم تعيينه
-                return "01000000000";
+                // ثانياً: إذا لم يوجد، جرب البحث في ADMIN_settings (للتوافق مع الإصدارات القديمة)
+                const settingsRef = collection(db, 'ADMIN_settings');
+                const settingsQuery = query(settingsRef, where('key', '==', 'walletNumber'));
+                const settingsSnap = await getDocs(settingsQuery);
+                
+                if (!settingsSnap.empty) {
+                    const walletNumber = settingsSnap.docs[0].data().value;
+                    if (walletNumber && walletNumber.trim()) {
+                        return { success: true, number: walletNumber, name: '', type: 'etisalat' };
+                    }
+                }
+                
+                return { success: false, number: null };
             } catch (error) {
                 console.error('خطأ في جلب رقم المحفظة:', error);
-                return "01000000000";
+                return { success: false, number: null };
             }
         }
 
-        // التحقق من وجود طلب قيد المراجعة
-        async function hasPendingRequest(packageId, userPhone) {
+        // ==================== التحقق من الاشتراك المفعل (مع وقت الخادم) ====================
+        async function hasActiveSubscription(packageId, userId) {
+            try {
+                const userDoc = await getDoc(doc(db, 'STU_users', userId));
+                if (!userDoc.exists()) return false;
+                
+                const activePackages = userDoc.data().activePackages || {};
+                const subscriptionInfo = activePackages[packageId];
+                if (!subscriptionInfo) return false;
+                
+                const serverTime = Timestamp.now();
+                const expiresAt = subscriptionInfo.expiresAt;
+                
+                if (!expiresAt) return true;
+                
+                const expiryDate = expiresAt.toDate ? expiresAt.toDate() : new Date(expiresAt);
+                return expiryDate >= serverTime.toDate();
+            } catch (error) {
+                console.error('خطأ في التحقق من الاشتراك:', error);
+                return false;
+            }
+        }
+
+        // ==================== التحقق من وجود طلب قيد المراجعة ====================
+        async function hasPendingRequest(packageId, userId) {
             try {
                 const paymentsRef = collection(db, 'PAY_requests');
                 const q = query(
                     paymentsRef,
                     where('packageId', '==', packageId),
-                    where('userPhone', '==', userPhone),
+                    where('userId', '==', userId),
                     where('status', '==', 'قيد المراجعة')
                 );
                 const querySnapshot = await getDocs(q);
-                
                 return !querySnapshot.empty;
             } catch (error) {
                 console.error('خطأ في التحقق من الطلبات المعلقة:', error);
@@ -776,139 +642,202 @@
             }
         }
 
-        // التحقق من اشتراك مفعل
-        async function hasActiveSubscription(packageId, userPhone) {
+        // ==================== التحقق من المستخدم وبياناته ====================
+        async function verifyUser() {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.replace('index.html');
+                        reject();
+                        return;
+                    }
+                    
+                    try {
+                        const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                        if (!userDoc.exists()) {
+                            await signOut(auth);
+                            window.location.replace('index.html');
+                            reject();
+                            return;
+                        }
+                        
+                        currentUser = user;
+                        userData = { uid: user.uid, ...userDoc.data() };
+                        resolve();
+                    } catch (error) {
+                        console.error('خطأ في جلب بيانات المستخدم:', error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        // ==================== جلب بيانات الباقة ====================
+        async function getPackageData(packageId) {
             try {
-                const paymentsRef = collection(db, 'PAY_requests');
-                const q = query(
-                    paymentsRef,
-                    where('packageId', '==', packageId),
-                    where('userPhone', '==', userPhone),
-                    where('status', '==', 'مفعل')
-                );
-                const querySnapshot = await getDocs(q);
-                
-                return !querySnapshot.empty;
+                const packageRef = doc(db, 'PKG_packages', packageId);
+                const packageSnap = await getDoc(packageRef);
+                if (!packageSnap.exists()) throw new Error('الباقة غير موجودة');
+                return { id: packageId, ...packageSnap.data() };
             } catch (error) {
-                console.error('خطأ في التحقق من الاشتراك:', error);
-                return false;
+                console.error('خطأ في جلب الباقة:', error);
+                throw error;
             }
         }
 
-        // ==================== تحميل الصفحة الرئيسية ====================
+        // ==================== إرسال طلب الدفع ====================
+        async function submitPaymentRequest(packageData, walletNumber, walletInfo) {
+            const paymentsRef = collection(db, 'PAY_requests');
+            
+            await addDoc(paymentsRef, {
+                userId: currentUser.uid,
+                userPhone: userData.phone || '',
+                userName: userData.name || 'غير معروف',
+                packageId: packageData.id,
+                packageName: packageData.name,
+                packagePrice: packageData.price,
+                packageDuration: packageData.duration,
+                status: 'قيد المراجعة',
+                createdAt: serverTimestamp(),
+                walletNumber: walletNumber,
+                walletType: walletInfo?.type || 'etisalat',
+                walletName: walletInfo?.name || '',
+                source: 'web',
+                notes: ''
+            });
+        }
+
+        // ==================== تحميل الصفحة ====================
         async function loadPaymentPage() {
+            skeletonLoader.classList.remove('hidden');
+            paymentContent.classList.add('hidden');
+            
+            if (!checkOnlineStatus()) {
+                showToast('لا يوجد اتصال بالإنترنت', true);
+                skeletonLoader.classList.add('hidden');
+                paymentContent.innerHTML = `
+                    <div class="error-box">
+                        <i class="fas fa-wifi"></i>
+                        <h3>لا يوجد اتصال بالإنترنت</h3>
+                        <p>يرجى التحقق من اتصالك وإعادة المحاولة</p>
+                        <button class="retry-btn" onclick="location.reload()"><i class="fas fa-redo-alt"></i> إعادة المحاولة</button>
+                    </div>
+                `;
+                paymentContent.classList.remove('hidden');
+                return;
+            }
+            
             try {
-                // إظهار skeleton loader
-                skeletonLoader.classList.remove('hidden');
-                paymentContent.classList.add('hidden');
-
-                // التحقق من المستخدم
-                await checkAuth();
-                
-                if (!currentUser) {
-                    throw new Error('المستخدم غير موجود');
-                }
-
-                // جلب packageId من الرابط
-                const packageId = getPackageIdFromUrl();
+                const urlParams = new URLSearchParams(window.location.search);
+                const packageId = urlParams.get('packageId');
                 
                 if (!packageId) {
                     throw new Error('لم يتم تحديد الباقة');
                 }
-
-                // جلب بيانات الباقة من Firestore
-                const packageRef = doc(db, 'PKG_packages', packageId);
-                const packageSnap = await getDoc(packageRef);
                 
-                if (!packageSnap.exists()) {
-                    throw new Error('الباقة غير موجودة');
-                }
-
-                const packageData = packageSnap.data();
-
+                // جلب بيانات الباقة
+                const packageData = await getPackageData(packageId);
+                
                 // التحقق من وجود اشتراك مفعل
-                const isActive = await hasActiveSubscription(packageId, currentUser.phone);
+                const isActive = await hasActiveSubscription(packageId, currentUser.uid);
                 
                 if (isActive) {
-                    // عرض رسالة أن الباقة مفعلة
                     paymentContent.innerHTML = `
                         <div class="success-message">
                             <i class="fas fa-check-circle"></i>
                             <span>هذه الباقة مفعلة بالفعل!</span>
                         </div>
-                        <a href="pay.html" class="paid-btn" style="text-decoration: none;">
+                        <button class="paid-btn" onclick="window.location.href='pay.html'" style="background: #2e8b57;">
                             <i class="fas fa-crown"></i>
                             الذهاب لاشتراكاتي
-                        </a>
+                        </button>
                     `;
-                    
                     skeletonLoader.classList.add('hidden');
                     paymentContent.classList.remove('hidden');
                     loadingScreen.classList.add('hidden');
                     return;
                 }
-
+                
                 // التحقق من وجود طلب قيد المراجعة
-                const hasPending = await hasPendingRequest(packageId, currentUser.phone);
+                const hasPending = await hasPendingRequest(packageId, currentUser.uid);
                 
                 if (hasPending) {
-                    // عرض رسالة أن الطلب قيد المراجعة
                     paymentContent.innerHTML = `
                         <div class="waiting-message">
                             <i class="fas fa-clock"></i>
                             <h3>طلبك قيد المراجعة</h3>
                             <p>لقد أرسلت طلباً لهذه الباقة مسبقاً وهو قيد المراجعة من الإدارة.</p>
-                            <p style="margin-top: 15px; font-size: 12px;">سيصلك إشعار عند التفعيل</p>
-                            <a href="home.html" class="retry-btn" style="margin-top: 20px; text-decoration: none;">
-                                <i class="fas fa-home"></i>
-                                العودة للرئيسية
-                            </a>
+                            <p style="margin-top: 15px; font-size: 12px;">سيصلك إشعار عند التفعيل خلال 24 ساعة</p>
+                            <button class="retry-btn" onclick="window.location.href='pay.html'" style="margin-top: 20px;">
+                                <i class="fas fa-crown"></i> متابعة حالة طلبي
+                            </button>
                         </div>
                     `;
-                    
                     skeletonLoader.classList.add('hidden');
                     paymentContent.classList.remove('hidden');
                     loadingScreen.classList.add('hidden');
                     return;
                 }
-
-                // جلب رقم المحفظة
-                const walletNumber = await getWalletNumber();
-
-                // عرض صفحة الدفع
+                
+                // جلب رقم المحفظة النشط من ADMIN_wallets
+                const walletResult = await getWalletNumber();
+                const hasWalletNumber = walletResult.success && walletResult.number;
+                const walletNumber = hasWalletNumber ? walletResult.number : null;
+                const walletInfo = hasWalletNumber ? { number: walletResult.number, name: walletResult.name, type: walletResult.type } : null;
+                
+                const formattedPrice = typeof packageData.price === 'number' 
+                    ? packageData.price.toLocaleString() 
+                    : packageData.price || 0;
+                
+                let walletHtml = '';
+                if (!hasWalletNumber) {
+                    walletHtml = `
+                        <div class="wallet-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>⚠️ لم يتم إعداد رقم المحفظة بعد. يرجى التواصل مع المشرف لإتمام الدفع.</span>
+                            <a href="https://wa.me/201202326992" target="_blank">تواصل واتساب <i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    `;
+                } else {
+                    // عرض نوع المحفظة إن وجد
+                    const walletTypeText = walletResult.type === 'etisalat' ? '📱 اتصالات كاش' : 
+                                          walletResult.type === 'vodafone' ? '📱 فودافون كاش' : 
+                                          walletResult.type === 'orange' ? '📱 أورنج كاش' : 
+                                          walletResult.type === 'instapay' ? '🏦 إنستا باي' : '💰 محفظة إلكترونية';
+                    
+                    walletHtml = `
+                        <div class="payment-number">
+                            <div class="payment-number-label">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>${walletTypeText}</span>
+                            </div>
+                            <div class="number-box" id="walletNumber">${walletNumber}</div>
+                            ${walletResult.name ? `<div style="font-size: 12px; color: #b1a4c2; margin-bottom: 10px;">📌 المستلم: ${escapeHtml(walletResult.name)}</div>` : ''}
+                            <button class="copy-btn" id="copyBtn">
+                                <i class="fas fa-copy"></i> نسخ الرقم
+                            </button>
+                        </div>
+                    `;
+                }
+                
                 paymentContent.innerHTML = `
-                    <!-- تفاصيل الباقة -->
                     <div class="package-details">
                         <div class="package-name">
                             <i class="fas fa-crown"></i>
-                            <span>${packageData.name || 'باقة غير مسماة'}</span>
+                            <span>${escapeHtml(packageData.name || 'باقة غير مسماة')}</span>
                         </div>
                         <div class="package-price-row">
                             <span class="price-label">السعر:</span>
-                            <span class="price-value">
-                                ${packageData.price || 0} <small>جنيه</small>
-                            </span>
+                            <span class="price-value">${formattedPrice} <small>جنيه</small></span>
                         </div>
                         <div class="package-meta">
-                            <span><i class="fas fa-clock"></i> ${packageData.duration || 'شهر'}</span>
+                            <span><i class="fas fa-clock"></i> ${escapeHtml(packageData.duration || 'شهر')}</span>
                             <span><i class="fas fa-calendar"></i> تبدأ: ${packageData.startDate || 'غير محدد'}</span>
                         </div>
                     </div>
-
-                    <!-- رقم الدفع -->
-                    <div class="payment-number">
-                        <div class="payment-number-label">
-                            <i class="fas fa-mobile-alt"></i>
-                            <span>رقم محفظة اتصالات كاش</span>
-                        </div>
-                        <div class="number-box" id="walletNumber">${walletNumber}</div>
-                        <button class="copy-btn" id="copyBtn">
-                            <i class="fas fa-copy"></i>
-                            نسخ الرقم
-                        </button>
-                    </div>
-
-                    <!-- تعليمات الدفع -->
+                    
+                    ${walletHtml}
+                    
                     <div class="instructions">
                         <div class="instructions-title">
                             <i class="fas fa-info-circle"></i>
@@ -916,11 +845,11 @@
                         </div>
                         <div class="instruction-item">
                             <i class="fas fa-1"></i>
-                            <span>افتح محفظة اتصالات كاش على هاتفك</span>
+                            <span>افتح محفظة ${walletResult.type === 'etisalat' ? 'اتصالات كاش' : walletResult.type === 'vodafone' ? 'فودافون كاش' : walletResult.type === 'orange' ? 'أورنج كاش' : 'إنستا باي'} على هاتفك</span>
                         </div>
                         <div class="instruction-item">
                             <i class="fas fa-2"></i>
-                            <span>حول المبلغ المطلوب (${packageData.price || 0} جنيه) للرقم أعلاه</span>
+                            <span>حول المبلغ المطلوب (${formattedPrice} جنيه) للرقم أعلاه</span>
                         </div>
                         <div class="instruction-item">
                             <i class="fas fa-3"></i>
@@ -928,174 +857,153 @@
                         </div>
                         <div class="instruction-item">
                             <i class="fas fa-4"></i>
-                            <span>انتظر لحين تأكيد الدفع من الإدارة (سيتم التفعيل خلال 24 ساعة)</span>
+                            <span>انتظر تأكيد الدفع من الإدارة (سيتم التفعيل خلال 24 ساعة)</span>
                         </div>
                     </div>
-
-                    <!-- زر أنا دفعت -->
+                    
+                    ${hasWalletNumber ? `
                     <button class="paid-btn" id="paidBtn">
-                        <i class="fas fa-check-circle"></i>
-                        أنا دفعت
+                        <i class="fas fa-check-circle"></i> أنا دفعت
                     </button>
-
-                    <!-- رسالة الانتظار (مخفية ابتدائياً) -->
+                    ` : `
+                    <a href="home.html" class="retry-btn" style="display: block; text-align: center; text-decoration: none;">
+                        <i class="fas fa-home"></i> العودة للرئيسية
+                    </a>
+                    `}
+                    
                     <div id="waitingMessage" class="waiting-message hidden">
                         <i class="fas fa-clock"></i>
                         <h3>تم إرسال طلب الدفع</h3>
                         <p>جاري مراجعة الدفع من الإدارة. سيتم تفعيل الباقة فور التأكيد.</p>
-                        <p style="margin-top: 10px; font-size: 12px;">سيصلك إشعار عند التفعيل</p>
+                        <p style="margin-top: 10px; font-size: 12px;">سيصلك إشعار عند التفعيل خلال 24 ساعة</p>
+                        <button class="retry-btn" onclick="window.location.href='pay.html'" style="margin-top: 20px;">
+                            <i class="fas fa-crown"></i> متابعة حالة طلبي
+                        </button>
                     </div>
                 `;
-
-                // إخفاء skeleton وإظهار المحتوى
+                
                 skeletonLoader.classList.add('hidden');
                 paymentContent.classList.remove('hidden');
-
-                // ===== إضافة وظيفة نسخ الرقم =====
-                document.getElementById('copyBtn').addEventListener('click', async () => {
-                    const walletNumber = document.getElementById('walletNumber').textContent;
-                    try {
-                        await navigator.clipboard.writeText(walletNumber);
-                        
-                        const copyBtn = document.getElementById('copyBtn');
-                        const originalHTML = copyBtn.innerHTML;
-                        
-                        copyBtn.classList.add('copied');
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
-                        
-                        setTimeout(() => {
-                            copyBtn.classList.remove('copied');
-                            copyBtn.innerHTML = originalHTML;
-                        }, 2000);
-                        
-                        showToast('تم نسخ الرقم بنجاح');
-                    } catch (err) {
-                        showToast('فشل في نسخ الرقم', true);
-                    }
-                });
-
-                // ===== إضافة وظيفة زر "أنا دفعت" مع منع التكرار =====
-                document.getElementById('paidBtn').addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    
-                    // منع العمليات المتكررة
-                    if (isProcessing) {
-                        showToast('يوجد طلب قيد الإرسال', true);
-                        return;
-                    }
-
-                    const paidBtn = document.getElementById('paidBtn');
-                    const waitingMessage = document.getElementById('waitingMessage');
-                    
-                    // تعطيل الزر
-                    isProcessing = true;
-                    paidBtn.disabled = true;
-                    paidBtn.innerHTML = '<span class="btn-spinner"></span> جاري الإرسال...';
-                    
-                    try {
-                        // التحقق مرة أخرى من عدم وجود طلب معلق
-                        const stillPending = await hasPendingRequest(packageId, currentUser.phone);
-                        if (stillPending) {
-                            showToast('لديك طلب قيد المراجعة بالفعل', true);
-                            paidBtn.disabled = false;
-                            paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> أنا دفعت';
-                            isProcessing = false;
+                loadingScreen.classList.add('hidden');
+                
+                // إضافة وظيفة نسخ الرقم
+                const copyBtn = document.getElementById('copyBtn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', async () => {
+                        const walletNumberEl = document.getElementById('walletNumber');
+                        if (walletNumberEl) {
+                            try {
+                                await navigator.clipboard.writeText(walletNumberEl.textContent);
+                                copyBtn.classList.add('copied');
+                                copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+                                setTimeout(() => {
+                                    copyBtn.classList.remove('copied');
+                                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> نسخ الرقم';
+                                }, 2000);
+                                showToast('تم نسخ الرقم بنجاح');
+                            } catch (err) {
+                                showToast('فشل في نسخ الرقم', true);
+                            }
+                        }
+                    });
+                }
+                
+                // إضافة وظيفة زر "أنا دفعت"
+                const paidBtn = document.getElementById('paidBtn');
+                if (paidBtn) {
+                    paidBtn.addEventListener('click', async () => {
+                        if (isProcessing) {
+                            showToast('يوجد طلب قيد الإرسال', true);
                             return;
                         }
-
-                        // حفظ طلب الدفع في Firebase مع نسخة ثابتة من البيانات
-                        const paymentsRef = collection(db, 'PAY_requests');
-                        await addDoc(paymentsRef, {
-                            // بيانات المستخدم
-                            userId: currentUser.uid,
-                            userPhone: currentUser.phone,
-                            userName: currentUser.name || 'غير معروف',
-                            
-                            // بيانات الباقة (نسخة ثابتة)
-                            packageId: packageId,
-                            packageName: packageData.name,
-                            packagePrice: packageData.price,
-                            packageDuration: packageData.duration,
-                            
-                            // بيانات الدفع
-                            status: 'قيد المراجعة',
-                            createdAt: serverTimestamp(), // وقت السيرفر
-                            walletNumber: walletNumber,
-                            
-                            // بيانات إضافية
-                            source: 'web',
-                            notes: ''
-                        });
-
-                        // إخفاء الزر وإظهار رسالة الانتظار
-                        paidBtn.classList.add('hidden');
-                        waitingMessage.classList.remove('hidden');
                         
-                        showToast('تم إرسال طلب الدفع بنجاح');
-
-                    } catch (error) {
-                        console.error('خطأ في إرسال طلب الدفع:', error);
+                        if (!checkOnlineStatus()) {
+                            showToast('لا يوجد اتصال بالإنترنت', true);
+                            return;
+                        }
                         
-                        // إعادة تمكين الزر
-                        paidBtn.disabled = false;
-                        paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> أنا دفعت';
+                        isProcessing = true;
+                        paidBtn.disabled = true;
+                        paidBtn.innerHTML = '<span class="btn-spinner"></span> جاري الإرسال...';
                         
-                        showToast('حدث خطأ في إرسال الطلب', true);
-                    } finally {
-                        isProcessing = false;
-                    }
-                });
-
+                        try {
+                            // التحقق مرة أخرى من عدم وجود اشتراك مفعل
+                            const stillActive = await hasActiveSubscription(packageId, currentUser.uid);
+                            if (stillActive) {
+                                showToast('الباقة مفعلة بالفعل!', true);
+                                paidBtn.disabled = false;
+                                paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> أنا دفعت';
+                                isProcessing = false;
+                                return;
+                            }
+                            
+                            // التحقق من عدم وجود طلب معلق
+                            const stillPending = await hasPendingRequest(packageId, currentUser.uid);
+                            if (stillPending) {
+                                showToast('لديك طلب قيد المراجعة بالفعل', true);
+                                paidBtn.disabled = false;
+                                paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> أنا دفعت';
+                                isProcessing = false;
+                                return;
+                            }
+                            
+                            // إرسال طلب الدفع مع معلومات المحفظة
+                            await submitPaymentRequest(packageData, walletNumber, walletInfo);
+                            
+                            // إخفاء الزر وعرض رسالة الانتظار
+                            paidBtn.classList.add('hidden');
+                            document.getElementById('waitingMessage').classList.remove('hidden');
+                            showToast('تم إرسال طلب الدفع بنجاح');
+                            
+                        } catch (error) {
+                            console.error('خطأ في إرسال طلب الدفع:', error);
+                            paidBtn.disabled = false;
+                            paidBtn.innerHTML = '<i class="fas fa-check-circle"></i> أنا دفعت';
+                            showToast('حدث خطأ في إرسال الطلب: ' + (error.message || 'حاول لاحقاً'), true);
+                        } finally {
+                            isProcessing = false;
+                        }
+                    });
+                }
+                
             } catch (error) {
                 console.error('خطأ في تحميل الصفحة:', error);
-                
-                // عرض رسالة خطأ
                 paymentContent.innerHTML = `
                     <div class="error-box">
                         <i class="fas fa-exclamation-triangle"></i>
                         <h3>حدث خطأ</h3>
-                        <p>${error.message || 'يرجى المحاولة مرة أخرى'}</p>
-                        <button class="retry-btn" onclick="location.reload()">
-                            <i class="fas fa-redo-alt"></i> إعادة المحاولة
-                        </button>
-                        <a href="home.html" class="retry-btn" style="margin-right: 10px; text-decoration: none;">
-                            <i class="fas fa-home"></i> الرئيسية
-                        </a>
+                        <p>${escapeHtml(error.message || 'يرجى المحاولة مرة أخرى')}</p>
+                        <button class="retry-btn" onclick="location.reload()"><i class="fas fa-redo-alt"></i> إعادة المحاولة</button>
+                        <a href="home.html" class="retry-btn" style="margin-right: 10px; text-decoration: none;"><i class="fas fa-home"></i> الرئيسية</a>
                     </div>
                 `;
-                
                 skeletonLoader.classList.add('hidden');
                 paymentContent.classList.remove('hidden');
-            } finally {
                 loadingScreen.classList.add('hidden');
             }
         }
-
+        
+        // ==================== الأحداث ====================
+        backBtn.addEventListener('click', () => window.history.back());
+        
+        window.addEventListener('online', () => {
+            offlineBanner.classList.remove('show');
+            showToast('تم استعادة الاتصال بالإنترنت');
+        });
+        window.addEventListener('offline', () => offlineBanner.classList.add('show'));
+        
         // ==================== بدء التطبيق ====================
-        const startApp = async () => {
+        async function init() {
             try {
+                await verifyUser();
                 await loadPaymentPage();
             } catch (error) {
-                console.error('خطأ في بدء التطبيق:', error);
+                console.error('فشل التهيئة:', error);
                 loadingScreen.classList.add('hidden');
-                
-                paymentContent.innerHTML = `
-                    <div class="error-box">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>خطأ في تحميل الصفحة</h3>
-                        <p>${error.message}</p>
-                        <button class="retry-btn" onclick="location.reload()">
-                            إعادة المحاولة
-                        </button>
-                    </div>
-                `;
-                paymentContent.classList.remove('hidden');
-                skeletonLoader.classList.add('hidden');
             }
-        };
-
-        startApp();
-
+        }
+        
+        init();
     </script>
 </body>
 </html>
