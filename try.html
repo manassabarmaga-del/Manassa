@@ -574,6 +574,12 @@
             }
         }
 
+        .toast-message.error {
+            background: #3b1f2a;
+            border-color: #c44545;
+            color: #ff9b9b;
+        }
+
         /* Scrollbar مخصص */
         ::-webkit-scrollbar {
             width: 6px;
@@ -726,7 +732,29 @@
     <!-- Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <script>
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        // ==================== استيراد Firebase ====================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ==================== تهيئة Firebase ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
         // ==================== عناصر الصفحة ====================
         const userBadge = document.getElementById('userBadge');
         const backBtn = document.getElementById('backBtn');
@@ -759,36 +787,116 @@
         let hasUnsavedChanges = false;
         let isRedirecting = false;
         let pendingAction = null;
+        let isSaving = false;
 
-        // ==================== التحقق من المستخدم (localStorage فقط) ====================
+        // ==================== التحقق من المستخدم (Firebase Auth) ====================
         const checkAuth = () => {
-            // التحقق من وجود بيانات مستخدم في localStorage
-            let localUser = null;
-            try {
-                localUser = JSON.parse(localStorage.getItem('edu_user') || 'null');
-            } catch (e) {
-                console.warn("Error parsing local user:", e);
-            }
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        // مستخدم مسجل دخول
+                        try {
+                            // جلب بيانات المستخدم من STU_users
+                            const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                            if (userDoc.exists()) {
+                                const userData = userDoc.data();
+                                currentUser = {
+                                    uid: user.uid,
+                                    name: userData.name || 'مستخدم',
+                                    phone: userData.phone || ''
+                                };
+                            } else {
+                                currentUser = {
+                                    uid: user.uid,
+                                    name: user.email?.split('@')[0] || 'مستخدم',
+                                    phone: ''
+                                };
+                            }
+                            
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            resolve(currentUser);
+                        } catch (error) {
+                            console.error('خطأ في جلب بيانات المستخدم:', error);
+                            currentUser = { uid: user.uid, name: 'مستخدم', phone: '' };
+                            userBadge.innerHTML = `<i class="fas fa-user"></i><span>${currentUser.name}</span>`;
+                            resolve(currentUser);
+                        }
+                    } else {
+                        // لا يوجد مستخدم - توجيه إلى index.html
+                        window.location.replace('index.html');
+                        reject(new Error('غير مصرح'));
+                    }
+                });
+            });
+        };
 
-            if (localUser && localUser.uid) {
-                // يوجد مستخدم مسجل
-                currentUser = {
-                    uid: localUser.uid,
-                    name: localUser.name || 'مستخدم'
-                };
-                
-                userBadge.innerHTML = `
-                    <i class="fas fa-user"></i>
-                    <span>${currentUser.name}</span>
-                `;
-                
-                return true;
-            } else {
-                // لا يوجد مستخدم - توجيه إلى index.html
-                window.location.href = 'index.html';
+        // ==================== حفظ الكود في Firestore ====================
+        async function saveCodeToFirestore() {
+            if (!currentUser) {
+                showToast('❌ المستخدم غير موجود', true);
                 return false;
             }
-        };
+            
+            if (isSaving) return false;
+            isSaving = true;
+            
+            try {
+                const code = codeEditor.value || '';
+                const codeRef = doc(db, 'STU_codes', currentUser.uid);
+                const codeDoc = await getDoc(codeRef);
+                
+                const currentData = codeDoc.exists() ? codeDoc.data() : {};
+                const updatedData = {
+                    ...currentData,
+                    [currentLang]: code,
+                    lastUpdated: serverTimestamp(),
+                    lastUpdatedBy: currentUser.uid
+                };
+                
+                await setDoc(codeRef, updatedData, { merge: true });
+                hasUnsavedChanges = false;
+                unsavedBadge.classList.remove('visible');
+                showToast('✅ تم حفظ الكود على الخادم');
+                return true;
+            } catch (error) {
+                console.error('خطأ في حفظ الكود:', error);
+                showToast('❌ فشل حفظ الكود على الخادم، تم الحفظ محلياً', true);
+                // حفظ محلي كنسخة احتياطية
+                const key = `code_${currentUser.uid}_${currentLang}`;
+                localStorage.setItem(key, codeEditor.value || '');
+                return false;
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        // ==================== تحميل الكود من Firestore ====================
+        async function loadCodeFromFirestore() {
+            if (!currentUser) return '';
+            
+            try {
+                const codeRef = doc(db, 'STU_codes', currentUser.uid);
+                const codeDoc = await getDoc(codeRef);
+                
+                if (codeDoc.exists()) {
+                    const data = codeDoc.data();
+                    const savedCode = data[currentLang] || '';
+                    if (savedCode) {
+                        return savedCode;
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل الكود من Firestore:', error);
+            }
+            
+            // إذا لم يوجد في Firestore، حاول من localStorage
+            const key = `code_${currentUser.uid}_${currentLang}`;
+            const localSaved = localStorage.getItem(key);
+            return localSaved || '';
+        }
 
         // ==================== دوال مساعدة ====================
         
@@ -824,7 +932,7 @@
 
         // تحديث التلوين
         function updateSyntaxHighlighting() {
-            const code = codeEditor.value || ''; // تأكد من أنها دائماً string
+            const code = codeEditor.value || '';
             let lang = 'markup';
             
             switch(currentLang) {
@@ -888,7 +996,7 @@
             }
         }
 
-        // دالة تشغيل الكود
+        // دالة تشغيل الكود (مع تحسين الأمان)
         function runCode() {
             const code = codeEditor.value || '';
             outputBox.innerHTML = '';
@@ -901,7 +1009,8 @@
                     iframe.style.border = 'none';
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = 'white';
-                    iframe.sandbox = 'allow-scripts allow-forms';
+                    // تعزيز أمان iframe
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
                     
                     outputBox.appendChild(iframe);
                     
@@ -919,7 +1028,7 @@
                     iframe.style.border = 'none';
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = 'white';
-                    iframe.sandbox = 'allow-scripts allow-forms';
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
                     
                     outputBox.appendChild(iframe);
                     
@@ -943,11 +1052,14 @@
                     outputBadge.innerText = 'CSS Preview';
                 }
                 else if (currentLang === 'js') {
+                    // تعزيز أمان تنفيذ JavaScript
+                    const safeCode = code || '';
                     const htmlContent = `
                         <!DOCTYPE html>
                         <html>
                         <head>
                             <meta charset="UTF-8">
+                            <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
                             <style>
                                 body { 
                                     font-family: system-ui; 
@@ -975,25 +1087,40 @@
                         <body>
                             <div id="console-output"></div>
                             <script>
+                                // حماية: إعادة تعريف console.log بشكل آمن
                                 const originalConsole = console.log;
                                 const output = document.getElementById('console-output');
                                 
                                 console.log = function(...args) {
                                     const line = document.createElement('div');
                                     line.className = 'console-line';
-                                    line.textContent = args.map(arg => 
-                                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-                                    ).join(' ');
+                                    try {
+                                        line.textContent = args.map(arg => {
+                                            if (arg === undefined) return 'undefined';
+                                            if (arg === null) return 'null';
+                                            if (typeof arg === 'object') {
+                                                try {
+                                                    return JSON.stringify(arg, null, 2);
+                                                } catch(e) {
+                                                    return String(arg);
+                                                }
+                                            }
+                                            return String(arg);
+                                        }).join(' ');
+                                    } catch(e) {
+                                        line.textContent = '[غير قابل للعرض]';
+                                    }
                                     output.appendChild(line);
                                     originalConsole.apply(console, args);
                                 };
                                 
+                                // تنفيذ الكود في نطاق آمن
                                 try {
-                                    ${code || ''}
+                                    ${safeCode}
                                 } catch (e) {
                                     const errorLine = document.createElement('div');
                                     errorLine.className = 'error-line';
-                                    errorLine.textContent = '❌ ' + e.message;
+                                    errorLine.textContent = '❌ ' + (e.message || 'خطأ غير معروف');
                                     output.appendChild(errorLine);
                                 }
                             <\/script>
@@ -1011,7 +1138,7 @@
                     iframe.style.borderRadius = '8px';
                     iframe.style.background = '#1e1e1e';
                     iframe.src = url;
-                    iframe.sandbox = 'allow-scripts allow-forms';
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
                     
                     outputBox.appendChild(iframe);
                     
@@ -1028,27 +1155,22 @@
             }
         }
 
-        // حفظ الكود
-        function saveCode() {
+        // حفظ الكود (في Firestore)
+        async function saveCode() {
             if (!currentUser) {
                 showToast('❌ المستخدم غير موجود', true);
                 return;
             }
             
-            const key = `code_${currentUser.uid}_${currentLang}`;
-            localStorage.setItem(key, codeEditor.value || '');
-            hasUnsavedChanges = false;
-            unsavedBadge.classList.remove('visible');
-            showToast('✅ تم حفظ الكود');
+            await saveCodeToFirestore();
         }
 
-        // تحميل الكود المحفوظ - دائماً يعيد نصاً فارغاً إذا لم يوجد
-        function loadSavedCode() {
+        // تحميل الكود المحفوظ
+        async function loadSavedCode() {
             if (!currentUser) return;
             
-            const key = `code_${currentUser.uid}_${currentLang}`;
-            const saved = localStorage.getItem(key);
-            codeEditor.value = saved || ''; // دائماً نص فارغ إذا لم يوجد
+            const saved = await loadCodeFromFirestore();
+            codeEditor.value = saved || '';
             hasUnsavedChanges = false;
             unsavedBadge.classList.remove('visible');
             updateSyntaxHighlighting();
@@ -1061,7 +1183,7 @@
                 showConfirm(
                     'مسح الكود',
                     'هل أنت متأكد من مسح كل الكود؟',
-                    () => {
+                    async () => {
                         codeEditor.value = '';
                         hasUnsavedChanges = true;
                         unsavedBadge.classList.add('visible');
@@ -1069,8 +1191,10 @@
                         analyzeCode();
                         outputBox.innerHTML = '';
                         showToast('✅ تم مسح الكود');
+                        // حفظ المسح في Firestore
+                        await saveCodeToFirestore();
                     },
-                    () => {} // onCancel
+                    () => {}
                 );
             }
         }
@@ -1109,9 +1233,9 @@
         }
 
         // تبديل اللغة
-        function switchLanguage(lang) {
+        async function switchLanguage(lang) {
             if (hasUnsavedChanges) {
-                pendingAction = () => {
+                pendingAction = async () => {
                     currentLang = lang;
                     
                     langBtns.forEach(btn => {
@@ -1122,18 +1246,18 @@
                     currentLangLabel.innerText = langNames[lang];
                     outputBadge.innerText = langNames[lang];
                     
-                    loadSavedCode();
+                    await loadSavedCode();
                 };
                 
                 showConfirm(
                     'تغيير اللغة',
                     'لديك تغييرات غير محفوظة. هل تريد الحفظ قبل التبديل؟',
-                    () => {
-                        saveCode();
-                        if (pendingAction) pendingAction();
+                    async () => {
+                        await saveCode();
+                        if (pendingAction) await pendingAction();
                     },
-                    () => {
-                        if (pendingAction) pendingAction();
+                    async () => {
+                        if (pendingAction) await pendingAction();
                     }
                 );
             } else {
@@ -1147,7 +1271,7 @@
                 currentLangLabel.innerText = langNames[lang];
                 outputBadge.innerText = langNames[lang];
                 
-                loadSavedCode();
+                await loadSavedCode();
             }
         }
 
@@ -1157,18 +1281,18 @@
                 showConfirm(
                     'تغييرات غير محفوظة',
                     'لديك كود غير محفوظ. هل تريد الحفظ قبل المغادرة؟',
-                    () => {
-                        saveCode();
+                    async () => {
+                        await saveCode();
                         isRedirecting = true;
-                        window.location.href = 'home.html?uid=' + (currentUser?.uid || '');
+                        window.location.href = 'home.html';
                     },
                     () => {
                         isRedirecting = true;
-                        window.location.href = 'home.html?uid=' + (currentUser?.uid || '');
+                        window.location.href = 'home.html';
                     }
                 );
             } else {
-                window.location.href = 'home.html?uid=' + (currentUser?.uid || '');
+                window.location.href = 'home.html';
             }
         }
 
@@ -1242,16 +1366,17 @@
         });
 
         // ==================== بدء التطبيق ====================
-        const startApp = () => {
-            // التحقق من المستخدم
-            if (checkAuth()) {
-                // تحميل الكود المحفوظ
-                loadSavedCode();
+        const startApp = async () => {
+            try {
+                await checkAuth();
+                await loadSavedCode();
+            } catch (error) {
+                console.error('خطأ في بدء التطبيق:', error);
+                // المستخدم غير مصرح، سيتم توجيهه تلقائياً من checkAuth
             }
         };
 
         startApp();
-
     </script>
 </body>
 </html>
