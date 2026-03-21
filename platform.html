@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>منصة الباقة - تجربة التعلم المتكاملة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(145deg, #0a0718 0%, #0f0a1f 100%);
+            color: #fff;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        .header {
+            background: rgba(26, 19, 48, 0.95); backdrop-filter: blur(15px);
+            padding: 14px 18px; position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(109, 79, 199, 0.4);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .back-btn {
+            width: 42px; height: 42px; background: rgba(15, 10, 31, 0.8);
+            border: 1px solid #2d224a; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: #b1a4c2; cursor: pointer;
+        }
+        .back-btn:hover { background: #6d4fc7; color: white; }
+        .header-info { flex: 1; }
+        .header-info h1 { font-size: 18px; font-weight: 800; }
+        .header-info p { font-size: 11px; color: #b1a4c2; display: flex; align-items: center; gap: 5px; }
+        .package-tag {
+            background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+            padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600;
+        }
+        .content { padding: 18px; max-width: 800px; margin: 0 auto; }
+        
+        .lesson-card {
+            background: rgba(26, 19, 48, 0.85); backdrop-filter: blur(10px);
+            border-radius: 32px; padding: 22px; margin-bottom: 20px;
+            border: 1px solid rgba(109, 79, 199, 0.25);
+        }
+        .lesson-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+        }
+        .lesson-number {
+            background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+            padding: 5px 14px; border-radius: 30px; font-size: 12px; font-weight: 600;
+        }
+        .lesson-status {
+            padding: 5px 14px; border-radius: 30px; font-size: 12px; font-weight: 600;
+        }
+        .status-completed { background: #2e8b57; color: white; }
+        .status-inprogress { background: #ffb347; color: #1a1330; }
+        .status-locked { background: #4a4a6a; color: #b1a4c2; }
+        .lesson-title {
+            font-size: 24px; font-weight: 900; margin: 12px 0 8px;
+            background: linear-gradient(135deg, #fff, #b49aff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .lesson-meta {
+            font-size: 12px; color: #b1a4c2; margin-bottom: 20px;
+            display: flex; gap: 15px; flex-wrap: wrap;
+        }
+        .video-container {
+            background: #000; border-radius: 24px; overflow: hidden;
+            margin: 20px 0; aspect-ratio: 16/9; border: 1px solid #2d224a;
+        }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+        .video-placeholder {
+            background: #0f0a1f; border-radius: 24px; padding: 40px;
+            text-align: center; border: 1px dashed #2d224a; margin: 20px 0;
+        }
+        
+        .elements-grid {
+            display: flex; flex-direction: column; gap: 16px; margin: 24px 0;
+        }
+        .element-card {
+            background: rgba(15, 10, 31, 0.7); border-radius: 20px; padding: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px; border: 1px solid #2d224a;
+        }
+        .element-card.completed { border-color: #2e8b57; background: rgba(46, 139, 86, 0.1); }
+        .element-info { display: flex; align-items: center; gap: 14px; flex: 1; }
+        .element-icon {
+            width: 50px; height: 50px; background: #2d224a; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+        }
+        .element-card.completed .element-icon { background: #2e8b57; }
+        .element-text h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .element-text p { font-size: 11px; color: #b1a4c2; }
+        .element-time-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.4); }
+        .element-actions { display: flex; gap: 10px; }
+        
+        .btn-primary {
+            background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+            border: none; color: white; padding: 8px 20px; border-radius: 40px;
+            font-weight: 600; font-size: 13px; cursor: pointer;
+        }
+        .btn-primary:active { transform: scale(0.96); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-success { background: #2e8b57; }
+        
+        .complete-lesson-btn {
+            width: 100%; background: linear-gradient(145deg, #2e8b57, #3cb371);
+            border: none; color: white; padding: 16px; border-radius: 50px;
+            font-weight: 800; font-size: 18px; cursor: pointer; margin-top: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .complete-lesson-btn.disabled { background: #4a4a6a; cursor: not-allowed; opacity: 0.6; }
+        
+        .lessons-sidebar {
+            background: rgba(26, 19, 48, 0.8); border-radius: 28px; padding: 18px;
+            margin-top: 20px; border: 1px solid rgba(109, 79, 199, 0.2);
+        }
+        .sidebar-header {
+            display: flex; justify-content: space-between; margin-bottom: 15px;
+            padding-bottom: 10px; border-bottom: 1px solid #2d224a; font-size: 13px; color: #b1a4c2;
+        }
+        .lesson-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            border-radius: 18px; cursor: pointer; margin-bottom: 6px;
+        }
+        .lesson-item.active { background: linear-gradient(145deg, #2d224a, #1e1535); border-right: 3px solid #ffd700; }
+        .lesson-num {
+            width: 38px; height: 38px; background: #6d4fc7; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-weight: 700;
+        }
+        .lesson-item.completed .lesson-num { background: #2e8b57; }
+        .lesson-item-info { flex: 1; }
+        .lesson-item-info h4 { font-size: 14px; font-weight: 700; }
+        .lesson-item-info p { font-size: 10px; color: #b1a4c2; }
+        .lesson-progress { font-size: 11px; font-weight: 600; color: #ffd700; }
+        
+        .exam-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(12px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            padding: 20px; overflow-y: auto;
+        }
+        .exam-container {
+            background: #1a1330; border-radius: 40px; max-width: 800px; width: 100%;
+            max-height: 90vh; overflow-y: auto; border: 1px solid #ffd700; padding: 24px;
+        }
+        .exam-header { text-align: center; margin-bottom: 25px; }
+        .exam-timer {
+            background: #2d224a; padding: 10px 20px; border-radius: 40px;
+            display: inline-block; margin-top: 10px; font-size: 20px; font-weight: 700;
+        }
+        .exam-timer.warning { background: #c44545; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
+        
+        .exam-question {
+            background: #0f0a1f; border-radius: 24px; padding: 20px; margin-bottom: 20px;
+            border: 1px solid #2d224a;
+        }
+        .exam-question-text { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+        
+        .code-editor {
+            background: #1e1e1e; border-radius: 16px; overflow: hidden; margin: 15px 0; direction: ltr;
+        }
+        .code-editor textarea {
+            width: 100%; min-height: 150px; background: #1e1e1e; color: #d4d4d4;
+            font-family: 'Fira Code', monospace; font-size: 14px; padding: 15px;
+            border: none; outline: none; resize: vertical;
+        }
+        
+        .exam-options { display: flex; flex-direction: column; gap: 12px; margin: 15px 0; }
+        .exam-option {
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            background: #0f0a1f; border-radius: 16px; border: 1px solid #2d224a; cursor: pointer;
+        }
+        .exam-option.selected { border-color: #6d4fc7; background: rgba(109, 79, 199, 0.2); }
+        
+        .exam-submit {
+            background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+            border: none; color: white; padding: 14px; border-radius: 40px;
+            font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; margin-top: 20px;
+        }
+        
+        .exam-result { text-align: center; padding: 30px; }
+        .exam-result-score { font-size: 48px; font-weight: 900; color: #ffd700; margin: 20px 0; }
+        
+        .toast {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            background: #1b3b2a; padding: 12px 24px; border-radius: 50px;
+            z-index: 2000; display: flex; align-items: center; gap: 10px;
+        }
+        .toast.error { background: #3b1f2a; }
+        .hidden { display: none; }
+        .loading { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-right"></i></div>
+        <div class="header-info">
+            <h1 id="packageName">جاري التحميل...</h1>
+            <p id="packageMeta"><i class="fas fa-calendar"></i> <span></span></p>
+        </div>
+        <div class="package-tag" id="packagePrice">0 جنيه</div>
+    </div>
+
+    <div class="content">
+        <div id="loadingState" class="loading"><i class="fas fa-spinner fa-pulse"></i> جاري التحميل...</div>
+        <div id="actualContent" class="hidden"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { 
+            getFirestore, doc, getDoc, setDoc, collection, query, where, 
+            getDocs, addDoc, updateDoc, onSnapshot, Timestamp, serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const backBtn = document.getElementById('backBtn');
+        const packageNameEl = document.getElementById('packageName');
+        const packageMeta = document.getElementById('packageMeta');
+        const packagePrice = document.getElementById('packagePrice');
+        const loadingState = document.getElementById('loadingState');
+        const actualContent = document.getElementById('actualContent');
+
+        // State
+        let currentUser = null;
+        let currentPackageId = null;
+        let packageInfo = null;
+        let lessonsList = [];
+        let progress = {};
+        let currentLessonIndex = 0;
+        let unsubscribeLessons = null;
+        let currentPlayer = null;
+        
+        // Exam State
+        let examModal = null;
+        let currentExam = null;
+        let examTimer = null;
+        let examTimeLeft = 0;
+
+        function showToast(msg, isError = false) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = `toast ${isError ? 'error' : ''}`;
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+        function getServerTime() { return Timestamp.now(); }
+        
+        function getYouTubeId(url) {
+            if (!url) return null;
+            let videoId = null;
+            if (url.includes('youtube.com/watch?v=')) videoId = url.split('v=')[1]?.split('&')[0];
+            else if (url.includes('youtu.be/')) videoId = url.split('/').pop();
+            return videoId;
+        }
+
+        function isMeetActive(lesson) {
+            const now = getServerTime().toDate();
+            const meetTime = new Date(`${lesson.date}T${lesson.time}:00`);
+            const meetStart = new Date(meetTime.getTime() - 15 * 60 * 1000);
+            const meetEnd = new Date(meetTime.getTime() + 2 * 60 * 60 * 1000);
+            return now >= meetStart && now <= meetEnd;
+        }
+
+        function isYoutubeAvailable(lesson) {
+            const now = getServerTime().toDate();
+            const meetTime = new Date(`${lesson.date}T${lesson.time}:00`);
+            const youtubeTime = new Date(meetTime.getTime() + 2 * 60 * 60 * 1000);
+            return now >= youtubeTime;
+        }
+
+        function isExamAvailable(lesson) {
+            if (!lesson.examOpenTime) return isYoutubeAvailable(lesson);
+            const now = getServerTime().toDate();
+            const examTime = new Date(lesson.examOpenTime);
+            return now >= examTime;
+        }
+
+        function isMeetConfirmAvailable(openedAt) {
+            if (!openedAt) return false;
+            const openTime = new Date(openedAt);
+            const now = getServerTime().toDate();
+            return (now - openTime) / (1000 * 60) >= 60;
+        }
+
+        async function loadProgress() {
+            const progressRef = doc(db, 'STU_users', currentUser.uid, 'progress', currentPackageId);
+            const snap = await getDoc(progressRef);
+            if (snap.exists()) {
+                progress = snap.data().progress || {};
+                currentLessonIndex = snap.data().currentLesson || 0;
+            }
+        }
+
+        async function saveProgress() {
+            const progressRef = doc(db, 'STU_users', currentUser.uid, 'progress', currentPackageId);
+            await setDoc(progressRef, {
+                progress: progress,
+                currentLesson: currentLessonIndex,
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+        }
+
+        // ==================== YouTube Player Integration ====================
+        function initYouTubePlayer(videoId, lessonId) {
+            if (!window.YT) {
+                const tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                const firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                
+                window.onYouTubeIframeAPIReady = () => {
+                    createPlayer(videoId, lessonId);
+                };
+            } else {
+                createPlayer(videoId, lessonId);
+            }
+        }
+        
+        function createPlayer(videoId, lessonId) {
+            const container = document.getElementById('youtube-player');
+            if (!container) return;
+            
+            if (currentPlayer) {
+                currentPlayer.destroy();
+            }
+            
+            currentPlayer = new YT.Player('youtube-player', {
+                videoId: videoId,
+                playerVars: { 'controls': 1, 'rel': 0, 'modestbranding': 1 },
+                events: {
+                    'onStateChange': (event) => {
+                        // عند انتهاء الفيديو
+                        if (event.data === YT.PlayerState.ENDED) {
+                            const lesson = lessonsList.find(l => l.id === lessonId);
+                            if (lesson && !progress[lessonId]?.youtube?.completed) {
+                                // عرض رسالة تسأل إذا كان الطالب يريد تأكيد المشاهدة
+                                if (confirm('🎬 هل شاهدت الفيديو بالكامل؟ اضغط موافق لتأكيد الإكمال')) {
+                                    completeYouTube(lessonId);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function completeYouTube(lessonId) {
+            if (!progress[lessonId]) progress[lessonId] = { meet: {}, youtube: {}, exam: {}, completed: false };
+            if (progress[lessonId].youtube?.completed) { showToast('✅ تم تسجيل المشاهدة مسبقاً'); return; }
+            
+            progress[lessonId].youtube = { completed: true, completedAt: getServerTime().toDate().toISOString() };
+            await saveProgress();
+            showToast('🎬 تم تسجيل مشاهدة الفيديو!');
+            checkAndCompleteLesson(lessonId);
+            renderCurrentLesson();
+        }
+
+        async function completeMeet(lessonId) {
+            if (!progress[lessonId]) progress[lessonId] = { meet: {}, youtube: {}, exam: {}, completed: false };
+            const meetData = progress[lessonId].meet;
+            if (meetData?.completed) { showToast('✅ تم تسجيل الحضور مسبقاً'); return; }
+            if (!meetData?.openedAt) { showToast('⚠️ يرجى فتح رابط البث المباشر أولاً', true); return; }
+            if (!isMeetConfirmAvailable(meetData.openedAt)) {
+                const remaining = 60 - Math.floor((getServerTime().toDate() - new Date(meetData.openedAt)) / (1000 * 60));
+                showToast(`⏳ يمكنك تأكيد الحضور بعد ${remaining} دقيقة`, true);
+                return;
+            }
+            
+            progress[lessonId].meet = { ...meetData, completed: true, confirmedAt: getServerTime().toDate().toISOString() };
+            await saveProgress();
+            showToast('🎥 تم تسجيل حضور البث المباشر!');
+            checkAndCompleteLesson(lessonId);
+            renderCurrentLesson();
+        }
+
+        async function openMeet(lessonId, meetLink) {
+            if (!meetLink) { showToast('❌ لا يوجد رابط للبث المباشر', true); return; }
+            if (!progress[lessonId]) progress[lessonId] = { meet: {}, youtube: {}, exam: {}, completed: false };
+            
+            window.open(meetLink, '_blank');
+            if (!progress[lessonId].meet?.openedAt) {
+                progress[lessonId].meet = { ...progress[lessonId].meet, openedAt: getServerTime().toDate().toISOString() };
+                await saveProgress();
+                showToast('🔗 تم فتح رابط البث، سيظهر زر التأكيد بعد ساعة');
+            }
+            renderCurrentLesson();
+        }
+
+        // ==================== Exam System ====================
+        async function startExam(lessonId, lessonNumber) {
+            const examQuery = query(collection(db, 'LESS_exams'), 
+                where('packageId', '==', currentPackageId),
+                where('lessonId', '==', lessonId)
+            );
+            const examSnap = await getDocs(examQuery);
+            if (examSnap.empty) { showToast('لا يوجد امتحان لهذا الدرس بعد', true); return; }
+            
+            currentExam = { id: examSnap.docs[0].id, ...examSnap.docs[0].data() };
+            examTimeLeft = (currentExam.duration || 30) * 60;
+            
+            openExamModal();
+        }
+
+        function openExamModal() {
+            examModal = document.createElement('div');
+            examModal.className = 'exam-modal';
+            document.body.appendChild(examModal);
+            renderExamInterface();
+            startExamTimer();
+        }
+
+        function startExamTimer() {
+            if (examTimer) clearInterval(examTimer);
+            examTimer = setInterval(() => {
+                if (examTimeLeft <= 0) {
+                    clearInterval(examTimer);
+                    submitExam();
+                } else {
+                    examTimeLeft--;
+                    updateExamTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimerDisplay() {
+            const timerEl = document.getElementById('examTimerDisplay');
+            if (timerEl) {
+                const minutes = Math.floor(examTimeLeft / 60);
+                const seconds = examTimeLeft % 60;
+                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (examTimeLeft < 60) timerEl.parentElement.classList.add('warning');
+            }
+        }
+
+        function renderExamInterface() {
+            let questionsHtml = '';
+            currentExam.questions.forEach((q, idx) => {
+                if (q.type === 'code') {
+                    questionsHtml += `
+                        <div class="exam-question" data-qid="${q.id}">
+                            <div class="exam-question-text">${idx + 1}. ${escapeHtml(q.text)}</div>
+                            <div class="code-editor">
+                                <textarea id="examCode_${q.id}" placeholder="اكتب الكود هنا..." rows="6"></textarea>
+                            </div>
+                            ${q.hints ? `<div style="font-size:12px; color:#b1a4c2; margin-top:8px;"><i class="fas fa-lightbulb"></i> ${escapeHtml(q.hints)}</div>` : ''}
+                        </div>
+                    `;
+                } else {
+                    questionsHtml += `
+                        <div class="exam-question" data-qid="${q.id}">
+                            <div class="exam-question-text">${idx + 1}. ${escapeHtml(q.text)}</div>
+                            <div class="exam-options">
+                                ${q.options.map(opt => `
+                                    <div class="exam-option" data-qid="${q.id}" data-value="${escapeHtml(opt)}">
+                                        <input type="radio" name="q${q.id}" value="${escapeHtml(opt)}" id="examOpt_${q.id}_${escapeHtml(opt)}">
+                                        <label for="examOpt_${q.id}_${escapeHtml(opt)}">${escapeHtml(opt)}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            examModal.innerHTML = `
+                <div class="exam-container">
+                    <div class="exam-header">
+                        <h2><i class="fas fa-file-alt"></i> ${escapeHtml(currentExam.title || 'امتحان الدرس')}</h2>
+                        <div class="exam-timer"><i class="fas fa-hourglass-half"></i> <span id="examTimerDisplay">${Math.floor(examTimeLeft/60).toString().padStart(2,'0')}:${(examTimeLeft%60).toString().padStart(2,'0')}</span></div>
+                        <p style="color:#b1a4c2; margin-top:8px;">درجة النجاح: ${currentExam.passingScore}%</p>
+                    </div>
+                    ${questionsHtml}
+                    <button class="exam-submit" id="submitExamBtn"><i class="fas fa-paper-plane"></i> إنهاء الامتحان</button>
+                </div>
+            `;
+            
+            document.querySelectorAll('.exam-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const radio = opt.querySelector('input');
+                    if (radio) radio.checked = true;
+                    document.querySelectorAll(`.exam-option[data-qid="${opt.dataset.qid}"]`).forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                });
+            });
+            
+            document.getElementById('submitExamBtn').addEventListener('click', submitExam);
+            updateExamTimerDisplay();
+        }
+
+        function normalizeCode(code) {
+            if (!code) return '';
+            return code.trim()
+                .replace(/\n\s*\n/g, '\n')
+                .split('\n').map(line => line.trim()).join('\n')
+                .replace(/"([^"]*)"/g, (match, p1) => `'${p1}'`)
+                .replace(/;\s*$/gm, '')
+                .replace(/\s*=\s*/g, '=').replace(/\s*\+\s*/g, '+').replace(/\s*-\s*/g, '-')
+                .replace(/\s*\*\s*/g, '*').replace(/\s*\/\s*/g, '/')
+                .replace(/\s*===\s*/g, '===').replace(/\s*==\s*/g, '==')
+                .replace(/\s*!==\s*/g, '!==').replace(/\s*!=\s*/g, '!=');
+        }
+
+        function compareCode(userCode, modelCode) {
+            return normalizeCode(userCode) === normalizeCode(modelCode);
+        }
+
+        function submitExam() {
+            if (examTimer) clearInterval(examTimer);
+            
+            let totalPoints = 0;
+            let earnedPoints = 0;
+            const answers = [];
+            
+            currentExam.questions.forEach(q => {
+                const points = q.points || 10;
+                totalPoints += points;
+                let isCorrect = false;
+                let userAnswer = '';
+                
+                if (q.type === 'code') {
+                    userAnswer = document.getElementById(`examCode_${q.id}`)?.value || '';
+                    isCorrect = compareCode(userAnswer, q.modelAnswer);
+                } else {
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    userAnswer = selected ? selected.value : '';
+                    isCorrect = (userAnswer === q.correctAnswer);
+                }
+                
+                if (isCorrect) earnedPoints += points;
+                answers.push({ questionId: q.id, userAnswer, isCorrect, points });
+            });
+            
+            const percentage = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
+            const passed = percentage >= (currentExam.passingScore || 70);
+            
+            const resultData = {
+                userId: currentUser.uid,
+                userName: currentUser.name || 'طالب',
+                packageId: currentPackageId,
+                lessonId: currentExam.lessonId,
+                lessonNumber: currentExam.lessonNumber,
+                score: earnedPoints,
+                totalPoints: totalPoints,
+                percentage: percentage,
+                passed: passed,
+                answers: answers,
+                completedAt: serverTimestamp()
+            };
+            
+            addDoc(collection(db, 'STU_exams'), resultData).then(async () => {
+                if (passed) {
+                    const lessonId = currentExam.lessonId;
+                    if (!progress[lessonId]) progress[lessonId] = { meet: {}, youtube: {}, exam: {}, completed: false };
+                    progress[lessonId].exam = { completed: true, score: earnedPoints, percentage: percentage };
+                    await saveProgress();
+                    checkAndCompleteLesson(lessonId);
+                    showToast(`🎉 ${passed ? 'اجتزت الامتحان!' : 'لم تجتز الامتحان، حاول مرة أخرى'}`);
+                } else {
+                    showToast(`❌ للأسف لم تجتز الامتحان (${Math.round(percentage)}%)`, true);
+                }
+                showExamResult(percentage, passed, earnedPoints, totalPoints);
+            }).catch(err => {
+                console.error(err);
+                showExamResult(percentage, passed, earnedPoints, totalPoints);
+            });
+        }
+
+        function showExamResult(percentage, passed, score, total) {
+            examModal.innerHTML = `
+                <div class="exam-container">
+                    <div class="exam-result">
+                        <i class="fas ${passed ? 'fa-trophy' : 'fa-frown'}" style="font-size: 60px; color: ${passed ? '#ffd700' : '#c44545'}; margin-bottom: 20px;"></i>
+                        <h2>${passed ? '🎉 تهانينا!' : '😔 للأسف'}</h2>
+                        <div class="exam-result-score">${Math.round(percentage)}%</div>
+                        <p>${score} من ${total} نقطة</p>
+                        <p style="color: ${passed ? '#2e8b57' : '#c44545'}; margin: 15px 0;">
+                            ${passed ? '✓ لقد اجتزت الامتحان بنجاح' : '✗ لم تجتز الامتحان، حاول مرة أخرى'}
+                        </p>
+                        <button class="exam-submit" id="closeExamBtn"><i class="fas fa-check"></i> إغلاق</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('closeExamBtn').addEventListener('click', () => {
+                examModal.remove();
+                renderCurrentLesson();
+            });
+        }
+
+        async function checkAndCompleteLesson(lessonId) {
+            const lessonProgress = progress[lessonId];
+            if (!lessonProgress) return;
+            
+            const youtubeDone = lessonProgress.youtube?.completed === true;
+            const meetDone = lessonProgress.meet?.completed === true;
+            const examDone = lessonProgress.exam?.completed === true;
+            
+            if (youtubeDone && meetDone && examDone && !lessonProgress.completed) {
+                lessonProgress.completed = true;
+                lessonProgress.completedAt = getServerTime().toDate().toISOString();
+                await saveProgress();
+                showToast(`🎉 مبروك! تم إكمال الدرس بالكامل!`);
+                
+                const allCompleted = lessonsList.length > 0 && lessonsList.every(l => progress[l.id]?.completed === true);
+                if (allCompleted) await createCertificate();
+                renderCurrentLesson();
+                renderLessonsList();
+            }
+        }
+
+        async function createCertificate() {
+            try {
+                const certsRef = collection(db, 'STU_certificates');
+                const q = query(certsRef, where('userId', '==', currentUser.uid), where('packageId', '==', currentPackageId));
+                const existing = await getDocs(q);
+                if (!existing.empty) return;
+                
+                await addDoc(certsRef, {
+                    userId: currentUser.uid, userName: currentUser.name || 'طالب',
+                    packageId: currentPackageId, packageName: packageInfo?.name || 'الباقة',
+                    completedLessons: lessonsList.length, earnedAt: serverTimestamp(), viewed: false
+                });
+                showToast(`🏆 مبروك! حصلت على شهادة إتمام دورة ${packageInfo?.name}`);
+                setTimeout(() => {
+                    if (confirm('🎉 تهانينا! هل تريد مشاهدة شهاداتك؟')) window.location.href = 'prize.html';
+                }, 2000);
+            } catch(e) { console.error(e); }
+        }
+
+        function isLessonUnlocked(lessonIndex) {
+            if (lessonIndex === 0) return true;
+            const prevLesson = lessonsList[lessonIndex - 1];
+            return progress[prevLesson.id]?.completed === true;
+        }
+
+        function renderCurrentLesson() {
+            if (!lessonsList.length || currentLessonIndex >= lessonsList.length) return;
+            
+            const lesson = lessonsList[currentLessonIndex];
+            const lessonProgress = progress[lesson.id] || { meet: {}, youtube: {}, exam: {}, completed: false };
+            const isUnlocked = isLessonUnlocked(currentLessonIndex);
+            const isCompleted = lessonProgress.completed === true;
+            
+            const meetActive = isMeetActive(lesson);
+            const youtubeAvailable = isYoutubeAvailable(lesson);
+            const examAvailable = isExamAvailable(lesson);
+            
+            const meetOpenedAt = lessonProgress.meet?.openedAt;
+            const meetConfirmAvailable = meetOpenedAt ? isMeetConfirmAvailable(meetOpenedAt) : false;
+            
+            const youtubeDone = lessonProgress.youtube?.completed === true;
+            const meetDone = lessonProgress.meet?.completed === true;
+            const examDone = lessonProgress.exam?.completed === true;
+            const allElementsDone = youtubeDone && meetDone && examDone;
+            
+            const videoId = getYouTubeId(lesson.recordingLink);
+            
+            let videoHtml = '';
+            if (videoId && youtubeAvailable && !isCompleted) {
+                videoHtml = `
+                    <div class="video-container">
+                        <div id="youtube-player"></div>
+                    </div>
+                    <script src="https://www.youtube.com/iframe_api"><\/script>
+                `;
+                // تأخير تهيئة الـ Player حتى يتم تحميل الـ DOM
+                setTimeout(() => {
+                    if (window.YT) {
+                        createPlayer(videoId, lesson.id);
+                    } else {
+                        window.onYouTubeIframeAPIReady = () => createPlayer(videoId, lesson.id);
+                    }
+                }, 100);
+            } else if (youtubeAvailable && !isCompleted) {
+                videoHtml = `<div class="video-placeholder"><i class="fab fa-youtube" style="font-size:48px; margin-bottom:12px;"></i><p>${lesson.recordingLink ? '<a href="' + lesson.recordingLink + '" target="_blank" style="color:#6d4fc7;">فتح الفيديو على يوتيوب</a>' : 'لا يوجد فيديو'}</p></div>`;
+            } else {
+                videoHtml = `<div class="video-placeholder"><i class="fas fa-clock" style="font-size:48px; margin-bottom:12px;"></i><p>⏳ الفيديو متاح بعد انتهاء البث بساعتين</p></div>`;
+            }
+            
+            actualContent.innerHTML = `
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <span class="lesson-number">الدرس ${lesson.lessonNumber}</span>
+                        <span class="lesson-status ${isCompleted ? 'status-completed' : (isUnlocked ? 'status-inprogress' : 'status-locked')}">
+                            ${isCompleted ? '✓ مكتمل' : (isUnlocked ? '⏳ جاري' : '🔒 مقفل')}
+                        </span>
+                    </div>
+                    <h2 class="lesson-title">${escapeHtml(lesson.title)}</h2>
+                    <div class="lesson-meta">
+                        <span><i class="fas fa-calendar"></i> ${lesson.date || 'غير محدد'}</span>
+                        <span><i class="fas fa-clock"></i> ${lesson.time || '--:--'}</span>
+                    </div>
+                    
+                    ${videoHtml}
+                    
+                    <div class="elements-grid">
+                        <div class="element-card ${youtubeDone ? 'completed' : ''}">
+                            <div class="element-info">
+                                <div class="element-icon"><i class="fab fa-youtube"></i></div>
+                                <div class="element-text"><h4>فيديو يوتيوب</h4><p>مشاهدة الفيديو التعليمي</p></div>
+                            </div>
+                            <div class="element-actions">
+                                ${!youtubeDone && youtubeAvailable && isUnlocked && !isCompleted ? 
+                                    `<button class="btn-primary" id="confirmYoutubeBtn"><i class="fas fa-check"></i> تأكيد المشاهدة</button>` : 
+                                    youtubeDone ? `<span style="color:#2e8b57;"><i class="fas fa-check-circle"></i> تم</span>` :
+                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${youtubeAvailable ? 'متاح' : 'بعد ساعتين'}</span>`}
+                            </div>
+                        </div>
+                        
+                        <div class="element-card ${meetDone ? 'completed' : ''}">
+                            <div class="element-info">
+                                <div class="element-icon"><i class="fab fa-google"></i></div>
+                                <div class="element-text"><h4>بث مباشر (Google Meet)</h4><p>حضور المحاضرة المباشرة</p></div>
+                            </div>
+                            <div class="element-actions">
+                                ${!meetDone && meetActive && isUnlocked && !isCompleted ? 
+                                    `<button class="btn-primary" id="openMeetBtn"><i class="fas fa-external-link-alt"></i> انضمام</button>
+                                     ${meetOpenedAt ? `<button class="btn-primary btn-success" id="confirmMeetBtn" ${!meetConfirmAvailable ? 'disabled' : ''}><i class="fas fa-check"></i> تأكيد الحضور</button>` : ''}` : 
+                                    meetDone ? `<span style="color:#2e8b57;"><i class="fas fa-check-circle"></i> تم</span>` :
+                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${meetActive ? 'متاح الآن' : 'يبدأ قبل الدرس بـ 15 دقيقة'}</span>`}
+                            </div>
+                        </div>
+                        
+                        <div class="element-card ${examDone ? 'completed' : ''}">
+                            <div class="element-info">
+                                <div class="element-icon"><i class="fas fa-file-alt"></i></div>
+                                <div class="element-text"><h4>امتحان إلكتروني</h4><p>اختبار فهم المحتوى</p></div>
+                            </div>
+                            <div class="element-actions">
+                                ${!examDone && examAvailable && isUnlocked && !isCompleted ? 
+                                    `<button class="btn-primary" id="startExamBtn"><i class="fas fa-play"></i> بدء الامتحان</button>` : 
+                                    examDone ? `<span style="color:#2e8b57;"><i class="fas fa-check-circle"></i> تم</span>` :
+                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${examAvailable ? 'متاح' : 'بعد انتهاء البث'}</span>`}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-lesson-btn ${!allElementsDone || isCompleted || !isUnlocked ? 'disabled' : ''}" id="completeLessonBtn" ${!allElementsDone || isCompleted || !isUnlocked ? 'disabled' : ''}>
+                        <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-crown'}"></i>
+                        ${isCompleted ? 'تم إكمال الدرس ✓' : 'إكمال الدرس'}
+                    </button>
+                </div>
+                <div class="lessons-sidebar" id="lessonsSidebar"></div>
+            `;
+            
+            document.getElementById('confirmYoutubeBtn')?.addEventListener('click', () => completeYouTube(lesson.id));
+            document.getElementById('openMeetBtn')?.addEventListener('click', () => openMeet(lesson.id, lesson.meetLink));
+            document.getElementById('confirmMeetBtn')?.addEventListener('click', () => completeMeet(lesson.id));
+            document.getElementById('startExamBtn')?.addEventListener('click', () => startExam(lesson.id, lesson.lessonNumber));
+            document.getElementById('completeLessonBtn')?.addEventListener('click', () => {
+                if (allElementsDone && !isCompleted && isUnlocked) checkAndCompleteLesson(lesson.id);
+            });
+            
+            renderLessonsList();
+        }
+
+        function renderLessonsList() {
+            const container = document.getElementById('lessonsSidebar');
+            if (!container) return;
+            if (!lessonsList.length) { container.innerHTML = '<div class="empty-state">لا توجد دروس</div>'; return; }
+            
+            const completedCount = Object.values(progress).filter(p => p.completed === true).length;
+            let html = `<div class="sidebar-header"><span><i class="fas fa-list"></i> قائمة الدروس</span><span>${completedCount}/${lessonsList.length} مكتمل</span></div>`;
+            
+            lessonsList.forEach((lesson, idx) => {
+                const p = progress[lesson.id] || {};
+                const isActive = idx === currentLessonIndex;
+                const isCompleted = p.completed === true;
+                const elementsProgress = (p.youtube?.completed ? 1 : 0) + (p.meet?.completed ? 1 : 0) + (p.exam?.completed ? 1 : 0);
+                
+                html += `
+                    <div class="lesson-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" data-index="${idx}">
+                        <div class="lesson-num">${lesson.lessonNumber}</div>
+                        <div class="lesson-item-info">
+                            <h4>${escapeHtml(lesson.title)}</h4>
+                            <p><i class="fas fa-calendar"></i> ${lesson.date || ''} <i class="fas fa-clock"></i> ${lesson.time || ''}</p>
+                        </div>
+                        <div class="lesson-progress">${elementsProgress}/3</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.querySelectorAll('.lesson-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    const idx = parseInt(el.dataset.index);
+                    if (!isNaN(idx) && idx !== currentLessonIndex && isLessonUnlocked(idx)) {
+                        currentLessonIndex = idx;
+                        saveProgress();
+                        renderCurrentLesson();
+                    } else if (!isLessonUnlocked(idx)) {
+                        showToast('🔒 يجب إكمال الدرس السابق أولاً', true);
+                    }
+                });
+            });
+        }
+
+        async function checkSubscription() {
+            const userDoc = await getDoc(doc(db, 'STU_users', currentUser.uid));
+            const active = userDoc.data()?.activePackages?.[currentPackageId];
+            if (!active) return false;
+            const expires = active.expiresAt;
+            if (!expires) return true;
+            const expDate = expires.toDate ? expires.toDate() : new Date(expires);
+            return expDate >= new Date();
+        }
+
+        async function loadPackage() {
+            const pkgRef = doc(db, 'PKG_packages', currentPackageId);
+            const pkg = await getDoc(pkgRef);
+            if (pkg.exists()) {
+                packageInfo = pkg.data();
+                packageNameEl.textContent = packageInfo.name || 'الباقة';
+                packageMeta.querySelector('span').textContent = `تبدأ: ${packageInfo.startDate || 'غير محدد'} • ${packageInfo.duration || 'شهر'}`;
+                packagePrice.textContent = `${packageInfo.price || 0} جنيه`;
+            }
+        }
+
+        function listenLessons() {
+            if (unsubscribeLessons) unsubscribeLessons();
+            const q = query(collection(db, 'LESS_lessons'), where('packageId', '==', currentPackageId));
+            unsubscribeLessons = onSnapshot(q, (snap) => {
+                lessonsList = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.lessonNumber || 0) - (b.lessonNumber || 0));
+                loadingState.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+                if (lessonsList.length === 0) {
+                    actualContent.innerHTML = '<div class="empty-state"><i class="fas fa-video-slash"></i><p>لا توجد دروس بعد</p></div>';
+                } else {
+                    if (currentLessonIndex >= lessonsList.length) currentLessonIndex = 0;
+                    renderCurrentLesson();
+                }
+            }, (err) => {
+                console.error(err);
+                loadingState.classList.add('hidden');
+                actualContent.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>خطأ: ${err.message}</p><button class="btn-primary" onclick="location.reload()">إعادة المحاولة</button></div>`;
+            });
+        }
+
+        async function init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentPackageId = urlParams.get('packageId');
+            if (!currentPackageId) { window.location.href = 'home.html'; return; }
+            
+            await new Promise((resolve) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) { window.location.href = 'index.html'; return; }
+                    const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                    currentUser = { uid: user.uid, ...userDoc.data() };
+                    resolve();
+                });
+            });
+            
+            const subscribed = await checkSubscription();
+            if (!subscribed) {
+                actualContent.innerHTML = `<div class="empty-state"><i class="fas fa-lock"></i><p>غير مشترك في هذه الباقة</p><button class="btn-primary" onclick="window.location.href='pay.html'">اشترك الآن</button></div>`;
+                loadingState.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+                return;
+            }
+            
+            await loadPackage();
+            await loadProgress();
+            listenLessons();
+        }
+        
+        backBtn.addEventListener('click', () => window.location.href = 'home.html');
+        init();
+    </script>
+</body>
+</html>
