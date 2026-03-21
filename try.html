@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>محرر الأكواد - منصة البرمجة</title>
+    <!-- خط Tajawal للعربية و Fira Code للكود -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Prism.js للتلوين -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0f0a1f;
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: rtl;
+        }
+
+        /* الحاوية الرئيسية */
+        .playground-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1a1330;
+            border: 1px solid #2d224a;
+            border-radius: 24px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            background: #0f0a1f;
+            border: 1px solid #2d224a;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b1a4c2;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #6d4fc7;
+            color: white;
+            border-color: #6d4fc7;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            color: #b1a4c2;
+        }
+
+        .user-badge {
+            background: #0f0a1f;
+            border: 1px solid #2d224a;
+            border-radius: 40px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+
+        .user-badge i {
+            color: #6d4fc7;
+        }
+
+        /* المحرر الرئيسي */
+        .editor-card {
+            background: #1a1330;
+            border: 1px solid #2d224a;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* شريط اللغة */
+        .language-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: #0f0a1f;
+            border-bottom: 1px solid #2d224a;
+        }
+
+        .lang-btn {
+            padding: 8px 24px;
+            background: transparent;
+            border: 1px solid #2d224a;
+            border-radius: 40px;
+            color: #b1a4c2;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-btn i {
+            font-size: 16px;
+        }
+
+        .lang-btn:hover {
+            background: #2d224a;
+            color: white;
+        }
+
+        .lang-btn.active {
+            background: #6d4fc7;
+            color: white;
+            border-color: #6d4fc7;
+        }
+
+        .lang-btn.html.active { background: #e44d26; border-color: #e44d26; }
+        .lang-btn.css.active { background: #264de4; border-color: #264de4; }
+        .lang-btn.js.active { background: #f7df1e; color: #000; border-color: #f7df1e; }
+
+        /* منطقة المحرر */
+        .editor-area {
+            padding: 20px;
+            background: #0f0a1f;
+        }
+
+        .editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .editor-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #b1a4c2;
+            font-size: 13px;
+        }
+
+        .editor-label i {
+            color: #6d4fc7;
+        }
+
+        .unsaved-badge {
+            background: #ffb347;
+            color: #1a1330;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .unsaved-badge.visible {
+            opacity: 1;
+        }
+
+        /* حاوية المحرر */
+        .editor-wrapper {
+            background: #1e1e1e;
+            border-radius: 20px;
+            border: 1px solid #2d224a;
+            overflow: hidden;
+            transition: border-color 0.2s;
+            direction: ltr;
+        }
+
+        .editor-wrapper:focus-within {
+            border-color: #6d4fc7;
+        }
+
+        .editor-scroll {
+            display: flex;
+            height: 300px;
+            background: #1e1e1e;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ترقيم الأسطر */
+        .line-numbers {
+            width: 50px;
+            padding: 16px 0;
+            background: #252526;
+            color: #858585;
+            text-align: center;
+            border-left: 1px solid #3e3e3e;
+            user-select: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        /* حاوية التحرير */
+        .code-container {
+            flex: 1;
+            position: relative;
+            overflow: auto;
+        }
+
+        #codeEditor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 16px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #d4d4d4;
+            caret-color: #6d4fc7;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow: hidden;
+            z-index: 3;
+            direction: ltr;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            -webkit-appearance: none;
+            autocapitalize: none;
+            autocorrect: off;
+            spellcheck: false;
+        }
+
+        /* طبقة التلوين */
+        .highlight-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            padding: 16px;
+            background: #1e1e1e;
+            pointer-events: none;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            z-index: 2;
+            color: #d4d4d4;
+            direction: ltr;
+        }
+
+        .highlight-layer code {
+            background: transparent !important;
+            color: #d4d4d4 !important;
+        }
+
+        .highlight-layer code * {
+            background: transparent !important;
+        }
+
+        /* المساعد الذكي */
+        .smart-hint {
+            background: #1a1330;
+            border: 1px solid #2d224a;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hint-icon {
+            width: 40px;
+            height: 40px;
+            background: #0f0a1f;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6d4fc7;
+            font-size: 20px;
+        }
+
+        .hint-content {
+            flex: 1;
+            color: #d0c2e6;
+            font-size: 14px;
+        }
+
+        .hint-content strong {
+            color: #6d4fc7;
+        }
+
+        /* أزرار الإجراءات */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            background: #0f0a1f;
+            border-top: 1px solid #2d224a;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .action-btn.run {
+            background: #6d4fc7;
+            color: white;
+            box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
+        }
+
+        .action-btn.save {
+            background: #2d224a;
+            color: white;
+            border: 1px solid #6d4fc7;
+        }
+
+        .action-btn.clear {
+            background: #2d1f2a;
+            color: #ff9b9b;
+            border: 1px solid #c44545;
+        }
+
+        .action-btn.run:hover {
+            background: #8a6cff;
+            transform: translateY(-2px);
+        }
+
+        /* منطقة النتيجة */
+        .output-section {
+            margin-top: 20px;
+            background: #1a1330;
+            border: 1px solid #2d224a;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: #0f0a1f;
+            border-bottom: 1px solid #2d224a;
+        }
+
+        .output-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b1a4c2;
+            font-size: 14px;
+        }
+
+        .output-title i {
+            color: #6d4fc7;
+        }
+
+        .output-badge {
+            background: #2d224a;
+            color: #b49aff;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+
+        .output-container {
+            padding: 20px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .output-box {
+            background: #0f0a1f;
+            border-radius: 16px;
+            padding: 16px;
+            color: #d0c2e6;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            border: 1px solid #2d224a;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            direction: ltr;
+        }
+
+        .output-box iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+        }
+
+        /* تذييل */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #4a3b62;
+            font-size: 12px;
+        }
+
+        /* Confirm Dialog مخصص */
+        .confirm-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+
+        .confirm-box {
+            background: #1a1330;
+            border: 1px solid #6d4fc7;
+            border-radius: 32px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .confirm-box i {
+            font-size: 50px;
+            color: #ffb347;
+            margin-bottom: 15px;
+        }
+
+        .confirm-box h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .confirm-box p {
+            color: #b1a4c2;
+            margin-bottom: 25px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn.cancel {
+            background: #2d224a;
+            color: #b1a4c2;
+            border: 1px solid #2d224a;
+        }
+
+        .confirm-btn.confirm {
+            background: #6d4fc7;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Toast Message */
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1b3b2a;
+            border: 1px solid #2e8b57;
+            color: #a0e6c0;
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                bottom: -100px;
+                opacity: 0;
+            }
+            to {
+                bottom: 20px;
+                opacity: 1;
+            }
+        }
+
+        .toast-message.error {
+            background: #3b1f2a;
+            border-color: #c44545;
+            color: #ff9b9b;
+        }
+
+        /* Scrollbar مخصص */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6d4fc7;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Confirm Dialog مخصص -->
+    <div id="confirmDialog" class="confirm-dialog hidden">
+        <div class="confirm-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>لديك تغييرات غير محفوظة</h3>
+            <p id="confirmMessage">هل تريد حفظ التغييرات قبل المغادرة؟</p>
+            <div class="confirm-actions">
+                <button class="confirm-btn cancel" id="confirmCancel">إلغاء</button>
+                <button class="confirm-btn cancel" id="confirmDiscard">تجاهل</button>
+                <button class="confirm-btn confirm" id="confirmSave">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toastMessage" class="toast-message hidden">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <div class="playground-container">
+        <!-- الهيدر -->
+        <div class="header">
+            <div class="header-left">
+                <a href="#" class="back-btn" id="backBtn">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="header-title">
+                    <h1>محرر الأكواد</h1>
+                    <p>درب نفسك على البرمجة</p>
+                </div>
+            </div>
+            <div class="user-badge" id="userBadge">
+                <i class="fas fa-user"></i>
+                <span>جاري التحميل...</span>
+            </div>
+        </div>
+
+        <!-- بطاقة المحرر -->
+        <div class="editor-card">
+            <!-- شريط اللغات -->
+            <div class="language-bar">
+                <button class="lang-btn html active" data-lang="html">
+                    <i class="fab fa-html5"></i>
+                    HTML
+                </button>
+                <button class="lang-btn css" data-lang="css">
+                    <i class="fab fa-css3-alt"></i>
+                    CSS
+                </button>
+                <button class="lang-btn js" data-lang="js">
+                    <i class="fab fa-js"></i>
+                    JavaScript
+                </button>
+            </div>
+
+            <!-- منطقة المحرر -->
+            <div class="editor-area">
+                <div class="editor-header">
+                    <div class="editor-label">
+                        <i class="fas fa-code"></i>
+                        <span id="currentLangLabel">HTML</span>
+                    </div>
+                    <div class="unsaved-badge" id="unsavedBadge">غير محفوظ</div>
+                </div>
+
+                <div class="editor-wrapper">
+                    <div class="editor-scroll" id="scrollContainer">
+                        <div class="line-numbers" id="lineNumbers">1</div>
+                        <div class="code-container">
+                            <textarea id="codeEditor" 
+                                      spellcheck="false" 
+                                      autocapitalize="none"
+                                      autocorrect="off"
+                                      autocomplete="off"
+                                      dir="ltr"
+                                      placeholder="// اكتب كودك هنا..."></textarea>
+                            <div class="highlight-layer" id="highlightLayer">
+                                <code id="highlightContent" class="language-html"></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المساعد الذكي -->
+                <div class="smart-hint" id="smartHint">
+                    <div class="hint-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="hint-content" id="hintContent">
+                        <strong>👋 مرحباً!</strong> ابدأ بكتابة الكود
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار الإجراءات -->
+            <div class="action-bar">
+                <button class="action-btn run" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    تشغيل
+                </button>
+                <button class="action-btn save" id="saveBtn">
+                    <i class="fas fa-save"></i>
+                    حفظ
+                </button>
+                <button class="action-btn clear" id="clearBtn">
+                    <i class="fas fa-trash"></i>
+                    مسح
+                </button>
+            </div>
+        </div>
+
+        <!-- منطقة النتيجة -->
+        <div class="output-section">
+            <div class="output-header">
+                <div class="output-title">
+                    <i class="fas fa-terminal"></i>
+                    <span>النتيجة</span>
+                </div>
+                <div class="output-badge" id="outputBadge">HTML</div>
+            </div>
+            <div class="output-container">
+                <div class="output-box" id="outputBox"></div>
+            </div>
+        </div>
+
+        <!-- تذييل -->
+        <div class="footer">
+            منصة البرمجة - محرر تدريبي
+        </div>
+    </div>
+
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        // ==================== استيراد Firebase ====================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ==================== تهيئة Firebase ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ==================== عناصر الصفحة ====================
+        const userBadge = document.getElementById('userBadge');
+        const backBtn = document.getElementById('backBtn');
+        const codeEditor = document.getElementById('codeEditor');
+        const highlightContent = document.getElementById('highlightContent');
+        const highlightLayer = document.getElementById('highlightLayer');
+        const scrollContainer = document.getElementById('scrollContainer');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const outputBox = document.getElementById('outputBox');
+        const hintContent = document.getElementById('hintContent');
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const currentLangLabel = document.getElementById('currentLangLabel');
+        const outputBadge = document.getElementById('outputBadge');
+        const unsavedBadge = document.getElementById('unsavedBadge');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmCancel = document.getElementById('confirmCancel');
+        const confirmDiscard = document.getElementById('confirmDiscard');
+        const confirmSave = document.getElementById('confirmSave');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+
+        // ==================== متغيرات عامة ====================
+        let currentUser = null;
+        let currentLang = 'html';
+        let typingTimer;
+        let hasUnsavedChanges = false;
+        let isRedirecting = false;
+        let pendingAction = null;
+        let isSaving = false;
+
+        // ==================== التحقق من المستخدم (Firebase Auth) ====================
+        const checkAuth = () => {
+            return new Promise((resolve, reject) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        // مستخدم مسجل دخول
+                        try {
+                            // جلب بيانات المستخدم من STU_users
+                            const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
+                            if (userDoc.exists()) {
+                                const userData = userDoc.data();
+                                currentUser = {
+                                    uid: user.uid,
+                                    name: userData.name || 'مستخدم',
+                                    phone: userData.phone || ''
+                                };
+                            } else {
+                                currentUser = {
+                                    uid: user.uid,
+                                    name: user.email?.split('@')[0] || 'مستخدم',
+                                    phone: ''
+                                };
+                            }
+                            
+                            userBadge.innerHTML = `
+                                <i class="fas fa-user"></i>
+                                <span>${currentUser.name}</span>
+                            `;
+                            resolve(currentUser);
+                        } catch (error) {
+                            console.error('خطأ في جلب بيانات المستخدم:', error);
+                            currentUser = { uid: user.uid, name: 'مستخدم', phone: '' };
+                            userBadge.innerHTML = `<i class="fas fa-user"></i><span>${currentUser.name}</span>`;
+                            resolve(currentUser);
+                        }
+                    } else {
+                        // لا يوجد مستخدم - توجيه إلى index.html
+                        window.location.replace('index.html');
+                        reject(new Error('غير مصرح'));
+                    }
+                });
+            });
+        };
+
+        // ==================== حفظ الكود في Firestore ====================
+        async function saveCodeToFirestore() {
+            if (!currentUser) {
+                showToast('❌ المستخدم غير موجود', true);
+                return false;
+            }
+            
+            if (isSaving) return false;
+            isSaving = true;
+            
+            try {
+                const code = codeEditor.value || '';
+                const codeRef = doc(db, 'STU_codes', currentUser.uid);
+                const codeDoc = await getDoc(codeRef);
+                
+                const currentData = codeDoc.exists() ? codeDoc.data() : {};
+                const updatedData = {
+                    ...currentData,
+                    [currentLang]: code,
+                    lastUpdated: serverTimestamp(),
+                    lastUpdatedBy: currentUser.uid
+                };
+                
+                await setDoc(codeRef, updatedData, { merge: true });
+                hasUnsavedChanges = false;
+                unsavedBadge.classList.remove('visible');
+                showToast('✅ تم حفظ الكود على الخادم');
+                return true;
+            } catch (error) {
+                console.error('خطأ في حفظ الكود:', error);
+                showToast('❌ فشل حفظ الكود على الخادم، تم الحفظ محلياً', true);
+                // حفظ محلي كنسخة احتياطية
+                const key = `code_${currentUser.uid}_${currentLang}`;
+                localStorage.setItem(key, codeEditor.value || '');
+                return false;
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        // ==================== تحميل الكود من Firestore ====================
+        async function loadCodeFromFirestore() {
+            if (!currentUser) return '';
+            
+            try {
+                const codeRef = doc(db, 'STU_codes', currentUser.uid);
+                const codeDoc = await getDoc(codeRef);
+                
+                if (codeDoc.exists()) {
+                    const data = codeDoc.data();
+                    const savedCode = data[currentLang] || '';
+                    if (savedCode) {
+                        return savedCode;
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل الكود من Firestore:', error);
+            }
+            
+            // إذا لم يوجد في Firestore، حاول من localStorage
+            const key = `code_${currentUser.uid}_${currentLang}`;
+            const localSaved = localStorage.getItem(key);
+            return localSaved || '';
+        }
+
+        // ==================== دوال مساعدة ====================
+        
+        function showToast(text, isError = false) {
+            toastText.textContent = text;
+            toastMessage.classList.remove('hidden');
+            
+            if (isError) {
+                toastMessage.style.background = '#3b1f2a';
+                toastMessage.style.borderColor = '#c44545';
+                toastMessage.style.color = '#ff9b9b';
+            } else {
+                toastMessage.style.background = '#1b3b2a';
+                toastMessage.style.borderColor = '#2e8b57';
+                toastMessage.style.color = '#a0e6c0';
+            }
+            
+            setTimeout(() => {
+                toastMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        // تحديث ترقيم الأسطر
+        function updateLineNumbers() {
+            const lines = codeEditor.value.split('\n');
+            const lineCount = Math.max(1, lines.length);
+            let numbers = '';
+            for (let i = 1; i <= lineCount; i++) {
+                numbers += i + '\n';
+            }
+            lineNumbers.innerText = numbers;
+        }
+
+        // تحديث التلوين
+        function updateSyntaxHighlighting() {
+            const code = codeEditor.value || '';
+            let lang = 'markup';
+            
+            switch(currentLang) {
+                case 'html': lang = 'markup'; break;
+                case 'css': lang = 'css'; break;
+                case 'js': lang = 'javascript'; break;
+            }
+            
+            highlightContent.className = `language-${lang}`;
+            highlightContent.textContent = code;
+            
+            if (window.Prism) {
+                Prism.highlightElement(highlightContent);
+            }
+            
+            updateLineNumbers();
+        }
+
+        // مزامنة التمرير
+        function syncScroll() {
+            if (highlightLayer) {
+                highlightLayer.scrollTop = scrollContainer.scrollTop;
+                highlightLayer.scrollLeft = scrollContainer.scrollLeft;
+            }
+        }
+
+        // تحليل الكود
+        function analyzeCode() {
+            const code = codeEditor.value;
+            
+            if (!code || !code.trim()) {
+                hintContent.innerHTML = '<strong>👋 مرحباً!</strong> اكتب كوداً لتبدأ التعلم';
+                return;
+            }
+            
+            let errors = [];
+            
+            const brackets = {
+                '(': (code.match(/\(/g) || []).length,
+                ')': (code.match(/\)/g) || []).length,
+                '{': (code.match(/{/g) || []).length,
+                '}': (code.match(/}/g) || []).length,
+                '[': (code.match(/\[/g) || []).length,
+                ']': (code.match(/\]/g) || []).length
+            };
+            
+            if (brackets['('] !== brackets[')']) {
+                errors.push(`أقواس () غير متطابقة`);
+            }
+            if (brackets['{'] !== brackets['}']) {
+                errors.push(`أقواس {} غير متطابقة`);
+            }
+            if (brackets['['] !== brackets[']']) {
+                errors.push(`أقواس [] غير متطابقة`);
+            }
+            
+            if (errors.length === 0) {
+                hintContent.innerHTML = '<strong>✅ رائع!</strong> الكود سليم - يمكنك تشغيله';
+            } else {
+                hintContent.innerHTML = `<strong>❌ خطأ:</strong> ${errors[0]}`;
+            }
+        }
+
+        // دالة تشغيل الكود (مع تحسين الأمان)
+        function runCode() {
+            const code = codeEditor.value || '';
+            outputBox.innerHTML = '';
+            
+            try {
+                if (currentLang === 'html') {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '200px';
+                    iframe.style.border = 'none';
+                    iframe.style.borderRadius = '8px';
+                    iframe.style.background = 'white';
+                    // تعزيز أمان iframe
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
+                    
+                    outputBox.appendChild(iframe);
+                    
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    iframeDoc.open();
+                    iframeDoc.write(code || '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body></body></html>');
+                    iframeDoc.close();
+                    
+                    outputBadge.innerText = 'HTML Output';
+                }
+                else if (currentLang === 'css') {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '200px';
+                    iframe.style.border = 'none';
+                    iframe.style.borderRadius = '8px';
+                    iframe.style.background = 'white';
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
+                    
+                    outputBox.appendChild(iframe);
+                    
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    iframeDoc.open();
+                    iframeDoc.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <style>${code || ''}</style>
+                        </head>
+                        <body style="font-family: system-ui; padding:20px;">
+                            <h1 style="color: #6d4fc7;">معاينة CSS</h1>
+                            <p style="color: #666;">اكتب HTML في قسم HTML لتجربة CSS</p>
+                        </body>
+                        </html>
+                    `);
+                    iframeDoc.close();
+                    
+                    outputBadge.innerText = 'CSS Preview';
+                }
+                else if (currentLang === 'js') {
+                    // تعزيز أمان تنفيذ JavaScript
+                    const safeCode = code || '';
+                    const htmlContent = `
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+                            <style>
+                                body { 
+                                    font-family: system-ui; 
+                                    padding: 20px; 
+                                    background: #1e1e1e;
+                                    color: #d4d4d4;
+                                    margin: 0;
+                                }
+                                #console-output {
+                                    font-family: 'Fira Code', monospace;
+                                    font-size: 13px;
+                                    line-height: 1.6;
+                                }
+                                .console-line {
+                                    padding: 4px 0;
+                                    border-bottom: 1px solid #333;
+                                    color: #a0e6c0;
+                                }
+                                .error-line {
+                                    color: #ff9b9b;
+                                    font-weight: bold;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div id="console-output"></div>
+                            <script>
+                                // حماية: إعادة تعريف console.log بشكل آمن
+                                const originalConsole = console.log;
+                                const output = document.getElementById('console-output');
+                                
+                                console.log = function(...args) {
+                                    const line = document.createElement('div');
+                                    line.className = 'console-line';
+                                    try {
+                                        line.textContent = args.map(arg => {
+                                            if (arg === undefined) return 'undefined';
+                                            if (arg === null) return 'null';
+                                            if (typeof arg === 'object') {
+                                                try {
+                                                    return JSON.stringify(arg, null, 2);
+                                                } catch(e) {
+                                                    return String(arg);
+                                                }
+                                            }
+                                            return String(arg);
+                                        }).join(' ');
+                                    } catch(e) {
+                                        line.textContent = '[غير قابل للعرض]';
+                                    }
+                                    output.appendChild(line);
+                                    originalConsole.apply(console, args);
+                                };
+                                
+                                // تنفيذ الكود في نطاق آمن
+                                try {
+                                    ${safeCode}
+                                } catch (e) {
+                                    const errorLine = document.createElement('div');
+                                    errorLine.className = 'error-line';
+                                    errorLine.textContent = '❌ ' + (e.message || 'خطأ غير معروف');
+                                    output.appendChild(errorLine);
+                                }
+                            <\/script>
+                        </body>
+                        </html>
+                    `;
+                    
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '200px';
+                    iframe.style.border = 'none';
+                    iframe.style.borderRadius = '8px';
+                    iframe.style.background = '#1e1e1e';
+                    iframe.src = url;
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
+                    
+                    outputBox.appendChild(iframe);
+                    
+                    iframe.onload = () => URL.revokeObjectURL(url);
+                    
+                    outputBadge.innerText = 'JavaScript Console';
+                }
+                
+                showToast('✅ تم تشغيل الكود بنجاح');
+                
+            } catch(e) {
+                outputBox.innerHTML = `<div style="color: #ff9b9b; padding: 10px;">❌ خطأ: ${e.message}</div>`;
+                showToast('❌ حدث خطأ في تشغيل الكود', true);
+            }
+        }
+
+        // حفظ الكود (في Firestore)
+        async function saveCode() {
+            if (!currentUser) {
+                showToast('❌ المستخدم غير موجود', true);
+                return;
+            }
+            
+            await saveCodeToFirestore();
+        }
+
+        // تحميل الكود المحفوظ
+        async function loadSavedCode() {
+            if (!currentUser) return;
+            
+            const saved = await loadCodeFromFirestore();
+            codeEditor.value = saved || '';
+            hasUnsavedChanges = false;
+            unsavedBadge.classList.remove('visible');
+            updateSyntaxHighlighting();
+            analyzeCode();
+        }
+
+        // مسح الكود
+        function clearCode() {
+            if (codeEditor.value && codeEditor.value.trim()) {
+                showConfirm(
+                    'مسح الكود',
+                    'هل أنت متأكد من مسح كل الكود؟',
+                    async () => {
+                        codeEditor.value = '';
+                        hasUnsavedChanges = true;
+                        unsavedBadge.classList.add('visible');
+                        updateSyntaxHighlighting();
+                        analyzeCode();
+                        outputBox.innerHTML = '';
+                        showToast('✅ تم مسح الكود');
+                        // حفظ المسح في Firestore
+                        await saveCodeToFirestore();
+                    },
+                    () => {}
+                );
+            }
+        }
+
+        // Confirm مخصص
+        function showConfirm(title, message, onConfirm, onCancel) {
+            confirmMessage.textContent = message;
+            confirmDialog.classList.remove('hidden');
+            
+            const handleConfirm = () => {
+                confirmDialog.classList.add('hidden');
+                cleanup();
+                if (onConfirm) onConfirm();
+            };
+            
+            const handleDiscard = () => {
+                confirmDialog.classList.add('hidden');
+                cleanup();
+                if (onCancel) onCancel();
+            };
+            
+            const handleCancel = () => {
+                confirmDialog.classList.add('hidden');
+                cleanup();
+            };
+            
+            const cleanup = () => {
+                confirmSave.removeEventListener('click', handleConfirm);
+                confirmDiscard.removeEventListener('click', handleDiscard);
+                confirmCancel.removeEventListener('click', handleCancel);
+            };
+            
+            confirmSave.addEventListener('click', handleConfirm);
+            confirmDiscard.addEventListener('click', handleDiscard);
+            confirmCancel.addEventListener('click', handleCancel);
+        }
+
+        // تبديل اللغة
+        async function switchLanguage(lang) {
+            if (hasUnsavedChanges) {
+                pendingAction = async () => {
+                    currentLang = lang;
+                    
+                    langBtns.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.lang === lang);
+                    });
+                    
+                    const langNames = { html: 'HTML', css: 'CSS', js: 'JavaScript' };
+                    currentLangLabel.innerText = langNames[lang];
+                    outputBadge.innerText = langNames[lang];
+                    
+                    await loadSavedCode();
+                };
+                
+                showConfirm(
+                    'تغيير اللغة',
+                    'لديك تغييرات غير محفوظة. هل تريد الحفظ قبل التبديل؟',
+                    async () => {
+                        await saveCode();
+                        if (pendingAction) await pendingAction();
+                    },
+                    async () => {
+                        if (pendingAction) await pendingAction();
+                    }
+                );
+            } else {
+                currentLang = lang;
+                
+                langBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+                
+                const langNames = { html: 'HTML', css: 'CSS', js: 'JavaScript' };
+                currentLangLabel.innerText = langNames[lang];
+                outputBadge.innerText = langNames[lang];
+                
+                await loadSavedCode();
+            }
+        }
+
+        // العودة للصفحة الرئيسية
+        function goHome() {
+            if (hasUnsavedChanges && !isRedirecting) {
+                showConfirm(
+                    'تغييرات غير محفوظة',
+                    'لديك كود غير محفوظ. هل تريد الحفظ قبل المغادرة؟',
+                    async () => {
+                        await saveCode();
+                        isRedirecting = true;
+                        window.location.href = 'home.html';
+                    },
+                    () => {
+                        isRedirecting = true;
+                        window.location.href = 'home.html';
+                    }
+                );
+            } else {
+                window.location.href = 'home.html';
+            }
+        }
+
+        // منع الخروج العرضي
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges && !isRedirecting) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // ==================== Event Listeners ====================
+        
+        codeEditor.addEventListener('input', () => {
+            clearTimeout(typingTimer);
+            hasUnsavedChanges = true;
+            unsavedBadge.classList.add('visible');
+            
+            typingTimer = setTimeout(() => {
+                updateSyntaxHighlighting();
+                analyzeCode();
+            }, 150);
+        });
+
+        codeEditor.addEventListener('scroll', syncScroll);
+        
+        scrollContainer.addEventListener('scroll', () => {
+            codeEditor.scrollTop = scrollContainer.scrollTop;
+            codeEditor.scrollLeft = scrollContainer.scrollLeft;
+            if (highlightLayer) {
+                highlightLayer.scrollTop = scrollContainer.scrollTop;
+                highlightLayer.scrollLeft = scrollContainer.scrollLeft;
+            }
+        });
+
+        codeEditor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = codeEditor.selectionStart;
+                const end = codeEditor.selectionEnd;
+                
+                codeEditor.value = codeEditor.value.substring(0, start) + '    ' + codeEditor.value.substring(end);
+                codeEditor.selectionStart = codeEditor.selectionEnd = start + 4;
+                
+                hasUnsavedChanges = true;
+                unsavedBadge.classList.add('visible');
+                updateSyntaxHighlighting();
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveCode();
+            }
+        });
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
+        });
+
+        runBtn.addEventListener('click', runCode);
+        saveBtn.addEventListener('click', saveCode);
+        clearBtn.addEventListener('click', clearCode);
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            goHome();
+        });
+
+        // ==================== بدء التطبيق ====================
+        const startApp = async () => {
+            try {
+                await checkAuth();
+                await loadSavedCode();
+            } catch (error) {
+                console.error('خطأ في بدء التطبيق:', error);
+                // المستخدم غير مصرح، سيتم توجيهه تلقائياً من checkAuth
+            }
+        };
+
+        startApp();
+    </script>
+</body>
+</html>
