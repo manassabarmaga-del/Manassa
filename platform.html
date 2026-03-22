@@ -725,7 +725,7 @@
                                 ${!youtubeDone && youtubeAvailable && isUnlocked && !isCompleted ? 
                                     `<button class="btn-primary" id="confirmYoutubeBtn"><i class="fas fa-check"></i> تأكيد المشاهدة</button>` : 
                                     youtubeDone ? `<span style="color:#2e8b57;"><i class="fas fa-check-circle"></i> تم</span>` :
-                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${youtubeAvailable ? 'متاح' : 'بعد ساعتين'}</span>`}
+                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${youtubeAvailable ? 'متاح' : 'ن'}</span>`}
                             </div>
                         </div>
                         
@@ -739,7 +739,7 @@
                                     `<button class="btn-primary" id="openMeetBtn"><i class="fas fa-external-link-alt"></i> انضمام</button>
                                      ${meetOpenedAt ? `<button class="btn-primary btn-success" id="confirmMeetBtn" ${!meetConfirmAvailable ? 'disabled' : ''}><i class="fas fa-check"></i> تأكيد الحضور</button>` : ''}` : 
                                     meetDone ? `<span style="color:#2e8b57;"><i class="fas fa-check-circle"></i> تم</span>` :
-                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${meetActive ? 'متاح الآن' : 'يبدأ قبل الدرس بـ 15 دقيقة'}</span>`}
+                                    `<span class="element-time-badge"><i class="fas fa-clock"></i> ${meetActive ? 'متاح الآن' : 'ممنوع التأخير'}</span>`}
                             </div>
                         </div>
                         
@@ -889,4 +889,4 @@
         init();
     </script>
 </body>
-</html>
+</html>>
