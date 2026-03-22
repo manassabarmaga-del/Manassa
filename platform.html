@@ -342,6 +342,12 @@
         function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
         function getServerTime() { return Timestamp.now(); }
         
+        // تحويل التاريخ إلى اسم يوم عربي
+        function getArabicDay(date) {
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            return days[date.getDay()];
+        }
+        
         // تحويل الوقت إلى صيغة 12 ساعة
         function formatTime12(timeStr) {
             if (!timeStr) return '--:--';
@@ -350,6 +356,14 @@
             const ampm = hour >= 12 ? 'مساءً' : 'صباحاً';
             hour = hour % 12 || 12;
             return `${hour}:${minutes} ${ampm}`;
+        }
+        
+        // دالة مساعدة لتنسيق التاريخ (YYYY-MM-DD)
+        function formatDateYMD(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
         }
 
         function getYouTubeId(url) {
@@ -360,37 +374,39 @@
             return videoId;
         }
 
-        // التحقق من وقت الدرس
+        // التحقق من وقت الدرس - تعديل لعرض الميعاد بدلاً من العد التنازلي
         function getLessonTimeStatus(lesson) {
             const now = getServerTime().toDate();
             const lessonDateTime = new Date(`${lesson.date}T${lesson.time}:00`);
             
             if (isNaN(lessonDateTime.getTime())) {
-                return { status: 'upcoming', text: 'موعد غير محدد', canAccess: false };
+                return { status: 'upcoming', text: 'موعد غير محدد', canAccess: false, displayText: 'موعد غير محدد' };
             }
             
             const lessonStart = lessonDateTime;
             const lessonEnd = new Date(lessonStart.getTime() + 2 * 60 * 60 * 1000);
+            const lessonDayName = getArabicDay(lessonStart);
+            const formattedTime = formatTime12(lesson.time);
+            const formattedDate = `${lessonDayName}، ${lesson.date}`;
+            const fullDateTimeText = `${formattedTime}، ${formattedDate}`;
             
             if (now < lessonStart) {
-                const diffMs = lessonStart - now;
-                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                const diffMinutes = Math.floor((diffMs % (3600000)) / 60000);
-                let timeText = '';
-                if (diffHours > 0) timeText = `بعد ${diffHours} ساعة`;
-                else if (diffMinutes > 0) timeText = `بعد ${diffMinutes} دقيقة`;
-                else timeText = 'قريباً';
-                return { status: 'upcoming', text: timeText, canAccess: false };
+                return { 
+                    status: 'upcoming', 
+                    text: fullDateTimeText, 
+                    canAccess: false, 
+                    displayText: fullDateTimeText
+                };
             }
             
             if (now >= lessonStart && now <= lessonEnd) {
-                return { status: 'active', text: 'جاري الآن', canAccess: true };
+                return { status: 'active', text: 'جاري الآن', canAccess: true, displayText: 'جاري الآن' };
             }
             
-            return { status: 'passed', text: 'انتهى', canAccess: false };
+            return { status: 'passed', text: `انتهى (كان ${fullDateTimeText})`, canAccess: false, displayText: `انتهى` };
         }
 
-        // التحقق من وقت العناصر
+        // التحقق من وقت العناصر (نفس الكود القديم، لم يتغير)
         function getElementTimeStatus(lesson, type) {
             const now = getServerTime().toDate();
             const lessonDateTime = new Date(`${lesson.date}T${lesson.time}:00`);
@@ -691,6 +707,16 @@
                 `<div class="video-container"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>` :
                 `<div class="video-placeholder"><i class="fab fa-youtube" style="font-size:36px;"></i><p style="margin-top:8px;">${youtubeStatus.available ? (lesson.recordingLink ? 'فيديو متاح' : 'لا يوجد فيديو') : youtubeStatus.text}</p></div>`;
             
+            // تعديل رسالة الدرس القادم لعرض الميعاد
+            let upcomingMessage = '';
+            if (!canAccessContent && lessonTime.status === 'upcoming') {
+                upcomingMessage = `
+                    <div style="background:#ffb34720; border:1px solid #ffb347; border-radius:16px; padding:12px; text-align:center; margin-bottom:16px;">
+                        <i class="fas fa-clock"></i> موعد الدرس: ${lessonTime.text}
+                    </div>
+                `;
+            }
+            
             actualContent.innerHTML = `
                 <div class="lesson-content">
                     <div class="content-header">
@@ -698,10 +724,7 @@
                         <div class="content-date">${lesson.date || 'غير محدد'} • ${formatTime12(lesson.time)}</div>
                     </div>
                     
-                    ${!canAccessContent && lessonTime.status === 'upcoming' ? 
-                        `<div style="background:#ffb34720; border:1px solid #ffb347; border-radius:16px; padding:12px; text-align:center; margin-bottom:16px;">
-                            <i class="fas fa-clock"></i> هذا الدرس ${lessonTime.text}
-                        </div>` : ''}
+                    ${upcomingMessage}
                     
                     ${videoHtml}
                     
@@ -780,7 +803,7 @@
             renderLessonsList();
         }
 
-        // عرض قائمة الدروس
+        // عرض قائمة الدروس - تعديل لعرض الميعاد الكامل
         function renderLessonsList() {
             const container = document.getElementById('lessonsList');
             if (!container) return;
@@ -800,19 +823,32 @@
                 
                 let statusClass = '';
                 let statusText = '';
+                let statusDisplay = '';
                 if (p.completed) {
                     statusClass = 'completed';
                     statusText = 'مكتمل';
+                    statusDisplay = '✓ مكتمل';
                 } else if (!isUnlocked) {
                     statusClass = 'locked';
                     statusText = 'مقفل';
+                    statusDisplay = '🔒 مقفل';
                 } else if (lessonTime.canAccess) {
                     statusClass = '';
                     statusText = 'متاح الآن';
+                    statusDisplay = 'متاح الآن';
                 } else {
                     statusClass = 'locked';
-                    statusText = lessonTime.text;
+                    statusText = lessonTime.displayText || lessonTime.text;
+                    // نعرض الميعاد كاملاً للدروس القادمة بدلاً من "مقفل"
+                    statusDisplay = lessonTime.displayText === 'انتهى' ? 'انتهى' : (lessonTime.status === 'upcoming' ? lessonTime.text : lessonTime.text);
                 }
+                
+                // تحديد لون الخلفية بناءً على الحالة
+                let statusBgClass = '';
+                if (p.completed) statusBgClass = 'status-available';
+                else if (lessonTime.canAccess) statusBgClass = 'status-available';
+                else if (lessonTime.status === 'upcoming') statusBgClass = 'status-upcoming';
+                else statusBgClass = 'status-locked';
                 
                 html += `
                     <div class="lesson-card ${statusClass} ${p.completed ? 'completed' : ''} ${isActive ? 'active' : ''}" data-id="${lesson.id}" data-index="${idx}">
@@ -825,8 +861,8 @@
                                     <span><i class="fas fa-clock"></i> ${formatTime12(lesson.time)}</span>
                                 </div>
                             </div>
-                            <div class="lesson-status ${p.completed ? 'status-available' : (lessonTime.canAccess ? 'status-available' : 'status-upcoming')}">
-                                ${p.completed ? '✓ مكتمل' : (lessonTime.canAccess ? 'متاح' : lessonTime.text)}
+                            <div class="lesson-status ${statusBgClass}">
+                                ${statusDisplay}
                             </div>
                         </div>
                         <div class="lesson-badge ${lesson.type === 'live' ? 'badge-live' : (lesson.type === 'recorded' ? 'badge-recorded' : 'badge-exam')}">
