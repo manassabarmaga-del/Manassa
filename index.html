@@ -2,21 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>منصة البرمجة | دخول الطلاب</title>
-  <!-- خط Tajawal -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Tajawal', sans-serif;
       background: linear-gradient(145deg, #0f0a1f 0%, #1a1330 100%);
@@ -26,15 +19,53 @@
       justify-content: center;
       padding: 16px;
       direction: rtl;
+      overflow-x: hidden;
     }
 
-    .container {
-      width: 100%;
-      max-width: 450px;
-      margin: 0 auto;
+    /* شاشة الترحيب */
+    .splash-screen {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(145deg, #0a0718 0%, #0f0a1f 100%);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 20000; transition: opacity 0.8s ease-in-out; opacity: 1;
     }
+    .splash-screen.fade-out { opacity: 0; pointer-events: none; }
+    .splash-content { text-align: center; animation: fadeInScale 0.6s ease-out; }
+    .splash-image {
+      width: 180px; height: 180px; margin: 0 auto 20px;
+      border-radius: 60px; overflow: hidden;
+      box-shadow: 0 20px 40px rgba(109, 79, 199, 0.4);
+      background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .splash-image img { width: 100%; height: 100%; object-fit: cover; }
+    .splash-image .no-image { font-size: 70px; color: #ffd700; }
+    .splash-title {
+      font-size: 26px; font-weight: 900;
+      background: linear-gradient(135deg, #ffd700, #b49aff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .splash-sub { font-size: 13px; color: #b1a4c2; }
+    .splash-loader {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(109, 79, 199, 0.3);
+      border-top-color: #ffd700;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 16px auto 0;
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* البطاقة الرئيسية */
+    /* المحتوى الرئيسي */
+    .main-content { opacity: 0; transition: opacity 0.5s ease-in-out; }
+    .main-content.visible { opacity: 1; }
+    .container { width: 100%; max-width: 450px; margin: 0 auto; }
+
     .card {
       background: rgba(26, 19, 48, 0.95);
       backdrop-filter: blur(10px);
@@ -42,494 +73,234 @@
       padding: 28px 24px;
       box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(109, 79, 199, 0.3);
-      transition: transform 0.2s ease;
     }
-
-    /* رأس البطاقة */
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
     }
-
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: flex; align-items: center; gap: 10px;
       background: linear-gradient(145deg, #6d4fc7, #5b3eb0);
-      padding: 8px 20px;
-      border-radius: 40px;
-      color: white;
-      box-shadow: 0 6px 12px rgba(109, 79, 199, 0.3);
+      padding: 8px 20px; border-radius: 40px;
+      color: white; box-shadow: 0 6px 12px rgba(109, 79, 199, 0.3);
     }
-
-    .logo i {
-      font-size: 18px;
-      color: #ffd700;
-    }
-
-    .logo span {
-      font-weight: 800;
-      font-size: 16px;
-    }
-
+    .logo i { font-size: 18px; color: #ffd700; }
+    .logo span { font-weight: 800; font-size: 16px; }
     .badge {
       background: rgba(255, 215, 0, 0.15);
-      color: #ffd700;
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-size: 13px;
-      font-weight: 700;
+      color: #ffd700; padding: 8px 18px; border-radius: 40px;
+      font-size: 13px; font-weight: 700;
       border: 1px solid rgba(255, 215, 0, 0.3);
     }
-
-    /* عنوان الصفحة */
-    .title-section {
-      margin-bottom: 28px;
-      text-align: center;
-    }
-
+    .title-section { margin-bottom: 28px; text-align: center; }
     .main-title {
-      font-size: 36px;
-      font-weight: 900;
+      font-size: 36px; font-weight: 900;
       background: linear-gradient(135deg, #6d4fc7, #b49aff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.2;
-      margin-bottom: 8px;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1.2; margin-bottom: 8px;
     }
-
     .sub-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #b1a4c2;
-      display: inline-block;
-      padding: 6px 20px;
-      border-radius: 40px;
-      background: rgba(109, 79, 199, 0.1);
+      font-size: 14px; font-weight: 600; color: #b1a4c2;
+      display: inline-block; padding: 6px 20px;
+      border-radius: 40px; background: rgba(109, 79, 199, 0.1);
     }
-
-    /* أزرار التبويب */
-    .tab-buttons {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
+    .tab-buttons { display: flex; gap: 12px; margin-bottom: 24px; }
     .tab-btn {
-      flex: 1;
-      background: transparent;
-      color: #b1a4c2;
-      border: 2px solid #2d224a;
-      padding: 14px 0;
-      border-radius: 40px;
-      font-family: 'Tajawal', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
+      flex: 1; background: transparent; color: #b1a4c2;
+      border: 2px solid #2d224a; padding: 14px 0;
+      border-radius: 40px; font-family: 'Tajawal', sans-serif;
+      font-size: 16px; font-weight: 800; cursor: pointer;
       transition: all 0.2s ease;
     }
-
     .tab-btn.active {
       background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      color: white;
-      border-color: #ffd700;
+      color: white; border-color: #ffd700;
       box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
     }
-
-    .tab-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* حاويات النماذج */
-    .form-container {
-      transition: opacity 0.25s ease;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* مجموعات الحقول */
-    .form-group {
-      margin-bottom: 20px;
-    }
-
+    .tab-btn:active { transform: scale(0.97); }
+    .form-container { transition: opacity 0.25s ease; }
+    .hidden { display: none !important; }
+    .form-group { margin-bottom: 20px; }
     label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #d0c2e6;
-      padding-right: 8px;
+      display: block; margin-bottom: 8px; font-size: 14px;
+      font-weight: 600; color: #d0c2e6; padding-right: 8px;
     }
-
-    label i {
-      margin-left: 8px;
-      color: #ffd700;
+    label i { margin-left: 8px; color: #ffd700; }
+    .input-wrapper { position: relative; }
+    input {
+      width: 100%; padding: 14px 18px; background: #0f0a1f;
+      border: 2px solid #2d224a; border-radius: 28px;
+      font-family: 'Tajawal', sans-serif; font-size: 15px;
+      color: white; transition: all 0.2s ease;
     }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 14px 18px;
-      background: #0f0a1f;
-      border: 2px solid #2d224a;
-      border-radius: 28px;
-      font-family: 'Tajawal', sans-serif;
-      font-size: 15px;
-      color: white;
-      transition: all 0.2s ease;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #6d4fc7;
+    input:focus {
+      outline: none; border-color: #6d4fc7;
       box-shadow: 0 0 0 3px rgba(109, 79, 199, 0.2);
     }
-
-    input::placeholder, select::placeholder {
-      color: #4a3b62;
-    }
-
+    input::placeholder { color: #4a3b62; }
     .password-toggle {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #6d4fc7;
-      font-size: 18px;
-      transition: opacity 0.2s;
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      cursor: pointer; color: #6d4fc7; font-size: 18px;
     }
-
-    .password-toggle:hover {
-      opacity: 1;
-    }
-
-    /* تلميحات */
     .phone-hint {
-      font-size: 12px;
-      color: #2e8b57;
-      margin-top: 6px;
-      margin-right: 12px;
-      display: none;
-      align-items: center;
-      gap: 6px;
-      background: rgba(46, 139, 86, 0.1);
-      padding: 6px 14px;
-      border-radius: 30px;
-      width: fit-content;
+      font-size: 12px; color: #2e8b57; margin-top: 6px; margin-right: 12px;
+      display: none; align-items: center; gap: 6px;
+      background: rgba(46, 139, 86, 0.1); padding: 6px 14px;
+      border-radius: 30px; width: fit-content;
     }
-
-    .phone-hint.show {
-      display: inline-flex;
-    }
-
-    /* الزر الرئيسي */
+    .phone-hint.show { display: inline-flex; }
     .btn-submit {
-      width: 100%;
-      background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 40px;
-      font-family: 'Tajawal', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      cursor: pointer;
-      margin: 8px 0 12px;
-      transition: all 0.2s ease;
+      width: 100%; background: linear-gradient(145deg, #6d4fc7, #8a6cff);
+      color: white; border: none; padding: 16px;
+      border-radius: 40px; font-family: 'Tajawal', sans-serif;
+      font-size: 18px; font-weight: 800; cursor: pointer;
+      margin: 8px 0 12px; transition: all 0.2s ease;
       box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
     }
-
-    .btn-submit:active:not(:disabled) {
-      transform: scale(0.97);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* سبينر التحميل */
+    .btn-submit:active:not(:disabled) { transform: scale(0.97); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
     .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 0.6s linear infinite;
+      display: inline-block; width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+      border-top-color: white; animation: spin 0.6s linear infinite;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* رسائل */
     .message {
-      padding: 14px 18px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: center;
-      margin: 16px 0 8px;
+      padding: 14px 18px; border-radius: 30px; font-size: 14px;
+      font-weight: 600; text-align: center; margin: 16px 0 8px;
       animation: fadeSlide 0.3s ease;
     }
-
     @keyframes fadeSlide {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .message-success {
       background: rgba(46, 139, 86, 0.2);
-      color: #a0e6c0;
-      border: 1px solid #2e8b57;
+      color: #a0e6c0; border: 1px solid #2e8b57;
     }
-
     .message-error {
       background: rgba(196, 69, 69, 0.2);
-      color: #ff9b9b;
-      border: 1px solid #c44545;
+      color: #ff9b9b; border: 1px solid #c44545;
     }
-
-    /* رابط نسيت كلمة المرور */
-    .forgot-link {
-      text-align: center;
-      margin: 12px 0 6px;
-    }
-
+    .forgot-link { text-align: center; margin: 12px 0 6px; }
     .forgot-link a {
-      color: #ffd700;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      background: rgba(109, 79, 199, 0.1);
-      padding: 8px 20px;
-      border-radius: 40px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      color: #ffd700; font-size: 13px; font-weight: 600;
+      text-decoration: none; background: rgba(109, 79, 199, 0.1);
+      padding: 8px 20px; border-radius: 40px;
+      display: inline-flex; align-items: center; gap: 8px;
       border: 1px solid rgba(109, 79, 199, 0.3);
-      transition: all 0.2s;
     }
-
-    .forgot-link a:hover {
-      background: #ffd700;
-      color: #0f0a1f;
-    }
-
-    /* رابط التبديل */
+    .forgot-link a:hover { background: #ffd700; color: #0f0a1f; }
     .switch-form {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
+      text-align: center; margin-top: 20px; font-size: 14px;
       color: #b1a4c2;
     }
-
     .switch-form span {
-      color: #ffd700;
-      font-weight: 900;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 4px;
+      color: #ffd700; font-weight: 900; cursor: pointer;
+      text-decoration: underline; text-underline-offset: 4px;
       margin-right: 6px;
     }
-
     .footer-note {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 12px;
+      text-align: center; margin-top: 24px; font-size: 12px;
       color: #4a3b62;
     }
-
-    /* شاشة تحميل */
-    .loading-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #0f0a1f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      transition: opacity 0.3s;
-    }
-
-    .loading-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .loading-spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid #2d224a;
-      border-top-color: #6d4fc7;
-      border-right-color: #ffd700;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    /* حالة عدم اتصال */
     .offline-banner {
-      background: #c44545;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10001;
-      transform: translateY(-100%);
-      transition: transform 0.3s;
+      background: #c44545; color: white; text-align: center;
+      padding: 8px; font-size: 12px; font-weight: 600;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 10001;
+      transform: translateY(-100%); transition: transform 0.3s;
     }
-
-    .offline-banner.show {
-      transform: translateY(0);
-    }
+    .offline-banner.show { transform: translateY(0); }
   </style>
 </head>
 <body>
-  <!-- شاشة تحميل -->
-  <div id="loadingScreen" class="loading-screen">
-    <div class="loading-spinner"></div>
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-image">
+        <img src="intro.png" alt="منصة البرمجة" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-laptop-code\'></i></div>'">
+      </div>
+      <div class="splash-title">منصة البرمجة</div>
+      <div class="splash-sub">Eng.Ismail Emad</div>
+      <div class="splash-loader"></div>
+    </div>
   </div>
 
-  <!-- حالة عدم اتصال -->
-  <div id="offlineBanner" class="offline-banner">
-    <i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <!-- الرأس -->
-      <div class="header">
-        <div class="logo">
-          <i class="fas fa-laptop-code"></i>
-          <span>منصة البرمجة</span>
+  <div id="mainContent" class="main-content">
+    <div class="container">
+      <div class="card">
+        <div class="header">
+          <div class="logo"><i class="fas fa-laptop-code"></i><span>منصة البرمجة</span></div>
+          <div class="badge"><i class="fas fa-star"></i> تعلم البرمجة</div>
         </div>
-        <div class="badge">
-          <i class="fas fa-star"></i> تعلم البرمجة
+        <div class="title-section">
+          <h1 class="main-title">Eng.Ismail</h1>
+          <div class="sub-title"><i class="fas fa-graduation-cap"></i> اعمل حساب يا بشمهندس</div>
         </div>
-      </div>
-
-      <!-- عنوان الترحيب -->
-      <div class="title-section">
-        <h1 class="main-title">Eng.Ismail</h1>
-        <div class="sub-title">
-          <i class="fas fa-graduation-cap"></i> اعمل حساب يا بشمهندس
-        </div>
-      </div>
-
-      <!-- أزرار التبويب -->
-      <div class="tab-buttons">
-        <button id="tabLoginBtn" class="tab-btn">تسجيل دخول</button>
-        <button id="tabSignupBtn" class="tab-btn active">إنشاء حساب</button> <!-- تعديل: جعل تبويب إنشاء الحساب نشطاً -->
-      </div>
-
-      <!-- ========== نموذج تسجيل الدخول ========== -->
-      <div id="loginFormContainer" class="form-container hidden"> <!-- تعديل: إضافة hidden -->
-        <div class="form-group">
-          <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-          <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-          <div class="phone-hint" id="loginPhoneHint">
-            <i class="fas fa-envelope"></i>          </div>
+        <div class="tab-buttons">
+          <button id="tabLoginBtn" class="tab-btn active">تسجيل دخول</button>
+          <button id="tabSignupBtn" class="tab-btn">إنشاء حساب</button>
         </div>
 
-        <div class="form-group">
-          <label><i class="fas fa-lock"></i> كلمة المرور</label>
-          <div class="input-wrapper">
-            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
-            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('loginPassword', this)"></i>
+        <div id="loginFormContainer" class="form-container">
+          <div class="form-group">
+            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
+            <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
+            <div class="phone-hint" id="loginPhoneHint"><i class="fas fa-envelope"></i></div>
           </div>
-        </div>
-
-        <div class="forgot-link">
-          <a href="#" id="whatsappForgotLink" target="_blank">
-            <i class="fab fa-whatsapp"></i> نسيت كلمة المرور؟ تواصل مع الدعم
-          </a>
-        </div>
-
-        <button id="loginActionBtn" class="btn-submit">
-          <i class="fas fa-sign-in-alt"></i>
-          تسجيل الدخول
-        </button>
-      </div>
-
-      <!-- ========== نموذج إنشاء حساب ========== -->
-      <div id="signupFormContainer" class="form-container"> <!-- تعديل: إزالة hidden -->
-        <div class="form-group">
-          <label><i class="fas fa-user"></i> الاسم الثلاثي</label>
-          <input type="text" id="signupName" placeholder="مثال: أحمد محمد علي" maxlength="50">
-        </div>
-
-        <div class="form-group">
-          <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-          <input type="tel" id="signupPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-          <div class="phone-hint" id="signupPhoneHint">
-            <i class="fas fa-envelope"></i> 
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> كلمة المرور</label>
+            <div class="input-wrapper">
+              <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('loginPassword', this)"></i>
+            </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label><i class="fas fa-school"></i> المدرسة (اختياري)</label>
-          <input type="text" id="signupSchool" placeholder="اسم المدرسة">
-        </div>
-
-        <div class="form-group">
-          <label><i class="fas fa-lock"></i> كلمة المرور</label>
-          <div class="input-wrapper">
-            <input type="password" id="signupPassword" placeholder="8 أحرف على الأقل" minlength="8">
-            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupPassword', this)"></i>
+          <div class="forgot-link">
+            <a href="#" id="whatsappForgotLink" target="_blank"><i class="fab fa-whatsapp"></i> نسيت كلمة المرور؟ تواصل مع الدعم</a>
           </div>
+          <button id="loginActionBtn" class="btn-submit"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
         </div>
 
-        <div class="form-group">
-          <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label>
-          <div class="input-wrapper">
-            <input type="password" id="signupConfirm" placeholder="أعد كتابة كلمة المرور">
-            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupConfirm', this)"></i>
+        <div id="signupFormContainer" class="form-container hidden">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> الاسم الثلاثي</label>
+            <input type="text" id="signupName" placeholder="مثال: أحمد محمد علي" maxlength="50">
           </div>
+          <div class="form-group">
+            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
+            <input type="tel" id="signupPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
+            <div class="phone-hint" id="signupPhoneHint"><i class="fas fa-envelope"></i></div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-school"></i> المدرسة (اختياري)</label>
+            <input type="text" id="signupSchool" placeholder="اسم المدرسة">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> كلمة المرور</label>
+            <div class="input-wrapper">
+              <input type="password" id="signupPassword" placeholder="8 أحرف على الأقل" minlength="8">
+              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupPassword', this)"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label>
+            <div class="input-wrapper">
+              <input type="password" id="signupConfirm" placeholder="أعد كتابة كلمة المرور">
+              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupConfirm', this)"></i>
+            </div>
+          </div>
+          <button id="signupActionBtn" class="btn-submit"><i class="fas fa-user-plus"></i> إنشاء حساب جديد</button>
         </div>
 
-        <button id="signupActionBtn" class="btn-submit">
-          <i class="fas fa-user-plus"></i>
-          إنشاء حساب جديد
-        </button>
-      </div>
-
-      <!-- رسائل -->
-      <div id="globalMessage" class="hidden"></div>
-
-      <!-- رابط التبديل -->
-      <div class="switch-form" id="switchFormText">
-        لديك حساب بالفعل؟ <span id="switchFormSpan">تسجيل دخول</span> <!-- تعديل: تغيير النص ليتوافق مع العرض الافتراضي -->
-      </div>
-
-      <div class="footer-note">
-        منصة البرمجة © 2025 — تعلم بالعربية
+        <div id="globalMessage" class="hidden"></div>
+        <div class="switch-form" id="switchFormText">ليس لديك حساب؟ <span id="switchFormSpan">إنشاء حساب</span></div>
+        <div class="footer-note">منصة البرمجة © 2025 — تعلم بالعربية</div>
       </div>
     </div>
   </div>
 
+  <div id="offlineBanner" class="offline-banner"><i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت</div>
+
   <script>
-    // دالة عامة لتبديل كلمة المرور
     window.togglePassword = function(inputId, icon) {
       const input = document.getElementById(inputId);
       if (!input) return;
@@ -541,35 +312,23 @@
   </script>
 
   <script type="module">
-    // ==================== استيراد Firebase ====================
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
     import { 
-      getAuth, 
-      createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword, 
-      onAuthStateChanged,
-      signOut
+      getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+      onAuthStateChanged, signOut
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { 
-      getFirestore, 
-      doc, 
-      setDoc, 
-      getDoc, 
-      serverTimestamp,
-      Timestamp
+      getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // ==================== تهيئة Firebase ====================
     const firebaseConfig = {
       apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
       authDomain: "manassa-oloom.firebaseapp.com",
-      databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
       projectId: "manassa-oloom",
       storageBucket: "manassa-oloom.firebasestorage.app",
       messagingSenderId: "475047988456",
-      appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
-      measurementId: "G-F0N011WQB9"
+      appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -577,27 +336,20 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ==================== عناصر الصفحة ====================
-    const loadingScreen = document.getElementById('loadingScreen');
+    // DOM Elements
+    const splashScreen = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
     const offlineBanner = document.getElementById('offlineBanner');
     const globalMsg = document.getElementById('globalMessage');
-    
-    // أزرار التبويب
     const tabLogin = document.getElementById('tabLoginBtn');
     const tabSignup = document.getElementById('tabSignupBtn');
     const loginFormDiv = document.getElementById('loginFormContainer');
     const signupFormDiv = document.getElementById('signupFormContainer');
-    
-    // عناصر التحكم
     const switchSpan = document.getElementById('switchFormSpan');
-    
-    // حقول تسجيل الدخول
     const loginPhone = document.getElementById('loginPhone');
     const loginPass = document.getElementById('loginPassword');
     const loginBtn = document.getElementById('loginActionBtn');
     const loginHint = document.getElementById('loginPhoneHint');
-    
-    // حقول إنشاء الحساب
     const signupName = document.getElementById('signupName');
     const signupPhone = document.getElementById('signupPhone');
     const signupSchool = document.getElementById('signupSchool');
@@ -605,25 +357,19 @@
     const signupConfirm = document.getElementById('signupConfirm');
     const signupBtn = document.getElementById('signupActionBtn');
     const signupHint = document.getElementById('signupPhoneHint');
-    
-    // رابط واتساب
     const whatsappLink = document.getElementById('whatsappForgotLink');
-    
-    // ==================== متغيرات عامة ====================
+
     let currentName = '', currentPhone = '';
     let isProcessing = false;
-    
-    // ==================== دوال مساعدة ====================
-    
-    // عرض رسالة
+    let splashCompleted = false;
+
     function showMessage(text, isSuccess = true) {
       globalMsg.classList.remove('hidden', 'message-success', 'message-error');
       globalMsg.classList.add('message', isSuccess ? 'message-success' : 'message-error');
       globalMsg.textContent = text;
       setTimeout(() => globalMsg.classList.add('hidden'), 5000);
     }
-    
-    // إظهار/إخفاء حالة التحميل في الزر
+
     function setButtonLoading(btn, loading, originalText = null) {
       if (loading) {
         btn.dataset.originalText = btn.innerHTML;
@@ -634,33 +380,16 @@
         btn.disabled = false;
       }
     }
+
+    function sanitize(str) { if (!str) return ''; return str.trim().replace(/[<>]/g, ''); }
+    function validatePhone(phone) { return /^01[0-9]{9}$/.test(phone); }
+    function validateName(name) { return /^[\u0600-\u06FF\s]{3,50}$/.test(name); }
     
-    // تنظيف النص
-    function sanitize(str) {
-      if (!str) return '';
-      return str.trim().replace(/[<>]/g, '');
-    }
-    
-    // التحقق من رقم الهاتف
-    function validatePhone(phone) {
-      return /^01[0-9]{9}$/.test(phone);
-    }
-    
-    // التحقق من الاسم (عربي فقط)
-    function validateName(name) {
-      return /^[\u0600-\u06FF\s]{3,50}$/.test(name);
-    }
-    
-    // إنشاء بريد إلكتروني آمن من رقم الهاتف (مع إضافة رمز عشوائي)
-    // 🔥 تحسين أمني: إضافة معرف فريد لتجنب التخمين السهل
+    // ========== إنشاء بريد ثابت من رقم الهاتف ==========
     function generateEmailFromPhone(phone) {
-      // إضافة جزء عشوائي ثابت (hash بسيط) لجعل التخمين أصعب
-      // هذا ليس آمناً تماماً، لكنه أفضل من الإصدار السابق
-      const timestamp = Date.now().toString(36).slice(-6);
-      return `${phone}@student.manassa.com`;
+      return `${phone}@manassa.com`;
     }
-    
-    // التحقق من وجود المستخدم في Firestore (STU_users)
+
     async function verifyUserInFirestore(uid) {
       try {
         const userDoc = await getDoc(doc(db, 'STU_users', uid));
@@ -670,42 +399,29 @@
         return false;
       }
     }
-    
-    // تسجيل خروج تلقائي إذا كانت البيانات غير مكتملة
+
     async function forceLogoutAndRedirect() {
       try {
         await signOut(auth);
         localStorage.removeItem('edu_user');
-      } catch (e) {
-        console.warn('خطأ في تسجيل الخروج:', e);
-      }
+      } catch (e) { console.warn('خطأ في تسجيل الخروج:', e); }
       window.location.replace('index.html');
     }
-    
-    // التحقق من الجلسة والتوجيه (محسّن)
+
     async function checkSessionAndRedirect() {
       return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
           if (user) {
-            // التحقق من وجود المستخدم في Firestore
             const existsInFirestore = await verifyUserInFirestore(user.uid);
-            
             if (existsInFirestore) {
-              // جلب اسم المستخدم للتخزين المحلي (للعرض فقط)
               const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
               const userData = userDoc.data();
-              
-              // تخزين محلي للعرض فقط (وليس للتحقق)
               localStorage.setItem('edu_user', JSON.stringify({
-                uid: user.uid,
-                name: userData.name || 'مستخدم',
-                phone: userData.phone || '',
-                lastVerified: Date.now()
+                uid: user.uid, name: userData.name || 'مستخدم',
+                phone: userData.phone || '', lastVerified: Date.now()
               }));
-              
               window.location.replace('home.html');
             } else {
-              // المستخدم موجود في Auth لكن ليس في Firestore
               console.warn('مستخدم بدون بيانات في Firestore، جاري تسجيل الخروج');
               await forceLogoutAndRedirect();
             }
@@ -714,27 +430,22 @@
         });
       });
     }
-    
-    // تحديث رابط واتساب
+
     function updateWhatsAppLink() {
       const name = encodeURIComponent(currentName || 'الطالب');
       const phone = encodeURIComponent(currentPhone || 'غير مدخل');
-      const text = `السلام عليكم، أرغب في استعادة كلمة المرور للحساب التالي:\nالاسم: ${name}\nرقم الهاتف: ${phone}`;
-      whatsappLink.href = `https://wa.me/201202326992?text=${text}`;
+      whatsappLink.href = `https://wa.me/201202326992?text=${encodeURIComponent(`السلام عليكم، أرغب في استعادة كلمة المرور للحساب التالي:\nالاسم: ${name}\nرقم الهاتف: ${phone}`)}`;
     }
-    
-    // التحقق من الاتصال بالإنترنت
+
     function checkOnlineStatus() {
       if (!navigator.onLine) {
         offlineBanner.classList.add('show');
         return false;
-      } else {
-        offlineBanner.classList.remove('show');
-        return true;
       }
+      offlineBanner.classList.remove('show');
+      return true;
     }
-    
-    // ==================== إظهار/إخفاء النماذج (تم تعديل المنطق ليناسب الوضع الافتراضي) ====================
+
     const showLoginTab = () => {
       loginFormDiv.classList.remove('hidden');
       signupFormDiv.classList.add('hidden');
@@ -743,7 +454,6 @@
       switchSpan.textContent = 'إنشاء حساب';
       globalMsg.classList.add('hidden');
     };
-    
     const showSignupTab = () => {
       signupFormDiv.classList.remove('hidden');
       loginFormDiv.classList.add('hidden');
@@ -752,113 +462,90 @@
       switchSpan.textContent = 'تسجيل دخول';
       globalMsg.classList.add('hidden');
     };
-    
-    // ==================== أحداث ====================
+
     tabLogin.addEventListener('click', showLoginTab);
     tabSignup.addEventListener('click', showSignupTab);
     switchSpan.addEventListener('click', () => {
       if (loginFormDiv.classList.contains('hidden')) showLoginTab();
       else showSignupTab();
     });
-    
-    // تلميحات الهاتف
+
     signupPhone?.addEventListener('input', function() {
       this.value = this.value.replace(/\D/g, '').slice(0, 11);
       signupHint.classList.toggle('show', this.value.length >= 11);
     });
-    
     loginPhone?.addEventListener('input', function() {
       this.value = this.value.replace(/\D/g, '').slice(0, 11);
       loginHint.classList.toggle('show', this.value.length >= 11);
     });
-    
-    // تحديث رابط واتساب
     signupName?.addEventListener('input', (e) => { currentName = sanitize(e.target.value); updateWhatsAppLink(); });
     signupPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
     loginPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
-    
-    // ==================== إنشاء حساب (محسّن) ====================
+
+    // ========== إنشاء حساب ==========
     signupBtn.addEventListener('click', async () => {
-      // التحقق من الاتصال
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
       }
-      
       if (isProcessing) {
         showMessage('جاري المعالجة، يرجى الانتظار...', false);
         return;
       }
-      
+
       const name = sanitize(signupName.value);
       const phone = sanitize(signupPhone.value);
       const school = sanitize(signupSchool.value) || '';
       const pass = signupPass.value;
       const confirm = signupConfirm.value;
-      
-      // التحقق من الحقول
+
       if (!name || !phone || !pass || !confirm) {
         return showMessage('جميع الحقول مطلوبة (المدرسة اختيارية)', false);
       }
-      
       if (!validateName(name)) {
         return showMessage('الاسم يجب أن يكون بالعربية فقط (3-50 حرف)', false);
       }
-      
       if (!validatePhone(phone)) {
         return showMessage('رقم الهاتف غير صحيح (11 رقم، يبدأ بـ 01)', false);
       }
-      
       if (pass.length < 8) {
         return showMessage('كلمة المرور يجب أن تكون 8 أحرف على الأقل', false);
       }
-      
       if (pass !== confirm) {
         return showMessage('كلمة المرور غير متطابقة', false);
       }
-      
+
       isProcessing = true;
       setButtonLoading(signupBtn, true);
-      
       const email = generateEmailFromPhone(phone);
-      
+
       try {
-        // إنشاء المستخدم في Firebase Auth
         const userCred = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
-        
-        // حفظ البيانات في Firestore (STU_users)
+
+        // حفظ في Firestore مع تخزين البريد الثابت
         await setDoc(doc(db, 'STU_users', user.uid), {
           uid: user.uid,
           name: name,
           phone: phone,
-          school: school || '',
+          email: email,  // حفظ البريد الثابت للرجوع إليه لاحقاً
+          school: school,
           role: 'student',
-          activePackages: {},      // ✅ كائن فارغ
+          activePackages: {},
           createdAt: serverTimestamp(),
           lastLogin: serverTimestamp()
         });
-        
-        // تخزين محلي للعرض فقط
+
         localStorage.setItem('edu_user', JSON.stringify({
-          uid: user.uid,
-          name: name,
-          phone: phone,
-          lastVerified: Date.now()
+          uid: user.uid, name: name, phone: phone, lastVerified: Date.now()
         }));
-        
+
         showMessage('✅ تم إنشاء الحساب بنجاح! جاري التحويل...', true);
-        
-        // تأخير بسيط ثم التوجيه
-        setTimeout(() => {
-          window.location.replace('home.html');
-        }, 1500);
-        
+        setTimeout(() => window.location.replace('home.html'), 1500);
+
       } catch (error) {
         console.error('خطأ في إنشاء الحساب:', error);
         setButtonLoading(signupBtn, false);
-        
-        // معالجة الأخطاء
         if (error.code === 'auth/email-already-in-use') {
           showMessage('⚠️ رقم الهاتف مسجل مسبقاً. يرجى تسجيل الدخول.', false);
         } else if (error.code === 'auth/weak-password') {
@@ -872,46 +559,56 @@
         isProcessing = false;
       }
     });
-    
-    // ==================== تسجيل الدخول (محسّن) ====================
+
+    // ========== تسجيل الدخول الذكي (البحث في Firestore أولاً) ==========
     loginBtn.addEventListener('click', async () => {
-      // التحقق من الاتصال
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
       }
-      
       if (isProcessing) {
         showMessage('جاري المعالجة، يرجى الانتظار...', false);
         return;
       }
-      
+
       const phone = sanitize(loginPhone.value);
       const pass = loginPass.value;
-      
+
       if (!phone || !pass) {
         return showMessage('رقم الهاتف وكلمة المرور مطلوبان', false);
       }
-      
       if (!validatePhone(phone)) {
         return showMessage('رقم الهاتف غير صحيح', false);
       }
-      
+
       isProcessing = true;
       setButtonLoading(loginBtn, true);
-      
-      const email = generateEmailFromPhone(phone);
-      
+
       try {
-        // محاولة تسجيل الدخول
+        // 1. البحث في Firestore عن المستخدم بهذا الرقم
+        const usersRef = collection(db, 'STU_users');
+        const q = query(usersRef, where('phone', '==', phone));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          showMessage('⚠️ هذا الرقم غير مسجل. يرجى إنشاء حساب أولاً.', false);
+          setButtonLoading(loginBtn, false);
+          isProcessing = false;
+          return;
+        }
+
+        // 2. استخراج البريد الإلكتروني من المستند
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        const email = userData.email || generateEmailFromPhone(phone);
+
+        // 3. تسجيل الدخول باستخدام البريد المستخرج
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
-        
-        // التحقق من وجود المستخدم في Firestore
-        const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
-        
-        if (!userDoc.exists()) {
-          // المستخدم موجود في Auth لكن ليس في Firestore
+
+        // 4. التأكد من وجود المستند في Firestore
+        const userDocExists = await getDoc(doc(db, 'STU_users', user.uid));
+        if (!userDocExists.exists()) {
           console.error('مستخدم بدون بيانات في Firestore');
           await signOut(auth);
           showMessage('⚠️ بيانات الحساب غير مكتملة. يرجى إنشاء حساب جديد.', false);
@@ -919,34 +616,26 @@
           isProcessing = false;
           return;
         }
-        
-        const userData = userDoc.data();
-        
-        // تحديث آخر تسجيل دخول
-        await setDoc(doc(db, 'STU_users', user.uid), {
-          lastLogin: serverTimestamp()
-        }, { merge: true });
-        
-        // تخزين محلي للعرض فقط
+
+        // 5. تحديث آخر تسجيل دخول
+        await setDoc(doc(db, 'STU_users', user.uid), { lastLogin: serverTimestamp() }, { merge: true });
+
         localStorage.setItem('edu_user', JSON.stringify({
           uid: user.uid,
           name: userData.name || 'مستخدم',
           phone: userData.phone || phone,
           lastVerified: Date.now()
         }));
-        
+
         showMessage('✅ تم تسجيل الدخول بنجاح! جاري التحويل...', true);
-        
-        setTimeout(() => {
-          window.location.replace('home.html');
-        }, 1200);
-        
+        setTimeout(() => window.location.replace('home.html'), 1200);
+
       } catch (error) {
         console.error('خطأ في تسجيل الدخول:', error);
         setButtonLoading(loginBtn, false);
         
         if (error.code === 'auth/user-not-found') {
-          showMessage('⚠️ رقم الهاتف غير مسجل. يرجى إنشاء حساب أولاً.', false);
+          showMessage('⚠️ لا يوجد حساب بهذا الرقم. يرجى إنشاء حساب أولاً.', false);
         } else if (error.code === 'auth/wrong-password') {
           showMessage('كلمة المرور غير صحيحة', false);
         } else if (error.code === 'auth/invalid-credential') {
@@ -960,43 +649,44 @@
         isProcessing = false;
       }
     });
-    
-    // ==================== مراقبة حالة الاتصال ====================
+
+    // شاشة الترحيب
+    function hideSplashAndShowContent() {
+      splashScreen.classList.add('fade-out');
+      setTimeout(() => {
+        splashScreen.style.display = 'none';
+        mainContent.classList.add('visible');
+        checkSessionAndRedirect();
+      }, 800);
+    }
+    function startSplashScreen() {
+      setTimeout(() => {
+        if (!splashCompleted) {
+          splashCompleted = true;
+          hideSplashAndShowContent();
+        }
+      }, 3000);
+    }
+
     window.addEventListener('online', () => {
       offlineBanner.classList.remove('show');
       showMessage('تم استعادة الاتصال بالإنترنت', true);
     });
-    
-    window.addEventListener('offline', () => {
-      offlineBanner.classList.add('show');
-    });
-    
-    // ==================== بدء التطبيق ====================
+    window.addEventListener('offline', () => offlineBanner.classList.add('show'));
+
     async function init() {
-      // التحقق من الاتصال المبدئي
       checkOnlineStatus();
-      
-      // إخفاء شاشة التحميل بعد فترة قصيرة
+      startSplashScreen();
       setTimeout(() => {
-        loadingScreen.classList.add('hidden');
-      }, 500);
-      
-      // التحقق من الجلسة والتوجيه
-      await checkSessionAndRedirect();
+        if (!splashCompleted) {
+          splashCompleted = true;
+          hideSplashAndShowContent();
+        }
+      }, 3500);
     }
-    
-    // تشغيل
     init();
-    
-    // تحديث رابط واتساب مبدئياً
     updateWhatsAppLink();
-    
-    // دالة مساعدة للخروج (للتطوير)
-    window.debugLogout = async () => {
-      await signOut(auth);
-      localStorage.removeItem('edu_user');
-      window.location.reload();
-    };
+    window.debugLogout = async () => { await signOut(auth); localStorage.removeItem('edu_user'); window.location.reload(); };
   </script>
 </body>
 </html>
