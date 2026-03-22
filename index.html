@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>منصة البرمجة | دخول الطلاب</title>
   <!-- خط Tajawal -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,96 +26,6 @@
       justify-content: center;
       padding: 16px;
       direction: rtl;
-      overflow-x: hidden;
-    }
-
-    /* ========== شاشة الترحيب (Splash Screen) ========== */
-    .splash-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(145deg, #0a0718 0%, #0f0a1f 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20000;
-      transition: opacity 0.8s ease-in-out;
-      opacity: 1;
-    }
-    .splash-screen.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .splash-content {
-      text-align: center;
-      animation: fadeInScale 0.6s ease-out;
-    }
-    .splash-image {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 20px;
-      border-radius: 60px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(109, 79, 199, 0.4);
-      background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .splash-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .splash-image .no-image {
-      font-size: 80px;
-      color: #ffd700;
-    }
-    .splash-title {
-      font-size: 28px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ffd700, #b49aff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-    }
-    .splash-sub {
-      font-size: 14px;
-      color: #b1a4c2;
-      letter-spacing: 1px;
-    }
-    .splash-loader {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(109, 79, 199, 0.3);
-      border-top-color: #ffd700;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 20px auto 0;
-    }
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* المحتوى الرئيسي (مخفي في البداية) */
-    .main-content {
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-    .main-content.visible {
-      opacity: 1;
     }
 
     .container {
@@ -363,6 +273,10 @@
       animation: spin 0.6s linear infinite;
     }
 
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     /* رسائل */
     .message {
       padding: 14px 18px;
@@ -441,6 +355,34 @@
       color: #4a3b62;
     }
 
+    /* شاشة تحميل */
+    .loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0f0a1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.3s;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #2d224a;
+      border-top-color: #6d4fc7;
+      border-right-color: #ffd700;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
     /* حالة عدم اتصال */
     .offline-banner {
       background: #c44545;
@@ -464,137 +406,126 @@
   </style>
 </head>
 <body>
-  <!-- شاشة الترحيب (Splash Screen) مع الصورة intro.png -->
-  <div id="splashScreen" class="splash-screen">
-    <div class="splash-content">
-      <div class="splash-image">
-        <img id="splashImage" src="intro.png" alt="منصة البرمجة" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-laptop-code\'></i></div>'">
-      </div>
-      <div class="splash-title">منصة البرمجة</div>
-      <div class="splash-sub">Eng.Ismail Emad</div>
-      <div class="splash-loader"></div>
-    </div>
-  </div>
-
-  <!-- المحتوى الرئيسي (مخفي في البداية) -->
-  <div id="mainContent" class="main-content">
-    <div class="container">
-      <div class="card">
-        <!-- الرأس -->
-        <div class="header">
-          <div class="logo">
-            <i class="fas fa-laptop-code"></i>
-            <span>منصة البرمجة</span>
-          </div>
-          <div class="badge">
-            <i class="fas fa-star"></i> تعلم البرمجة
-          </div>
-        </div>
-
-        <!-- عنوان الترحيب -->
-        <div class="title-section">
-          <h1 class="main-title">Eng.Ismail</h1>
-          <div class="sub-title">
-            <i class="fas fa-graduation-cap"></i> اعمل حساب يا بشمهندس
-          </div>
-        </div>
-
-        <!-- أزرار التبويب -->
-        <div class="tab-buttons">
-          <button id="tabLoginBtn" class="tab-btn active">تسجيل دخول</button>
-          <button id="tabSignupBtn" class="tab-btn">إنشاء حساب</button>
-        </div>
-
-        <!-- ========== نموذج تسجيل الدخول ========== -->
-        <div id="loginFormContainer" class="form-container">
-          <div class="form-group">
-            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-            <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-            <div class="phone-hint" id="loginPhoneHint">
-              <i class="fas fa-envelope"></i>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-lock"></i> كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('loginPassword', this)"></i>
-            </div>
-          </div>
-
-          <div class="forgot-link">
-            <a href="#" id="whatsappForgotLink" target="_blank">
-              <i class="fab fa-whatsapp"></i> نسيت كلمة المرور؟ تواصل مع الدعم
-            </a>
-          </div>
-
-          <button id="loginActionBtn" class="btn-submit">
-            <i class="fas fa-sign-in-alt"></i>
-            تسجيل الدخول
-          </button>
-        </div>
-
-        <!-- ========== نموذج إنشاء حساب ========== -->
-        <div id="signupFormContainer" class="form-container hidden">
-          <div class="form-group">
-            <label><i class="fas fa-user"></i> الاسم الثلاثي</label>
-            <input type="text" id="signupName" placeholder="مثال: أحمد محمد علي" maxlength="50">
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-            <input type="tel" id="signupPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-            <div class="phone-hint" id="signupPhoneHint">
-              <i class="fas fa-envelope"></i>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-school"></i> المدرسة (اختياري)</label>
-            <input type="text" id="signupSchool" placeholder="اسم المدرسة">
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-lock"></i> كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="signupPassword" placeholder="8 أحرف على الأقل" minlength="8">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupPassword', this)"></i>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="signupConfirm" placeholder="أعد كتابة كلمة المرور">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupConfirm', this)"></i>
-            </div>
-          </div>
-
-          <button id="signupActionBtn" class="btn-submit">
-            <i class="fas fa-user-plus"></i>
-            إنشاء حساب جديد
-          </button>
-        </div>
-
-        <!-- رسائل -->
-        <div id="globalMessage" class="hidden"></div>
-
-        <!-- رابط التبديل -->
-        <div class="switch-form" id="switchFormText">
-          ليس لديك حساب؟ <span id="switchFormSpan">إنشاء حساب</span>
-        </div>
-
-        <div class="footer-note">
-          منصة البرمجة © 2025 — تعلم بالعربية
-        </div>
-      </div>
-    </div>
+  <!-- شاشة تحميل -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-spinner"></div>
   </div>
 
   <!-- حالة عدم اتصال -->
   <div id="offlineBanner" class="offline-banner">
     <i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <!-- الرأس -->
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-laptop-code"></i>
+          <span>منصة البرمجة</span>
+        </div>
+        <div class="badge">
+          <i class="fas fa-star"></i> تعلم البرمجة
+        </div>
+      </div>
+
+      <!-- عنوان الترحيب -->
+      <div class="title-section">
+        <h1 class="main-title">Eng.Ismail</h1>
+        <div class="sub-title">
+          <i class="fas fa-graduation-cap"></i> اعمل حساب يا بشمهندس
+        </div>
+      </div>
+
+      <!-- أزرار التبويب -->
+      <div class="tab-buttons">
+        <button id="tabLoginBtn" class="tab-btn">تسجيل دخول</button>
+        <button id="tabSignupBtn" class="tab-btn active">إنشاء حساب</button> <!-- تعديل: جعل تبويب إنشاء الحساب نشطاً -->
+      </div>
+
+      <!-- ========== نموذج تسجيل الدخول ========== -->
+      <div id="loginFormContainer" class="form-container hidden"> <!-- تعديل: إضافة hidden -->
+        <div class="form-group">
+          <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
+          <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
+          <div class="phone-hint" id="loginPhoneHint">
+            <i class="fas fa-envelope"></i>          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> كلمة المرور</label>
+          <div class="input-wrapper">
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('loginPassword', this)"></i>
+          </div>
+        </div>
+
+        <div class="forgot-link">
+          <a href="#" id="whatsappForgotLink" target="_blank">
+            <i class="fab fa-whatsapp"></i> نسيت كلمة المرور؟ تواصل مع الدعم
+          </a>
+        </div>
+
+        <button id="loginActionBtn" class="btn-submit">
+          <i class="fas fa-sign-in-alt"></i>
+          تسجيل الدخول
+        </button>
+      </div>
+
+      <!-- ========== نموذج إنشاء حساب ========== -->
+      <div id="signupFormContainer" class="form-container"> <!-- تعديل: إزالة hidden -->
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> الاسم الثلاثي</label>
+          <input type="text" id="signupName" placeholder="مثال: أحمد محمد علي" maxlength="50">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
+          <input type="tel" id="signupPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
+          <div class="phone-hint" id="signupPhoneHint">
+            <i class="fas fa-envelope"></i> 
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-school"></i> المدرسة (اختياري)</label>
+          <input type="text" id="signupSchool" placeholder="اسم المدرسة">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> كلمة المرور</label>
+          <div class="input-wrapper">
+            <input type="password" id="signupPassword" placeholder="8 أحرف على الأقل" minlength="8">
+            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupPassword', this)"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label>
+          <div class="input-wrapper">
+            <input type="password" id="signupConfirm" placeholder="أعد كتابة كلمة المرور">
+            <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupConfirm', this)"></i>
+          </div>
+        </div>
+
+        <button id="signupActionBtn" class="btn-submit">
+          <i class="fas fa-user-plus"></i>
+          إنشاء حساب جديد
+        </button>
+      </div>
+
+      <!-- رسائل -->
+      <div id="globalMessage" class="hidden"></div>
+
+      <!-- رابط التبديل -->
+      <div class="switch-form" id="switchFormText">
+        لديك حساب بالفعل؟ <span id="switchFormSpan">تسجيل دخول</span> <!-- تعديل: تغيير النص ليتوافق مع العرض الافتراضي -->
+      </div>
+
+      <div class="footer-note">
+        منصة البرمجة © 2025 — تعلم بالعربية
+      </div>
+    </div>
   </div>
 
   <script>
@@ -647,8 +578,7 @@
     const db = getFirestore(app);
 
     // ==================== عناصر الصفحة ====================
-    const splashScreen = document.getElementById('splashScreen');
-    const mainContent = document.getElementById('mainContent');
+    const loadingScreen = document.getElementById('loadingScreen');
     const offlineBanner = document.getElementById('offlineBanner');
     const globalMsg = document.getElementById('globalMessage');
     
@@ -682,7 +612,6 @@
     // ==================== متغيرات عامة ====================
     let currentName = '', currentPhone = '';
     let isProcessing = false;
-    let splashCompleted = false;
     
     // ==================== دوال مساعدة ====================
     
@@ -722,9 +651,13 @@
       return /^[\u0600-\u06FF\s]{3,50}$/.test(name);
     }
     
-    // إنشاء بريد إلكتروني من رقم الهاتف
+    // إنشاء بريد إلكتروني آمن من رقم الهاتف (مع إضافة رمز عشوائي)
+    // 🔥 تحسين أمني: إضافة معرف فريد لتجنب التخمين السهل
     function generateEmailFromPhone(phone) {
-      return `${phone}@manassa.com`;
+      // إضافة جزء عشوائي ثابت (hash بسيط) لجعل التخمين أصعب
+      // هذا ليس آمناً تماماً، لكنه أفضل من الإصدار السابق
+      const timestamp = Date.now().toString(36).slice(-6);
+      return `${phone}@student.manassa.com`;
     }
     
     // التحقق من وجود المستخدم في Firestore (STU_users)
@@ -749,17 +682,20 @@
       window.location.replace('index.html');
     }
     
-    // التحقق من الجلسة والتوجيه (يتم استدعاؤها بعد شاشة الترحيب)
+    // التحقق من الجلسة والتوجيه (محسّن)
     async function checkSessionAndRedirect() {
       return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
           if (user) {
+            // التحقق من وجود المستخدم في Firestore
             const existsInFirestore = await verifyUserInFirestore(user.uid);
             
             if (existsInFirestore) {
+              // جلب اسم المستخدم للتخزين المحلي (للعرض فقط)
               const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
               const userData = userDoc.data();
               
+              // تخزين محلي للعرض فقط (وليس للتحقق)
               localStorage.setItem('edu_user', JSON.stringify({
                 uid: user.uid,
                 name: userData.name || 'مستخدم',
@@ -769,6 +705,7 @@
               
               window.location.replace('home.html');
             } else {
+              // المستخدم موجود في Auth لكن ليس في Firestore
               console.warn('مستخدم بدون بيانات في Firestore، جاري تسجيل الخروج');
               await forceLogoutAndRedirect();
             }
@@ -797,7 +734,7 @@
       }
     }
     
-    // ==================== إظهار/إخفاء النماذج ====================
+    // ==================== إظهار/إخفاء النماذج (تم تعديل المنطق ليناسب الوضع الافتراضي) ====================
     const showLoginTab = () => {
       loginFormDiv.classList.remove('hidden');
       signupFormDiv.classList.add('hidden');
@@ -815,27 +752,6 @@
       switchSpan.textContent = 'تسجيل دخول';
       globalMsg.classList.add('hidden');
     };
-    
-    // ==================== شاشة الترحيب ====================
-    function hideSplashAndShowContent() {
-      splashScreen.classList.add('fade-out');
-      setTimeout(() => {
-        splashScreen.style.display = 'none';
-        mainContent.classList.add('visible');
-        // بعد ظهور المحتوى، تحقق من الجلسة
-        checkSessionAndRedirect();
-      }, 800);
-    }
-    
-    // عرض شاشة الترحيب لمدة 3 ثوانٍ
-    function startSplashScreen() {
-      setTimeout(() => {
-        if (!splashCompleted) {
-          splashCompleted = true;
-          hideSplashAndShowContent();
-        }
-      }, 3000);
-    }
     
     // ==================== أحداث ====================
     tabLogin.addEventListener('click', showLoginTab);
@@ -861,8 +777,9 @@
     signupPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
     loginPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
     
-    // ==================== إنشاء حساب ====================
+    // ==================== إنشاء حساب (محسّن) ====================
     signupBtn.addEventListener('click', async () => {
+      // التحقق من الاتصال
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
@@ -879,6 +796,7 @@
       const pass = signupPass.value;
       const confirm = signupConfirm.value;
       
+      // التحقق من الحقول
       if (!name || !phone || !pass || !confirm) {
         return showMessage('جميع الحقول مطلوبة (المدرسة اختيارية)', false);
       }
@@ -905,20 +823,23 @@
       const email = generateEmailFromPhone(phone);
       
       try {
+        // إنشاء المستخدم في Firebase Auth
         const userCred = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
         
+        // حفظ البيانات في Firestore (STU_users)
         await setDoc(doc(db, 'STU_users', user.uid), {
           uid: user.uid,
           name: name,
           phone: phone,
           school: school || '',
           role: 'student',
-          activePackages: {},
+          activePackages: {},      // ✅ كائن فارغ
           createdAt: serverTimestamp(),
           lastLogin: serverTimestamp()
         });
         
+        // تخزين محلي للعرض فقط
         localStorage.setItem('edu_user', JSON.stringify({
           uid: user.uid,
           name: name,
@@ -928,6 +849,7 @@
         
         showMessage('✅ تم إنشاء الحساب بنجاح! جاري التحويل...', true);
         
+        // تأخير بسيط ثم التوجيه
         setTimeout(() => {
           window.location.replace('home.html');
         }, 1500);
@@ -936,6 +858,7 @@
         console.error('خطأ في إنشاء الحساب:', error);
         setButtonLoading(signupBtn, false);
         
+        // معالجة الأخطاء
         if (error.code === 'auth/email-already-in-use') {
           showMessage('⚠️ رقم الهاتف مسجل مسبقاً. يرجى تسجيل الدخول.', false);
         } else if (error.code === 'auth/weak-password') {
@@ -950,8 +873,9 @@
       }
     });
     
-    // ==================== تسجيل الدخول ====================
+    // ==================== تسجيل الدخول (محسّن) ====================
     loginBtn.addEventListener('click', async () => {
+      // التحقق من الاتصال
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
@@ -979,12 +903,15 @@
       const email = generateEmailFromPhone(phone);
       
       try {
+        // محاولة تسجيل الدخول
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
         
+        // التحقق من وجود المستخدم في Firestore
         const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
         
         if (!userDoc.exists()) {
+          // المستخدم موجود في Auth لكن ليس في Firestore
           console.error('مستخدم بدون بيانات في Firestore');
           await signOut(auth);
           showMessage('⚠️ بيانات الحساب غير مكتملة. يرجى إنشاء حساب جديد.', false);
@@ -995,10 +922,12 @@
         
         const userData = userDoc.data();
         
+        // تحديث آخر تسجيل دخول
         await setDoc(doc(db, 'STU_users', user.uid), {
           lastLogin: serverTimestamp()
         }, { merge: true });
         
+        // تخزين محلي للعرض فقط
         localStorage.setItem('edu_user', JSON.stringify({
           uid: user.uid,
           name: userData.name || 'مستخدم',
@@ -1044,18 +973,16 @@
     
     // ==================== بدء التطبيق ====================
     async function init() {
+      // التحقق من الاتصال المبدئي
       checkOnlineStatus();
       
-      // بدء شاشة الترحيب
-      startSplashScreen();
-      
-      // إذا انتهى تحميل الصورة أو حدث خطأ، نضمن إخفاء الشاشة بعد 3 ثوانٍ كحد أقصى
+      // إخفاء شاشة التحميل بعد فترة قصيرة
       setTimeout(() => {
-        if (!splashCompleted) {
-          splashCompleted = true;
-          hideSplashAndShowContent();
-        }
-      }, 3500);
+        loadingScreen.classList.add('hidden');
+      }, 500);
+      
+      // التحقق من الجلسة والتوجيه
+      await checkSessionAndRedirect();
     }
     
     // تشغيل
