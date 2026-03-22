@@ -20,7 +20,6 @@
         }
         .container { max-width: 1400px; margin: 0 auto; }
         
-        /* Login Modal */
         .login-modal {
             position: fixed; inset: 0;
             background: rgba(0,0,0,0.96); backdrop-filter: blur(12px);
@@ -199,6 +198,8 @@
             <div class="tab" data-tab="users"><i class="fas fa-users"></i> المستخدمين</div>
             <div class="tab" data-tab="orders"><i class="fas fa-credit-card"></i> الطلبات</div>
             <div class="tab" data-tab="posts"><i class="fas fa-newspaper"></i> المنشورات</div>
+            <div class="tab" data-tab="likes"><i class="fas fa-heart"></i> اللايكات والتعليقات</div>
+            <div class="tab" data-tab="cleaner"><i class="fas fa-broom"></i> تنظيف البيانات</div>
             <div class="tab" data-tab="settings"><i class="fas fa-sliders-h"></i> الإعدادات</div>
             <div class="tab" data-tab="backup"><i class="fas fa-database"></i> نسخ احتياطي</div>
         </div>
@@ -249,7 +250,6 @@
                     <div class="form-group"><label>رابط الميت (Google Meet)</label><input type="url" id="meetLink" placeholder="https://meet.google.com/xxx"></div>
                     <div class="form-group"><label>رابط اليوتيوب (التسجيل)</label><input type="url" id="recordingLink" placeholder="https://youtu.be/xxx"></div>
                 </div>
-                
                 <div class="card-header" style="margin-top:10px;"><div class="card-title"><i class="fas fa-paperclip"></i> روابط الملازم (PDF, صور, مستندات)</div></div>
                 <div class="grid-3" id="attachmentsContainer">
                     <div class="form-group"><label>رابط ملحق 1</label><input type="url" id="attachment1" placeholder="https://..."></div>
@@ -317,6 +317,52 @@
                 <div class="card">
                     <div class="card-header"><div class="card-title"><i class="fas fa-list"></i> المنشورات</div><button id="refreshPosts" class="btn-secondary"><i class="fas fa-sync-alt"></i> تحديث</button></div>
                     <div id="postsList"><div class="loading">جاري التحميل...</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== تبويب اللايكات والتعليقات (الباب الخلفي) ==================== -->
+        <div id="likesTab" class="tab-content hidden">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><i class="fas fa-heart"></i> التحكم في اللايكات</div></div>
+                    <div class="form-group"><label>اختر منشور</label><select id="likePostSelect"></select></div>
+                    <div class="form-group"><label>اختر مستخدم (اتركه فارغاً لإنشاء لايك وهمي)</label><select id="likeUserSelect"></select></div>
+                    <div class="grid-2">
+                        <button class="btn-primary" id="addLikeBtn"><i class="fas fa-heart"></i> إضافة لايك</button>
+                        <button class="btn-danger" id="removeLikeBtn"><i class="fas fa-heart-broken"></i> حذف لايك</button>
+                    </div>
+                    <div class="form-group"><label>ضبط عدد اللايكات يدوياً</label><input type="number" id="setLikesCount" placeholder="العدد الجديد"></div>
+                    <button class="btn-warning" id="setLikesBtn"><i class="fas fa-sliders-h"></i> ضبط عدد اللايكات</button>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><i class="fas fa-comments"></i> إضافة تعليق وهمي</div></div>
+                    <div class="form-group"><label>اختر منشور</label><select id="fakeCommentPostSelect"></select></div>
+                    <div class="form-group"><label>اسم المستخدم الوهمي</label><input type="text" id="fakeCommentUserName" placeholder="اسم وهمي"></div>
+                    <div class="form-group"><label>نص التعليق</label><textarea id="fakeCommentText" rows="2" placeholder="نص التعليق..."></textarea></div>
+                    <button class="btn-primary" id="addFakeCommentBtn"><i class="fas fa-magic"></i> إضافة تعليق وهمي</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-title"><i class="fas fa-list"></i> جميع التفاعلات</div><button id="refreshReactions" class="btn-secondary"><i class="fas fa-sync-alt"></i> تحديث</button></div>
+                <div id="reactionsList"><div class="loading">جاري التحميل...</div></div>
+            </div>
+        </div>
+
+        <!-- ==================== تبويب تنظيف البيانات ==================== -->
+        <div id="cleanerTab" class="tab-content hidden">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><i class="fas fa-broom"></i> تنظيف البيانات المكررة</div></div>
+                    <button class="btn-warning" id="cleanDuplicateCommentsBtn"><i class="fas fa-comment-slash"></i> حذف التعليقات المكررة</button>
+                    <button class="btn-warning" id="cleanEmptyUsersBtn"><i class="fas fa-user-slash"></i> حذف المستخدمين الفارغين</button>
+                    <button class="btn-danger" id="cleanAllReactionsBtn"><i class="fas fa-trash-alt"></i> حذف جميع التفاعلات</button>
+                    <button class="btn-danger" id="deleteAllLessonsBtn"><i class="fas fa-skull"></i> تدمير جميع الدروس</button>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><i class="fas fa-database"></i> تحليل البيانات</div></div>
+                    <div id="dbSizeInfo"></div>
+                    <button class="btn-primary" id="analyzeDbBtn"><i class="fas fa-chart-line"></i> تحليل حجم البيانات</button>
                 </div>
             </div>
         </div>
@@ -399,6 +445,8 @@
 
         let currentUser = null;
         let allPackages = [];
+        let allPosts = [];
+        let allUsers = [];
         let currentPackageId = '';
         let examQuestions = [];
 
@@ -479,15 +527,17 @@
             await loadExams();
             await loadWallets();
             await loadPosts();
+            await loadReactions();
             await loadSettings();
         }
 
         async function loadStats() {
-            const [packages, lessons, users, orders, pending, exams] = await Promise.all([
+            const [packages, lessons, users, orders, pending, exams, reactions] = await Promise.all([
                 getDocs(collection(db, 'PKG_packages')), getDocs(collection(db, 'LESS_lessons')),
                 getDocs(collection(db, 'STU_users')), getDocs(collection(db, 'PAY_requests')),
                 getDocs(query(collection(db, 'PAY_requests'), where('status', '==', 'قيد المراجعة'))),
-                getDocs(collection(db, 'LESS_exams'))
+                getDocs(collection(db, 'LESS_exams')),
+                getDocs(collection(db, 'post_reactions'))
             ]);
             document.getElementById('statPackages').textContent = packages.size;
             document.getElementById('statLessons').textContent = lessons.size;
@@ -511,6 +561,8 @@
             let opts = '<option value="">-- اختر باقة --</option>' + allPackages.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
             document.getElementById('lessonPackageSelect').innerHTML = opts;
             document.getElementById('examPackageSelect').innerHTML = opts;
+            document.getElementById('likePostSelect').innerHTML = opts;
+            document.getElementById('fakeCommentPostSelect').innerHTML = opts;
             
             document.getElementById('examPackageSelect').addEventListener('change', async (e) => {
                 const pkgId = e.target.value;
@@ -685,10 +737,14 @@
             let html = '';
             snap.forEach(doc => {
                 const u = doc.data();
-                html += `<tr><td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.phone)}</td><td>${escapeHtml(u.school) || '-'}</td>
+                html += `<tr>
+                    <td>${escapeHtml(u.name)}</td>
+                    <td>${escapeHtml(u.phone)}</td>
+                    <td>${escapeHtml(u.school) || '-'}</td>
                     <td><span class="status-badge ${u.role === 'admin' ? 'status-active' : 'status-pending'}">${u.role === 'admin' ? 'أدمن' : 'طالب'}</span></td>
                     <td>${u.activePackages ? Object.keys(u.activePackages).length : 0}</td>
-                    <td><button class="btn-success" onclick="makeAdmin('${doc.id}')" style="margin-left:5px;"><i class="fas fa-crown"></i></button><button class="btn-danger" onclick="deleteUser('${doc.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+                    <td><button class="btn-success" onclick="makeAdmin('${doc.id}')" style="margin-left:5px;"><i class="fas fa-crown"></i></button><button class="btn-danger" onclick="deleteUser('${doc.id}')"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
             });
             document.getElementById('usersTableBody').innerHTML = html || '<td colspan="6">لا يوجد مستخدمين</td>';
             
@@ -714,11 +770,16 @@
             for (const docSnap of snap.docs) {
                 const r = docSnap.data();
                 const statusClass = r.status === 'قيد المراجعة' ? 'status-pending' : (r.status === 'مفعل' ? 'status-active' : 'status-cancelled');
-                html += `<tr><td>${escapeHtml(r.userName)}</td><td>${escapeHtml(r.userPhone)}</td><td>${escapeHtml(r.packageName)}</td>
-                    <td>${r.packagePrice || 0} جنيه</td><td>${formatDate(r.createdAt)}</td>
+                html += `<tr>
+                    <td>${escapeHtml(r.userName)}</td>
+                    <td>${escapeHtml(r.userPhone)}</td>
+                    <td>${escapeHtml(r.packageName)}</td>
+                    <td>${r.packagePrice || 0} جنيه</td>
+                    <td>${formatDate(r.createdAt)}</td>
                     <td><span class="status-badge ${statusClass}">${r.status}</span></td>
                     <td>${r.status === 'قيد المراجعة' ? `<button class="btn-success" onclick="approveOrder('${docSnap.id}', '${r.userId}', '${r.packageId}', '${r.packageDuration}')">تفعيل</button>` : ''}
-                    <button class="btn-danger" onclick="deleteOrder('${docSnap.id}')">حذف</button></td></tr>`;
+                    <button class="btn-danger" onclick="deleteOrder('${docSnap.id}')">حذف</button></td>
+                </tr>`;
             }
             document.getElementById('ordersTableBody').innerHTML = html || '<td colspan="7">لا توجد طلبات</td>';
         }
@@ -749,12 +810,18 @@
         // ==================== المنشورات ====================
         async function loadPosts() {
             const snap = await getDocs(query(collection(db, 'POSTS_feed'), orderBy('createdAt', 'desc')));
+            allPosts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             let html = '';
             snap.forEach(doc => {
                 const p = doc.data();
-                html += `<div class="item-card"><div class="item-header"><div><i class="fas ${p.icon}"></i> <strong>${escapeHtml(p.title)}</strong><br><small>✍️ ${escapeHtml(p.author || 'الإدارة')}</small></div><button class="btn-danger" onclick="deletePost('${doc.id}')">حذف</button></div><div>${escapeHtml(p.content?.substring(0, 80))}...</div></div>`;
+                html += `<div class="item-card"><div class="item-header"><div><i class="fas ${p.icon}"></i> <strong>${escapeHtml(p.title)}</strong><br><small>✍️ ${escapeHtml(p.author || 'الإدارة')} | ❤️ ${p.likesCount || 0} | 💬 ${p.commentsCount || 0}</small></div><button class="btn-danger" onclick="deletePost('${doc.id}')">حذف</button></div><div>${escapeHtml(p.content?.substring(0, 80))}...</div></div>`;
             });
             document.getElementById('postsList').innerHTML = html || '<div class="empty-state">لا توجد منشورات</div>';
+            
+            // تحديث قوائم اللايكات
+            const postOpts = '<option value="">-- اختر منشور --</option>' + allPosts.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+            document.getElementById('likePostSelect').innerHTML = postOpts;
+            document.getElementById('fakeCommentPostSelect').innerHTML = postOpts;
         }
 
         document.getElementById('addPostBtn')?.addEventListener('click', async () => {
@@ -775,6 +842,123 @@
         });
 
         window.deletePost = async (id) => { if(confirm('حذف المنشور؟')) { await deleteDoc(doc(db, 'POSTS_feed', id)); loadPosts(); loadStats(); showToast('تم الحذف'); } };
+
+        // ==================== اللايكات والتعليقات (الباب الخلفي) ====================
+        async function loadReactions() {
+            const snap = await getDocs(query(collection(db, 'post_reactions'), orderBy('createdAt', 'desc'), limit(50)));
+            let html = '';
+            for (const docSnap of snap.docs) {
+                const r = docSnap.data();
+                let postTitle = 'غير معروف';
+                try { const p = await getDoc(doc(db, 'POSTS_feed', r.postId)); if (p.exists()) postTitle = p.data().title; } catch(e) {}
+                html += `<div class="item-card"><div class="item-header"><div><strong>${r.type === 'like' ? '❤️ لايك' : '💬 تعليق'}</strong> - ${escapeHtml(postTitle)}<br><small>المستخدم: ${escapeHtml(r.userName) || escapeHtml(r.userId)}</small></div><button class="btn-danger" onclick="deleteReaction('${docSnap.id}')">حذف</button></div>${r.commentText ? `<div>${escapeHtml(r.commentText)}</div>` : ''}<div><small>${formatDate(r.createdAt)}</small></div></div>`;
+            }
+            document.getElementById('reactionsList').innerHTML = html || '<div class="empty-state">لا توجد تفاعلات</div>';
+        }
+
+        // إضافة لايك
+        document.getElementById('addLikeBtn')?.addEventListener('click', async () => {
+            const postId = document.getElementById('likePostSelect').value;
+            if (!postId) { showToast('اختر منشوراً أولاً', true); return; }
+            const userId = document.getElementById('likeUserSelect').value || `fake_user_${Date.now()}`;
+            const userName = userId.startsWith('fake_') ? `وهمي_${Date.now()}` : null;
+            
+            await addDoc(collection(db, 'post_reactions'), {
+                postId, userId, userName, type: 'like', createdAt: serverTimestamp()
+            });
+            await updateDoc(doc(db, 'POSTS_feed', postId), { likesCount: increment(1) });
+            showToast('تم إضافة اللايك');
+            loadPosts();
+            loadReactions();
+            loadStats();
+        });
+
+        // ضبط عدد اللايكات يدوياً
+        document.getElementById('setLikesBtn')?.addEventListener('click', async () => {
+            const postId = document.getElementById('likePostSelect').value;
+            if (!postId) { showToast('اختر منشوراً أولاً', true); return; }
+            const newCount = parseInt(document.getElementById('setLikesCount').value);
+            if (isNaN(newCount)) { showToast('أدخل عدداً صحيحاً', true); return; }
+            await updateDoc(doc(db, 'POSTS_feed', postId), { likesCount: newCount });
+            showToast(`تم ضبط عدد اللايكات إلى ${newCount}`);
+            loadPosts();
+        });
+
+        // إضافة تعليق وهمي
+        document.getElementById('addFakeCommentBtn')?.addEventListener('click', async () => {
+            const postId = document.getElementById('fakeCommentPostSelect').value;
+            if (!postId) { showToast('اختر منشوراً أولاً', true); return; }
+            const userName = document.getElementById('fakeCommentUserName').value.trim() || `وهمي_${Date.now()}`;
+            const commentText = document.getElementById('fakeCommentText').value.trim();
+            if (!commentText) { showToast('أدخل نص التعليق', true); return; }
+            
+            await addDoc(collection(db, 'post_reactions'), {
+                postId, userId: `fake_${Date.now()}`, userName, type: 'comment',
+                commentText, createdAt: serverTimestamp()
+            });
+            await updateDoc(doc(db, 'POSTS_feed', postId), { commentsCount: increment(1) });
+            showToast('تم إضافة التعليق الوهمي');
+            document.getElementById('fakeCommentText').value = '';
+            loadPosts();
+            loadReactions();
+            loadStats();
+        });
+
+        window.deleteReaction = async (id) => { if(confirm('حذف التفاعل؟')) { await deleteDoc(doc(db, 'post_reactions', id)); loadReactions(); loadPosts(); loadStats(); showToast('تم الحذف'); } };
+        document.getElementById('refreshReactions')?.addEventListener('click', () => loadReactions());
+
+        // ==================== تنظيف البيانات ====================
+        document.getElementById('cleanDuplicateCommentsBtn')?.addEventListener('click', async () => {
+            const comments = await getDocs(query(collection(db, 'post_reactions'), where('type', '==', 'comment')));
+            const seen = new Set();
+            const duplicates = [];
+            comments.forEach(doc => {
+                const data = doc.data();
+                const key = `${data.postId}_${data.userId}_${data.commentText}`;
+                if (seen.has(key)) duplicates.push(doc.ref);
+                else seen.add(key);
+            });
+            const batch = writeBatch(db);
+            duplicates.forEach(ref => batch.delete(ref));
+            await batch.commit();
+            showToast(`تم حذف ${duplicates.length} تعليق مكرر`);
+            loadReactions();
+        });
+
+        document.getElementById('deleteAllLessonsBtn')?.addEventListener('click', async () => {
+            if (confirm('⚠️ تحذير: هذا سيحذف جميع الدروس! لا يمكن التراجع!')) {
+                const lessons = await getDocs(collection(db, 'LESS_lessons'));
+                const batch = writeBatch(db);
+                lessons.forEach(l => batch.delete(l.ref));
+                await batch.commit();
+                showToast('تم تدمير جميع الدروس');
+                loadStats();
+                document.getElementById('lessonPackageSelect')?.dispatchEvent(new Event('change'));
+            }
+        });
+
+        document.getElementById('cleanAllReactionsBtn')?.addEventListener('click', async () => {
+            if (confirm('⚠️ حذف جميع التفاعلات (لايكات وتعليقات)؟')) {
+                const reactions = await getDocs(collection(db, 'post_reactions'));
+                const batch = writeBatch(db);
+                reactions.forEach(r => batch.delete(r.ref));
+                await batch.commit();
+                showToast('تم حذف جميع التفاعلات');
+                loadReactions();
+                loadPosts();
+                loadStats();
+            }
+        });
+
+        document.getElementById('analyzeDbBtn')?.addEventListener('click', async () => {
+            const collections = ['STU_users', 'PKG_packages', 'LESS_lessons', 'POSTS_feed', 'PAY_requests', 'post_reactions', 'LESS_exams', 'STU_exams'];
+            let html = '<div class="item-card">تحليل قاعدة البيانات:</div>';
+            for (const col of collections) {
+                const snap = await getDocs(collection(db, col));
+                html += `<div class="item-card">📁 ${col}: ${snap.size} وثيقة</div>`;
+            }
+            document.getElementById('dbSizeInfo').innerHTML = html;
+        });
 
         // ==================== الإعدادات ====================
         async function loadWallets() {
@@ -883,6 +1067,8 @@
                 if (tabName === 'lessons') document.getElementById('lessonPackageSelect').dispatchEvent(new Event('change'));
                 if (tabName === 'exams') loadExams();
                 if (tabName === 'posts') loadPosts();
+                if (tabName === 'likes') loadReactions();
+                if (tabName === 'cleaner') document.getElementById('analyzeDbBtn').click();
             });
         });
 
@@ -890,6 +1076,14 @@
         document.getElementById('refreshLessons')?.addEventListener('click', () => document.getElementById('lessonPackageSelect').dispatchEvent(new Event('change')));
         document.getElementById('refreshExams')?.addEventListener('click', () => loadExams());
         document.getElementById('refreshPosts')?.addEventListener('click', () => loadPosts());
+        
+        // تحميل قائمة المستخدمين لاختيار اللايكات
+        async function loadUsersForSelect() {
+            const snap = await getDocs(collection(db, 'STU_users'));
+            let opts = '<option value="">-- اختر مستخدم --</option>' + snap.docs.map(d => `<option value="${d.id}">${escapeHtml(d.data().name)} (${escapeHtml(d.data().phone)})</option>`).join('');
+            document.getElementById('likeUserSelect').innerHTML = opts;
+        }
+        loadUsersForSelect();
     </script>
 </body>
 </html>
