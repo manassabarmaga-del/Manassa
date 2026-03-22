@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>الرئيسية - منصة البرمجة</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -23,11 +24,11 @@
             background: #f8fafc;
             color: #0f172a;
             min-height: 100vh;
-            overflow-x: hidden;
             direction: rtl;
+            padding-bottom: 80px; /* مساحة للتبويبات العائمة */
         }
         
-        /* Header - ثابت */
+        /* Header */
         .header {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             padding: 12px 20px;
@@ -40,12 +41,14 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             border-bottom: 2px solid #dc2626;
         }
+        
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
         }
+        
         .logo-image {
             width: 44px;
             height: 44px;
@@ -57,11 +60,7 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
-        .logo-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        
         .logo-fallback {
             width: 44px;
             height: 44px;
@@ -71,20 +70,24 @@
             align-items: center;
             justify-content: center;
         }
+        
         .logo-fallback i {
             font-size: 22px;
             color: #ffd700;
         }
+        
         .logo-text h1 {
             font-size: 18px;
             font-weight: 900;
             color: white;
         }
+        
         .logo-text span {
             font-size: 9px;
             color: #ffd700;
             opacity: 0.9;
         }
+        
         .user-menu {
             display: flex;
             align-items: center;
@@ -93,11 +96,13 @@
             padding: 5px 12px 5px 6px;
             border-radius: 50px;
         }
+        
         .user-name {
             font-size: 12px;
             font-weight: 600;
             color: #f1f5f9;
         }
+        
         .logout-btn {
             background: rgba(220, 38, 38, 0.2);
             border: 1px solid rgba(220, 38, 38, 0.5);
@@ -112,10 +117,10 @@
             gap: 5px;
             transition: all 0.2s;
         }
-        .logout-btn:hover {
+        
+        .logout-btn:active {
             background: #dc2626;
             color: white;
-            border-color: #dc2626;
         }
         
         /* Hashtag */
@@ -125,22 +130,20 @@
             text-align: center;
             border-bottom: 1px solid #e2e8f0;
         }
+        
         .hashtag-bar .hashtag {
             font-size: 12px;
             font-weight: 700;
             color: #dc2626;
         }
+        
         .hashtag-bar .hashtag i {
             margin-left: 5px;
         }
-        .hashtag-bar .hashtag span {
-            color: #475569;
-            font-weight: 500;
-        }
         
-        /* Main Content - ثابت بدون عائم */
+        /* Main Content */
         .content {
-            padding: 20px 16px 90px;
+            padding: 20px 16px;
             max-width: 680px;
             margin: 0 auto;
             width: 100%;
@@ -155,11 +158,13 @@
             color: white;
             box-shadow: 0 10px 25px rgba(220, 38, 38, 0.2);
         }
+        
         .welcome-card h2 {
             font-size: 20px;
             font-weight: 900;
             margin-bottom: 5px;
         }
+        
         .welcome-card p {
             font-size: 12px;
             opacity: 0.9;
@@ -175,6 +180,7 @@
             justify-content: space-between;
             margin: 20px 0 10px;
         }
+        
         .section-title {
             display: flex;
             align-items: center;
@@ -183,10 +189,11 @@
             font-weight: 800;
             color: #0f172a;
         }
+        
         .section-title i {
             color: #dc2626;
-            font-size: 16px;
         }
+        
         .section-link {
             color: #dc2626;
             font-size: 11px;
@@ -199,16 +206,18 @@
             padding: 4px 12px;
             border-radius: 40px;
         }
-        .section-link:hover {
+        
+        .section-link:active {
             background: #dc2626;
             color: white;
         }
         
-        /* My Packages - تمرير أفقي مع إظهار المحتوى بالكامل */
+        /* My Packages - Horizontal Scroll */
         .packages-scroll-container {
             position: relative;
             width: 100%;
         }
+        
         .scroll-hint {
             position: absolute;
             left: 0;
@@ -226,18 +235,13 @@
             z-index: 5;
             pointer-events: none;
             animation: slidePulse 1.5s infinite;
-            box-shadow: 0 2px 8px rgba(220,38,38,0.3);
         }
+        
         @keyframes slidePulse {
-            0%, 100% {
-                opacity: 0.8;
-                transform: translateY(-50%) translateX(0);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-50%) translateX(-5px);
-            }
+            0%, 100% { opacity: 0.8; transform: translateY(-50%) translateX(0); }
+            50% { opacity: 1; transform: translateY(-50%) translateX(-5px); }
         }
+        
         .my-packages-scroll {
             display: flex;
             overflow-x: auto;
@@ -246,17 +250,21 @@
             scrollbar-width: thin;
             -webkit-overflow-scrolling: touch;
         }
+        
         .my-packages-scroll::-webkit-scrollbar {
             height: 3px;
         }
+        
         .my-packages-scroll::-webkit-scrollbar-track {
             background: #e2e8f0;
             border-radius: 10px;
         }
+        
         .my-packages-scroll::-webkit-scrollbar-thumb {
             background: #dc2626;
             border-radius: 10px;
         }
+        
         .my-package-card {
             min-width: 155px;
             background: white;
@@ -265,14 +273,13 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             border: 1px solid #eef2f6;
             cursor: pointer;
-            transition: all 0.2s;
             flex-shrink: 0;
         }
-        .my-package-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.1);
-            border-color: #dc2626;
+        
+        .my-package-card:active {
+            transform: scale(0.98);
         }
+        
         .my-package-img {
             width: 42px;
             height: 42px;
@@ -283,16 +290,19 @@
             justify-content: center;
             margin-bottom: 8px;
         }
+        
         .my-package-img i {
             font-size: 18px;
             color: #ffd700;
         }
+        
         .my-package-name {
             font-weight: 800;
             font-size: 13px;
             margin-bottom: 3px;
             color: #0f172a;
         }
+        
         .my-package-date {
             font-size: 9px;
             color: #64748b;
@@ -300,6 +310,7 @@
             align-items: center;
             gap: 3px;
         }
+        
         .empty-packages-card {
             min-width: 260px;
             background: #f8fafc;
@@ -311,10 +322,12 @@
             border: 1px dashed #cbd5e1;
             flex-shrink: 0;
         }
+        
         .empty-packages-card i {
             font-size: 32px;
             color: #94a3b8;
         }
+        
         .empty-packages-card .btn-browse {
             background: #dc2626;
             color: white;
@@ -330,20 +343,12 @@
         .packages-swiper {
             width: 100%;
             overflow: hidden;
-            margin: 0;
         }
-        .swiper {
-            width: 100%;
-            overflow: visible;
-        }
-        .swiper-wrapper {
-            display: flex;
-        }
+        
         .swiper-slide {
             width: 260px !important;
-            flex-shrink: 0;
-            margin-left: 14px;
         }
+        
         .package-card {
             background: white;
             border-radius: 24px;
@@ -355,11 +360,11 @@
             flex-direction: column;
             height: 100%;
         }
-        .package-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.1);
-            border-color: #dc2626;
+        
+        .package-card:active {
+            transform: scale(0.98);
         }
+        
         .package-badge {
             position: absolute;
             top: 12px;
@@ -371,22 +376,26 @@
             font-size: 9px;
             font-weight: 800;
         }
+        
         .package-name {
             font-size: 18px;
             font-weight: 800;
             margin: 28px 0 6px;
             color: #0f172a;
         }
+        
         .package-price {
             font-size: 24px;
             font-weight: 800;
             color: #dc2626;
             margin-bottom: 8px;
         }
+        
         .package-price small {
             font-size: 11px;
             color: #94a3b8;
         }
+        
         .package-features {
             flex: 1;
             display: flex;
@@ -394,19 +403,20 @@
             gap: 6px;
             margin: 8px 0;
         }
+        
         .feature-item {
             display: flex;
             align-items: center;
             gap: 6px;
             color: #475569;
             font-size: 11px;
-            line-height: 1.4;
         }
+        
         .feature-item i {
             color: #dc2626;
             font-size: 10px;
-            flex-shrink: 0;
         }
+        
         .subscribe-btn {
             width: 100%;
             background: #dc2626;
@@ -422,23 +432,25 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-            transition: all 0.2s;
         }
-        .subscribe-btn:hover {
-            background: #b91c1c;
+        
+        .subscribe-btn:active {
             transform: scale(0.98);
         }
         
         /* Posts Feed */
         .feed-container {
             margin-top: 28px;
+            margin-bottom: 20px;
         }
+        
         .feed-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 12px;
         }
+        
         .feed-header h2 {
             font-size: 16px;
             font-weight: 800;
@@ -447,6 +459,7 @@
             align-items: center;
             gap: 6px;
         }
+        
         .feed-header h2 i {
             color: #dc2626;
         }
@@ -456,6 +469,7 @@
             display: flex;
             flex-direction: column;
         }
+        
         .post-sender {
             display: flex;
             align-items: center;
@@ -463,6 +477,7 @@
             margin-bottom: 4px;
             padding-right: 8px;
         }
+        
         .sender-avatar {
             width: 34px;
             height: 34px;
@@ -476,16 +491,19 @@
             color: white;
             flex-shrink: 0;
         }
+        
         .sender-name {
             font-weight: 800;
             font-size: 13px;
             color: #0f172a;
         }
+        
         .sender-time {
             font-size: 9px;
             color: #94a3b8;
             margin-right: 6px;
         }
+        
         .post-bubble {
             background: white;
             border-radius: 20px;
@@ -496,6 +514,7 @@
             border: 1px solid #eef2f6;
             position: relative;
         }
+        
         .post-bubble::before {
             content: '';
             position: absolute;
@@ -507,12 +526,14 @@
             border-width: 6px 8px 6px 0;
             border-color: transparent white transparent transparent;
         }
+        
         .post-content-text {
             color: #334155;
             font-size: 12px;
             line-height: 1.5;
             margin-bottom: 8px;
         }
+        
         .post-actions {
             display: flex;
             align-items: center;
@@ -521,6 +542,7 @@
             padding-top: 6px;
             border-top: 1px solid #f1f5f9;
         }
+        
         .action-like, .action-comment {
             display: flex;
             align-items: center;
@@ -532,9 +554,11 @@
             padding: 3px 8px;
             border-radius: 30px;
         }
-        .action-like:hover, .action-comment:hover {
+        
+        .action-like:active, .action-comment:active {
             background: #f8fafc;
         }
+        
         .action-like.liked {
             color: #dc2626;
         }
@@ -546,11 +570,13 @@
             flex-direction: column;
             gap: 6px;
         }
+        
         .comment-item {
             display: flex;
             gap: 6px;
             align-items: flex-start;
         }
+        
         .comment-avatar {
             width: 26px;
             height: 26px;
@@ -564,6 +590,7 @@
             color: #475569;
             flex-shrink: 0;
         }
+        
         .comment-bubble {
             background: #f8fafc;
             border-radius: 16px;
@@ -572,6 +599,7 @@
             max-width: calc(100% - 36px);
             position: relative;
         }
+        
         .comment-bubble::before {
             content: '';
             position: absolute;
@@ -583,22 +611,26 @@
             border-width: 5px 6px 5px 0;
             border-color: transparent #f8fafc transparent transparent;
         }
+        
         .comment-name {
             font-size: 9px;
             font-weight: 800;
             color: #dc2626;
             margin-bottom: 2px;
         }
+        
         .comment-text {
             font-size: 10px;
             color: #334155;
             line-height: 1.4;
         }
+        
         .comment-time {
             font-size: 8px;
             color: #94a3b8;
             margin-top: 2px;
         }
+        
         .show-more-comments {
             font-size: 9px;
             color: #dc2626;
@@ -611,16 +643,17 @@
         /* Footer */
         .footer {
             background: #0f172a;
-            margin-top: 32px;
             padding: 28px 20px 22px;
             border-top: 3px solid #dc2626;
             font-family: 'Amiri', serif;
         }
+        
         .footer-content {
             max-width: 680px;
             margin: 0 auto;
             text-align: center;
         }
+        
         .footer-logo {
             display: flex;
             align-items: center;
@@ -628,23 +661,26 @@
             gap: 8px;
             margin-bottom: 16px;
         }
+        
         .footer-logo i {
             font-size: 24px;
             color: #ffd700;
         }
+        
         .footer-logo span {
             font-size: 16px;
             font-weight: 700;
             color: white;
         }
+        
         .footer-quote {
             font-family: 'Amiri', serif;
             font-size: 13px;
             line-height: 1.6;
             color: #cbd5e1;
             margin-bottom: 18px;
-            padding: 0 8px;
         }
+        
         .footer-stats {
             display: flex;
             justify-content: center;
@@ -652,20 +688,19 @@
             margin: 18px 0;
             flex-wrap: wrap;
         }
-        .footer-stat {
-            text-align: center;
-        }
+        
         .footer-stat .number {
             font-size: 20px;
             font-weight: 800;
             color: #ffd700;
-            font-family: 'Tajawal', sans-serif;
         }
+        
         .footer-stat .label {
             font-size: 10px;
             color: #94a3b8;
             margin-top: 2px;
         }
+        
         .footer-message {
             font-family: 'Amiri', serif;
             font-size: 12px;
@@ -675,14 +710,82 @@
             padding-top: 16px;
             border-top: 1px solid #334155;
         }
+        
         .footer-message i {
             color: #ffd700;
             margin-left: 5px;
         }
+        
         .footer-copyright {
             font-size: 9px;
             color: #475569;
             margin-top: 18px;
+        }
+        
+        /* Tabs - العائمة فقط */
+        .tabs-container {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: #0f172a;
+            border-radius: 50px;
+            padding: 5px 12px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            z-index: 1000;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: #94a3b8;
+            font-size: 9px;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 40px;
+            flex: 1;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .tab i {
+            font-size: 14px;
+        }
+        
+        .tab.active {
+            color: #ffd700;
+            background: rgba(220, 38, 38, 0.2);
+        }
+        
+        .tab:active {
+            background: rgba(220, 38, 38, 0.1);
+        }
+        
+        /* Back to Top - زر عادي في أسفل الصفحة */
+        .back-to-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            margin: 0 auto 20px;
+            width: fit-content;
+        }
+        
+        .back-to-top:active {
+            transform: scale(0.98);
         }
         
         /* Modal */
@@ -700,10 +803,12 @@
             opacity: 0;
             transition: 0.2s;
         }
+        
         .comment-modal.show {
             visibility: visible;
             opacity: 1;
         }
+        
         .comment-box {
             background: white;
             border-radius: 28px;
@@ -711,12 +816,7 @@
             width: 100%;
             max-width: 360px;
         }
-        .comment-box h3 {
-            color: #0f172a;
-            margin-bottom: 12px;
-            font-weight: 800;
-            font-size: 16px;
-        }
+        
         .comment-box textarea {
             width: 100%;
             height: 90px;
@@ -728,163 +828,45 @@
             margin: 8px 0;
             resize: none;
         }
+        
         .comment-actions {
             display: flex;
             gap: 10px;
         }
-        .btn-send {
+        
+        .btn-send, .btn-cancel {
             flex: 1;
-            background: #dc2626;
-            color: white;
-            border: none;
             padding: 10px;
             border-radius: 40px;
             font-weight: 700;
             cursor: pointer;
+            border: none;
         }
+        
+        .btn-send {
+            background: #dc2626;
+            color: white;
+        }
+        
         .btn-cancel {
-            flex: 1;
             background: #f1f5f9;
             color: #475569;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
         }
         
-        /* Tabs */
-        .tabs-container {
-            position: fixed;
-            bottom: 16px;
-            left: 16px;
-            right: 16px;
-            background: #0f172a;
-            border-radius: 50px;
-            padding: 5px 12px;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            border: 1px solid #334155;
-            z-index: 100;
-        }
-        .tab {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            color: #94a3b8;
-            font-size: 9px;
-            cursor: pointer;
-            padding: 5px 12px;
-            border-radius: 40px;
-        }
-        .tab i {
-            font-size: 14px;
-        }
-        .tab.active {
-            color: #ffd700;
-            background: rgba(220, 38, 38, 0.2);
+        /* Utility */
+        .hidden { display: none !important; }
+        
+        .skeleton-header, .skeleton-post, .my-package-skeleton, .package-skeleton {
+            background: #e2e8f0;
+            animation: pulse 1s infinite;
         }
         
-        .back-to-top {
-            position: fixed;
-            bottom: 80px;
-            right: 16px;
-            width: 40px;
-            height: 40px;
-            background: #dc2626;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(220,38,38,0.4);
-            z-index: 99;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
+        .skeleton-header { height: 70px; border-radius: 24px; margin-bottom: 20px; }
+        .skeleton-post { height: 110px; border-radius: 20px; margin-bottom: 12px; }
+        .my-package-skeleton { width: 140px; height: 130px; border-radius: 20px; flex-shrink: 0; }
+        .package-skeleton { width: 240px; height: 280px; border-radius: 24px; }
         
-        .toast-message {
-            position: fixed;
-            bottom: 85px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0f172a;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-size: 11px;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .toast-message.error {
-            background: #dc2626;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: #94a3b8;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 24px;
-            margin: 16px 0;
-        }
-        .skeleton-wrapper {
-            width: 100%;
-        }
-        .skeleton-header {
-            height: 70px;
-            background: #e2e8f0;
-            border-radius: 24px;
-            margin-bottom: 20px;
-            animation: pulse 1s infinite;
-        }
-        .skeleton-post {
-            height: 110px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            margin-bottom: 12px;
-            animation: pulse 1s infinite;
-        }
-        .my-package-skeleton {
-            width: 140px;
-            height: 130px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            animation: pulse 1s infinite;
-            flex-shrink: 0;
-        }
-        .package-skeleton {
-            width: 240px;
-            height: 280px;
-            background: #e2e8f0;
-            border-radius: 24px;
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
-        }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
         
         .offline-banner {
             background: #dc2626;
@@ -900,23 +882,25 @@
             transform: translateY(-100%);
             transition: transform 0.3s;
         }
-        .offline-banner.show {
-            transform: translateY(0);
-        }
+        
+        .offline-banner.show { transform: translateY(0); }
+        
         .loading-screen {
             position: fixed;
             inset: 0;
             background: white;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 9999;
             transition: opacity 0.3s;
         }
+        
         .loading-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
+        
         .loader {
             width: 36px;
             height: 36px;
@@ -925,10 +909,50 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 11px;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        
+        .toast-message.error { background: #dc2626; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 24px;
+        }
+        
+        .infinite-loader {
+            text-align: center;
+            padding: 20px;
+            color: #dc2626;
+        }
+        
+        .infinite-loader::after {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #e2e8f0;
+            border-top-color: #dc2626;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
         }
     </style>
 </head>
@@ -938,9 +962,7 @@
 
     <div class="header">
         <div class="logo">
-            <div class="logo-image" id="logoImage">
-                <img src="logo.png" alt="منصة البرمجة" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'logo-fallback\'><i class=\'fas fa-laptop-code\'></i></div>'">
-            </div>
+            <div class="logo-image"><img src="logo.png" alt="منصة البرمجة" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'logo-fallback\'><i class=\'fas fa-laptop-code\'></i></div>'"></div>
             <div class="logo-text">
                 <h1>منصة البرمجة</h1>
                 <span>Learn to Code</span>
@@ -953,9 +975,7 @@
     </div>
 
     <div class="hashtag-bar">
-        <div class="hashtag">
-            <i class="fas fa-hashtag"></i> <span>#</span> اتعلم_بشكل_جديد
-        </div>
+        <div class="hashtag"><i class="fas fa-hashtag"></i> <span>#</span> اتعلم_بشكل_جديد</div>
     </div>
 
     <div class="content" id="mainContent">
@@ -974,39 +994,31 @@
 
     <div class="footer" id="footer">
         <div class="footer-content">
-            <div class="footer-logo">
-                <i class="fas fa-crown"></i>
-                <span>منصة البرمجة</span>
-            </div>
-            <div class="footer-quote" id="footerQuote">
-                "رحلة الألف ميل تبدأ بخطوة... وخطوتك الأولى نحو عالم البرمجة تبدأ من هنا"
-            </div>
-            <div class="footer-stats" id="footerStats">
+            <div class="footer-logo"><i class="fas fa-crown"></i><span>منصة البرمجة</span></div>
+            <div class="footer-quote" id="footerQuote">"رحلة الألف ميل تبدأ بخطوة..."</div>
+            <div class="footer-stats">
                 <div class="footer-stat"><div class="number" id="footerStudents">0</div><div class="label">طالب متدرب</div></div>
                 <div class="footer-stat"><div class="number" id="footerCourses">0</div><div class="label">باقة تدريبية</div></div>
                 <div class="footer-stat"><div class="number" id="footerLessons">0</div><div class="label">درس تعليمي</div></div>
             </div>
-            <div class="footer-message" id="footerMessage">
-                <i class="fas fa-quote-right"></i> نبني جيلاً من المبرمجين العرب القادرين على صناعة المستقبل. نؤمن بأن التعليم هو المفتاح، وأن البرمجة هي لغة العصر.
-            </div>
-            <div class="footer-copyright">
-                © 2025 منصة البرمجة | جميع الحقوق محفوظة
-            </div>
+            <div class="footer-message" id="footerMessage"><i class="fas fa-quote-right"></i> نبني جيلاً من المبرمجين العرب...</div>
+            <div class="footer-copyright">© 2025 منصة البرمجة | جميع الحقوق محفوظة</div>
         </div>
     </div>
 
-    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+    <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i> أعلى الصفحة</button>
 
     <div class="tabs-container">
         <div class="tab active" id="tabHome"><i class="fas fa-home"></i><span>الرئيسية</span></div>
         <div class="tab" id="tabMySubs"><i class="fas fa-crown"></i><span>اشتراكاتي</span></div>
         <div class="tab" id="tabTry"><i class="fas fa-code"></i><span>درب نفسك</span></div>
+        <div class="tab" id="tabDay"><i class="fas fa-calendar-alt"></i><span>تنظيم اليوم</span></div>
     </div>
 
     <div id="commentModal" class="comment-modal">
         <div class="comment-box">
             <h3><i class="fas fa-comment"></i> أضف تعليقك</h3>
-            <textarea id="commentText" placeholder="اكتب تعليقك هنا..."></textarea>
+            <textarea id="commentText" placeholder="اكتب تعليقك هنا..." maxlength="500"></textarea>
             <div class="comment-actions">
                 <button class="btn-send" id="sendCommentBtn">إرسال</button>
                 <button class="btn-cancel" id="cancelCommentBtn">إلغاء</button>
@@ -1020,11 +1032,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import {
-            getFirestore, doc, getDoc, collection, query, where,
-            getDocs, orderBy, limit, startAfter, addDoc, updateDoc,
-            serverTimestamp, increment, setDoc, Timestamp
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy, limit, startAfter, addDoc, updateDoc, serverTimestamp, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
@@ -1039,6 +1047,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // DOM Elements
         const loadingScreen = document.getElementById('loadingScreen');
         const offlineBanner = document.getElementById('offlineBanner');
         const skeletonLoader = document.getElementById('skeletonLoader');
@@ -1048,12 +1057,14 @@
         const tabHome = document.getElementById('tabHome');
         const tabMySubs = document.getElementById('tabMySubs');
         const tabTry = document.getElementById('tabTry');
+        const tabDay = document.getElementById('tabDay');
         const backToTop = document.getElementById('backToTop');
         const commentModal = document.getElementById('commentModal');
         const commentText = document.getElementById('commentText');
         const sendCommentBtn = document.getElementById('sendCommentBtn');
         const cancelCommentBtn = document.getElementById('cancelCommentBtn');
 
+        // Variables
         let currentUser = null;
         let userData = { name: 'بشمهندس', activePackages: {} };
         let lastPostDoc = null;
@@ -1062,7 +1073,9 @@
         let currentPostForComment = null;
         let packagesCache = new Map();
         let allCommentsCache = new Map();
+        let swiperInstance = null;
 
+        // Utility Functions
         function showToast(text, isError = false) {
             const toast = document.createElement('div');
             toast.className = `toast-message ${isError ? 'error' : ''}`;
@@ -1073,12 +1086,7 @@
 
         function escapeHtml(str) {
             if (!str) return '';
-            return String(str).replace(/[&<>]/g, function (m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
+            return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
         }
 
         function formatRelativeTime(timestamp) {
@@ -1101,6 +1109,7 @@
             return true;
         }
 
+        // Auth
         async function checkAuthAndLoad() {
             return new Promise((resolve, reject) => {
                 onAuthStateChanged(auth, async (user) => {
@@ -1128,12 +1137,19 @@
             });
         }
 
+        // Data Functions
         async function loadMyPackages() {
             if (!userData.activePackages || typeof userData.activePackages !== 'object') return [];
             const entries = Object.entries(userData.activePackages);
             if (entries.length === 0) return [];
+            
             const now = new Date();
-            const activeEntries = entries.filter(([_, sub]) => !sub.expiresAt || (sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt)) >= now);
+            const activeEntries = entries.filter(([_, sub]) => {
+                if (!sub.expiresAt) return true;
+                const expiresDate = sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt);
+                return expiresDate >= now;
+            });
+            
             if (activeEntries.length === 0) return [];
 
             const packages = [];
@@ -1144,8 +1160,9 @@
                     try {
                         const pkg = await getDoc(doc(db, 'PKG_packages', pkgId));
                         if (pkg.exists()) {
-                            packagesCache.set(pkgId, { id: pkgId, ...pkg.data() });
-                            packages.push(packagesCache.get(pkgId));
+                            const packageData = { id: pkgId, ...pkg.data() };
+                            packagesCache.set(pkgId, packageData);
+                            packages.push(packageData);
                         }
                     } catch (e) {}
                 }
@@ -1159,7 +1176,7 @@
                 const packages = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 packages.forEach(p => packagesCache.set(p.id, p));
                 return packages;
-            } catch {
+            } catch (error) {
                 return [];
             }
         }
@@ -1245,14 +1262,17 @@
                     document.getElementById('footerMessage').innerHTML = `<i class="fas fa-quote-right"></i> ${data.message || 'نبني جيلاً من المبرمجين العرب...'}`;
                 } else {
                     await setDoc(doc(db, 'FOOTER_stats', 'main'), {
-                        students: 0, courses: 0, lessons: 0,
+                        students: 1250, courses: 8, lessons: 120,
                         quote: '"رحلة الألف ميل تبدأ بخطوة... وخطوتك الأولى نحو عالم البرمجة تبدأ من هنا"',
                         message: 'نبني جيلاً من المبرمجين العرب القادرين على صناعة المستقبل. نؤمن بأن التعليم هو المفتاح، وأن البرمجة هي لغة العصر.',
                         updatedAt: serverTimestamp()
                     });
+                    document.getElementById('footerStudents').textContent = 1250;
+                    document.getElementById('footerCourses').textContent = 8;
+                    document.getElementById('footerLessons').textContent = 120;
                 }
             } catch (error) {
-                console.warn('خطأ في تحميل محتوى الفوتر:', error);
+                console.warn('خطأ في تحميل الفوتر:', error);
             }
         }
 
@@ -1293,11 +1313,11 @@
                     </div>
                 `;
             });
-
+            
             if (hasMoreComments) {
                 commentsHtml += `<div class="show-more-comments" data-post="${post.id}">عرض المزيد من التعليقات (${post.commentsCount - comments.length}) <i class="fas fa-arrow-down"></i></div>`;
             }
-
+            
             return `
                 <div class="post-item" data-post-id="${post.id}">
                     <div class="post-sender">
@@ -1330,146 +1350,23 @@
             if (!feed) return;
             if (!append) feed.innerHTML = '';
             const likedSet = await getUserLikes(posts.map(p => p.id));
-
+            
             for (const post of posts) {
                 const postHtml = await renderPost(post, likedSet);
                 feed.insertAdjacentHTML('beforeend', postHtml);
             }
-
+            
             document.querySelectorAll('.action-like').forEach(btn => {
                 const pid = btn.dataset.post;
                 const likesSpan = btn.querySelector('.likes-count');
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    handleLike(btn, pid, likesSpan);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); handleLike(btn, pid, likesSpan); });
             });
             document.querySelectorAll('.action-comment').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    currentPostForComment = btn.dataset.post;
-                    commentModal.classList.add('show');
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); currentPostForComment = btn.dataset.post; commentModal.classList.add('show'); });
             });
             document.querySelectorAll('.show-more-comments').forEach(el => {
                 el.addEventListener('click', () => showToast('سيتم عرض جميع التعليقات قريباً'));
             });
-        }
-
-        async function loadHomePage() {
-            skeletonLoader.classList.remove('hidden');
-            actualContent.classList.add('hidden');
-            if (!checkOnlineStatus()) {
-                showError('لا يوجد اتصال بالإنترنت');
-                skeletonLoader.classList.add('hidden');
-                return;
-            }
-
-            try {
-                const [myPackages, featuredPackages, initialPosts] = await Promise.all([loadMyPackages(), loadFeaturedPackages(), loadPosts(false)]);
-                await loadFooterContent();
-
-                let html = `
-                    <div class="welcome-card" data-aos="fade-down">
-                        <h2>مرحباً ${escapeHtml(userData.name || 'بشمهندس')} 👋</h2>
-                        <p><i class="fas fa-code"></i> مستعد تتعلم حاجة جديدة النهاردة؟</p>
-                    </div>
-                `;
-
-                html += `<div class="section-header"><div class="section-title"><i class="fas fa-crown"></i> باقاتي</div></div>`;
-                html += `<div class="packages-scroll-container">`;
-                if (!myPackages || myPackages.length === 0) {
-                    html += `<div class="my-packages-scroll"><div class="empty-packages-card"><i class="fas fa-frown"></i><div><h4>لا توجد باقات نشطة</h4><p style="font-size:12px;">اشترك في باقة لبدء التعلم</p></div><button class="btn-browse" id="browsePackagesBtn"><i class="fas fa-search"></i> استعرض</button></div></div>`;
-                } else {
-                    html += `<div class="my-packages-scroll" id="myPackagesScroll">`;
-                    if (myPackages.length > 2) html += `<div class="scroll-hint"><i class="fas fa-arrow-left"></i> اسحب للمزيد</div>`;
-                    myPackages.forEach(pkg => {
-                        let dateText = pkg.startDate || 'قريباً';
-                        if (pkg.subscription?.expiresAt) {
-                            try {
-                                dateText = `ينتهي: ${pkg.subscription.expiresAt.toDate().toLocaleDateString('ar-EG')}`;
-                            } catch (e) {}
-                        }
-                        html += `<div class="my-package-card" onclick="location.href='platform.html?packageId=${pkg.id}'">
-                            <div class="my-package-img"><i class="fas fa-cubes"></i></div>
-                            <div class="my-package-name">${escapeHtml(pkg.name || 'باقة')}</div>
-                            <div class="my-package-date"><i class="fas fa-calendar-alt"></i> ${dateText}</div>
-                        </div>`;
-                    });
-                    html += `</div>`;
-                }
-                html += `</div>`;
-
-                html += `<div class="section-header"><div class="section-title"><i class="fas fa-star"></i> باقات مميزة</div><div class="section-link" onclick="location.href='packages.html'">عرض الكل <i class="fas fa-arrow-left"></i></div></div>`;
-                html += `<div class="packages-swiper"><div class="swiper packagesSwiper"><div class="swiper-wrapper">`;
-                if (featuredPackages.length === 0) {
-                    html += `<div class="swiper-slide"><div style="padding:30px; text-align:center;">لا توجد باقات</div></div>`;
-                } else {
-                    featuredPackages.forEach(pkg => {
-                        let featuresHtml = '';
-                        if (Array.isArray(pkg.features) && pkg.features.length > 0) {
-                            featuresHtml = pkg.features.map(f => `
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>${escapeHtml(f)}</span>
-                                </div>
-                            `).join('');
-                        } else if (typeof pkg.features === 'string' && pkg.features.trim()) {
-                            const featuresArr = pkg.features.split(',').map(f => f.trim());
-                            featuresHtml = featuresArr.map(f => `
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>${escapeHtml(f)}</span>
-                                </div>
-                            `).join('');
-                        } else {
-                            featuresHtml = `<div class="feature-item"><i class="fas fa-check-circle"></i><span>مميزات متنوعة</span></div>`;
-                        }
-
-                        html += `<div class="swiper-slide"><div class="package-card">
-                            <div class="package-badge">${escapeHtml(pkg.badge || 'مميزة')}</div>
-                            <h3 class="package-name">${escapeHtml(pkg.name)}</h3>
-                            <div class="package-price">${pkg.price || 0}<small> جنيه / ${escapeHtml(pkg.duration || 'شهر')}</small></div>
-                            <div class="package-features">${featuresHtml}</div>
-                            <button class="subscribe-btn" data-id="${pkg.id}"><i class="fas fa-crown"></i> اشترك الآن</button>
-                        </div></div>`;
-                    });
-                }
-                html += `</div></div></div>`;
-
-                html += `<div class="feed-container"><div class="feed-header"><h2><i class="fas fa-rss"></i> آخر الأخبار</h2></div><div id="postsFeed"></div><div id="infiniteTrigger" class="infinite-scroll-trigger" style="height:20px;"></div></div>`;
-
-                actualContent.innerHTML = html;
-                skeletonLoader.classList.add('hidden');
-                actualContent.classList.remove('hidden');
-
-                await renderPosts(initialPosts, false);
-                setupInfiniteScroll();
-
-                document.getElementById('browsePackagesBtn')?.addEventListener('click', () => location.href = 'packages.html');
-                document.querySelectorAll('.subscribe-btn').forEach(btn => btn.addEventListener('click', () => location.href = `payment.html?packageId=${btn.dataset.id}`));
-                new Swiper('.packagesSwiper', {
-                    slidesPerView: 'auto',
-                    spaceBetween: 14,
-                    freeMode: true,
-                    rtl: true
-                });
-                AOS.init({
-                    duration: 500,
-                    once: true
-                });
-            } catch (error) {
-                console.error(error);
-                showError('حدث خطأ في تحميل الصفحة');
-            } finally {
-                setTimeout(() => loadingScreen.classList.add('hidden'), 300);
-            }
-        }
-
-        function showError(msg) {
-            actualContent.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>عذراً</h3><p>${msg}</p><button class="btn-send" onclick="location.reload()" style="margin-top:16px;">إعادة المحاولة</button></div>`;
-            actualContent.classList.remove('hidden');
-            skeletonLoader.classList.add('hidden');
         }
 
         function setupInfiniteScroll() {
@@ -1483,17 +1380,131 @@
                         trigger.innerHTML = '';
                         if (newPosts.length) await renderPosts(newPosts, true);
                         else hasMorePosts = false;
-                    } catch {
-                        trigger.innerHTML = '';
-                        hasMorePosts = false;
-                    }
+                    } catch { trigger.innerHTML = ''; }
                 }
-            }, {
-                threshold: 0.1
-            });
+            }, { threshold: 0.1 });
             observer.observe(trigger);
         }
 
+        async function loadHomePage() {
+            skeletonLoader.classList.remove('hidden');
+            actualContent.classList.add('hidden');
+            if (!checkOnlineStatus()) {
+                showError('لا يوجد اتصال بالإنترنت');
+                skeletonLoader.classList.add('hidden');
+                return;
+            }
+            
+            try {
+                const [myPackages, featuredPackages, initialPosts] = await Promise.all([loadMyPackages(), loadFeaturedPackages(), loadPosts(false)]);
+                await loadFooterContent();
+                
+                let html = `
+                    <div class="welcome-card" data-aos="fade-down">
+                        <h2>مرحباً ${escapeHtml(userData.name || 'بشمهندس')} 👋</h2>
+                        <p><i class="fas fa-code"></i> مستعد تتعلم حاجة جديدة النهاردة؟</p>
+                    </div>
+                `;
+                
+                html += `<div class="section-header"><div class="section-title"><i class="fas fa-crown"></i> باقاتي</div></div>`;
+                html += `<div class="packages-scroll-container">`;
+                if (!myPackages || myPackages.length === 0) {
+                    html += `<div class="my-packages-scroll"><div class="empty-packages-card"><i class="fas fa-frown"></i><div><h4>لا توجد باقات نشطة</h4><p style="font-size:12px;">اشترك في باقة لبدء التعلم</p></div><button class="btn-browse" id="browsePackagesBtn"><i class="fas fa-search"></i> استعرض</button></div></div>`;
+                } else {
+                    html += `<div class="my-packages-scroll" id="myPackagesScroll">`;
+                    if (myPackages.length > 2) html += `<div class="scroll-hint"><i class="fas fa-arrow-left"></i> اسحب للمزيد</div>`;
+                    myPackages.forEach(pkg => {
+                        let dateText = 'نشط';
+                        if (userData.activePackages[pkg.id]?.expiresAt) {
+                            try {
+                                const expiresDate = userData.activePackages[pkg.id].expiresAt.toDate();
+                                dateText = `ينتهي: ${expiresDate.toLocaleDateString('ar-EG')}`;
+                            } catch(e) {}
+                        }
+                        html += `<div class="my-package-card" onclick="location.href='platform.html?packageId=${pkg.id}'">
+                            <div class="my-package-img"><i class="fas fa-cubes"></i></div>
+                            <div class="my-package-name">${escapeHtml(pkg.name || 'باقة')}</div>
+                            <div class="my-package-date"><i class="fas fa-calendar-alt"></i> ${dateText}</div>
+                        </div>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `</div>`;
+                
+                html += `<div class="section-header"><div class="section-title"><i class="fas fa-star"></i> باقات مميزة</div><div class="section-link" onclick="location.href='packages.html'">عرض الكل <i class="fas fa-arrow-left"></i></div></div>`;
+                html += `<div class="packages-swiper"><div class="swiper packagesSwiper"><div class="swiper-wrapper">`;
+                if (featuredPackages.length === 0) {
+                    html += `<div class="swiper-slide"><div style="padding:30px; text-align:center;">لا توجد باقات</div></div>`;
+                } else {
+                    featuredPackages.forEach(pkg => {
+                        let featuresHtml = '';
+                        if (Array.isArray(pkg.features) && pkg.features.length > 0) {
+                            featuresHtml = pkg.features.slice(0, 3).map(f => `<div class="feature-item"><i class="fas fa-check-circle"></i><span>${escapeHtml(f)}</span></div>`).join('');
+                        } else if (typeof pkg.features === 'string' && pkg.features.trim()) {
+                            const featuresArr = pkg.features.split(',').map(f => f.trim()).slice(0, 3);
+                            featuresHtml = featuresArr.map(f => `<div class="feature-item"><i class="fas fa-check-circle"></i><span>${escapeHtml(f)}</span></div>`).join('');
+                        } else {
+                            featuresHtml = `<div class="feature-item"><i class="fas fa-check-circle"></i><span>مميزات متنوعة</span></div>`;
+                        }
+                        html += `<div class="swiper-slide"><div class="package-card">
+                            <div class="package-badge">${escapeHtml(pkg.badge || 'مميزة')}</div>
+                            <h3 class="package-name">${escapeHtml(pkg.name)}</h3>
+                            <div class="package-price">${pkg.price || 0}<small> جنيه / ${escapeHtml(pkg.duration || 'شهر')}</small></div>
+                            <div class="package-features">${featuresHtml}</div>
+                            <button class="subscribe-btn" data-id="${pkg.id}"><i class="fas fa-crown"></i> اشترك الآن</button>
+                        </div></div>`;
+                    });
+                }
+                html += `</div></div></div>`;
+                
+                html += `<div class="feed-container"><div class="feed-header"><h2><i class="fas fa-rss"></i> آخر الأخبار</h2></div><div id="postsFeed"></div><div id="infiniteTrigger" class="infinite-scroll-trigger" style="height:20px;"></div></div>`;
+                
+                actualContent.innerHTML = html;
+                skeletonLoader.classList.add('hidden');
+                actualContent.classList.remove('hidden');
+                
+                await renderPosts(initialPosts, false);
+                setupInfiniteScroll();
+                
+                document.getElementById('browsePackagesBtn')?.addEventListener('click', () => location.href = 'packages.html');
+                document.querySelectorAll('.subscribe-btn').forEach(btn => btn.addEventListener('click', () => location.href = `payment.html?packageId=${btn.dataset.id}`));
+                
+                if (swiperInstance) swiperInstance.destroy();
+                swiperInstance = new Swiper('.packagesSwiper', { slidesPerView: 'auto', spaceBetween: 14, freeMode: true, rtl: true });
+                AOS.init({ duration: 500, once: true });
+                
+            } catch (error) {
+                console.error(error);
+                showError('حدث خطأ في تحميل الصفحة');
+            } finally {
+                setTimeout(() => loadingScreen.classList.add('hidden'), 300);
+            }
+        }
+        
+        function showError(msg) {
+            actualContent.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle" style="font-size:48px;color:#dc2626;margin-bottom:16px;"></i><h3>عذراً</h3><p>${msg}</p><button class="btn-send" onclick="location.reload()" style="margin-top:16px;max-width:200px;margin-left:auto;margin-right:auto;">إعادة المحاولة</button></div>`;
+            actualContent.classList.remove('hidden');
+            skeletonLoader.classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (tabName === 'home') {
+                tabHome.classList.add('active');
+                loadHomePage();
+            } else if (tabName === 'subs') {
+                tabMySubs.classList.add('active');
+                window.location.href = 'pay.html';
+            } else if (tabName === 'try') {
+                tabTry.classList.add('active');
+                window.location.href = 'try.html';
+            } else if (tabName === 'day') {
+                tabDay.classList.add('active');
+                window.location.href = 'day.html';
+            }
+        }
+
+        // Event Listeners
         sendCommentBtn.addEventListener('click', async () => {
             if (currentPostForComment) {
                 const success = await addComment(currentPostForComment, commentText.value);
@@ -1506,25 +1517,26 @@
                 }
             }
         });
+        
         cancelCommentBtn.addEventListener('click', () => {
             commentModal.classList.remove('show');
             commentText.value = '';
+            currentPostForComment = null;
         });
-
+        
         logoutBtn.addEventListener('click', async () => {
             await signOut(auth);
             localStorage.removeItem('edu_user');
             location.replace('index.html');
         });
-        tabHome.addEventListener('click', () => location.reload());
-        tabMySubs.addEventListener('click', () => location.href = 'pay.html');
-        tabTry.addEventListener('click', () => location.href = 'try.html');
-
-        window.addEventListener('scroll', () => backToTop.classList.toggle('visible', window.scrollY > 300));
-        backToTop.addEventListener('click', () => window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        }));
+        
+        tabHome.addEventListener('click', () => switchTab('home'));
+        tabMySubs.addEventListener('click', () => switchTab('subs'));
+        tabTry.addEventListener('click', () => switchTab('try'));
+        tabDay.addEventListener('click', () => switchTab('day'));
+        
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        
         window.addEventListener('online', () => {
             offlineBanner.classList.remove('show');
             showToast('تم استعادة الاتصال');
@@ -1535,7 +1547,8 @@
         async function init() {
             try {
                 await checkAuthAndLoad();
-                await loadHomePage();
+                loadingScreen.classList.add('hidden');
+                loadHomePage();
             } catch (error) {
                 loadingScreen.classList.add('hidden');
                 showError('فشل تحميل البيانات');
