@@ -362,6 +362,7 @@
     let currentName = '', currentPhone = '';
     let isProcessing = false;
     let splashCompleted = false;
+    let authUnsubscribe = null; // لتخزين دالة إلغاء الاشتراك
 
     function showMessage(text, isSuccess = true) {
       globalMsg.classList.remove('hidden', 'message-success', 'message-error');
@@ -385,7 +386,6 @@
     function validatePhone(phone) { return /^01[0-9]{9}$/.test(phone); }
     function validateName(name) { return /^[\u0600-\u06FF\s]{3,50}$/.test(name); }
     
-    // ========== إنشاء بريد ثابت من رقم الهاتف ==========
     function generateEmailFromPhone(phone) {
       return `${phone}@manassa.com`;
     }
@@ -408,9 +408,14 @@
       window.location.replace('index.html');
     }
 
+    // === الدالة المعدلة: إلغاء الاشتراك فور الحصول على أول نتيجة ===
     async function checkSessionAndRedirect() {
       return new Promise((resolve) => {
-        onAuthStateChanged(auth, async (user) => {
+        // إنشاء مراقب لمرة واحدة فقط
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+          // فور دخولنا هنا نلغي الاشتراك لمنع التنفيذ المتكرر
+          unsubscribe();
+          
           if (user) {
             const existsInFirestore = await verifyUserInFirestore(user.uid);
             if (existsInFirestore) {
@@ -428,6 +433,8 @@
           }
           resolve(user);
         });
+        // تخزين الدالة لاستخدامها لاحقاً إذا لزم الأمر (اختياري)
+        authUnsubscribe = unsubscribe;
       });
     }
 
@@ -523,12 +530,11 @@
         const userCred = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
 
-        // حفظ في Firestore مع تخزين البريد الثابت
         await setDoc(doc(db, 'STU_users', user.uid), {
           uid: user.uid,
           name: name,
           phone: phone,
-          email: email,  // حفظ البريد الثابت للرجوع إليه لاحقاً
+          email: email,
           school: school,
           role: 'student',
           activePackages: {},
@@ -560,7 +566,7 @@
       }
     });
 
-    // ========== تسجيل الدخول الذكي (البحث في Firestore أولاً) ==========
+    // ========== تسجيل الدخول المعدل: التأكد من اكتمال lastLogin قبل التوجيه ==========
     loginBtn.addEventListener('click', async () => {
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
@@ -585,7 +591,7 @@
       setButtonLoading(loginBtn, true);
 
       try {
-        // 1. البحث في Firestore عن المستخدم بهذا الرقم
+        // البحث في Firestore عن المستخدم بهذا الرقم
         const usersRef = collection(db, 'STU_users');
         const q = query(usersRef, where('phone', '==', phone));
         const querySnapshot = await getDocs(q);
@@ -597,16 +603,15 @@
           return;
         }
 
-        // 2. استخراج البريد الإلكتروني من المستند
         const userDoc = querySnapshot.docs[0];
         const userData = userDoc.data();
         const email = userData.email || generateEmailFromPhone(phone);
 
-        // 3. تسجيل الدخول باستخدام البريد المستخرج
+        // تنفيذ تسجيل الدخول
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
 
-        // 4. التأكد من وجود المستند في Firestore
+        // التأكد من وجود المستند في Firestore
         const userDocExists = await getDoc(doc(db, 'STU_users', user.uid));
         if (!userDocExists.exists()) {
           console.error('مستخدم بدون بيانات في Firestore');
@@ -617,9 +622,10 @@
           return;
         }
 
-        // 5. تحديث آخر تسجيل دخول
+        // ⭐ تحديث lastLogin وانتظار اكتمال العملية بشكل صريح
         await setDoc(doc(db, 'STU_users', user.uid), { lastLogin: serverTimestamp() }, { merge: true });
 
+        // تخزين البيانات في localStorage بعد التأكد من اكتمال الكتابة
         localStorage.setItem('edu_user', JSON.stringify({
           uid: user.uid,
           name: userData.name || 'مستخدم',
@@ -628,6 +634,7 @@
         }));
 
         showMessage('✅ تم تسجيل الدخول بنجاح! جاري التحويل...', true);
+        // التوجيه بعد التأكد من اكتمال جميع العمليات (setDoc تم الانتهاء منه)
         setTimeout(() => window.location.replace('home.html'), 1200);
 
       } catch (error) {
@@ -659,6 +666,7 @@
         checkSessionAndRedirect();
       }, 800);
     }
+    
     function startSplashScreen() {
       setTimeout(() => {
         if (!splashCompleted) {
@@ -686,7 +694,12 @@
     }
     init();
     updateWhatsAppLink();
-    window.debugLogout = async () => { await signOut(auth); localStorage.removeItem('edu_user'); window.location.reload(); };
+    window.debugLogout = async () => { 
+      if (authUnsubscribe && typeof authUnsubscribe === 'function') authUnsubscribe();
+      await signOut(auth); 
+      localStorage.removeItem('edu_user'); 
+      window.location.reload(); 
+    };
   </script>
 </body>
 </html>
