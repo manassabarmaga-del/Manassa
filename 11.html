@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <meta name="theme-color" content="#b48b6f">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>بنك الأسئلة التدريبية | مهندس إسماعيل</title>
     <style>
         * {
@@ -14,415 +13,280 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* دعم الوضع الليلي التلقائي */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: linear-gradient(135deg, #2d2a24 0%, #1a1815 100%);
-                color: #fef3e2;
-            }
-            .quiz-card {
-                background: rgba(45, 42, 36, 0.92);
-                backdrop-filter: blur(8px);
-                color: #fef3e2;
-            }
-            .question-text {
-                color: #fef3e2;
-            }
-            .option-btn {
-                background: rgba(242, 229, 214, 0.15);
-                border-color: rgba(224, 203, 178, 0.3);
-                color: #fef3e2;
-            }
-            .option-btn:hover {
-                background: rgba(242, 229, 214, 0.25);
-            }
-            .feedback {
-                background: rgba(248, 240, 228, 0.15);
-            }
-            .footer-badge {
-                background: rgba(232, 213, 191, 0.2);
-                color: #fef3e2;
-            }
-            .code-container, .code-text, pre code, pre {
-                background-color: #1e1e1e !important;
-                color: #d4d4d4;
-            }
-        }
-
         body {
             background: linear-gradient(135deg, #e0c3a5 0%, #f9e0b5 100%);
-            font-family: 'Amiri', 'Times New Roman', 'Segoe UI', system-ui, serif;
-            padding: clamp(0.75rem, 4vw, 1.5rem);
+            font-family: 'Amiri', 'Segoe UI', system-ui, serif;
+            padding: 12px;
             color: #2d2a24;
             min-height: 100vh;
-            /* تثبيت الصفحة ومنع الـ floating */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
         }
 
         .app-container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: clamp(1rem, 4vw, 1.8rem);
-            /* تثبيت الصفحة */
-            position: relative;
-            top: 0;
-            left: 0;
+            gap: 16px;
         }
 
-        /* Glassmorphism للبطاقة العلوية */
         .hero-card {
-            background: rgba(180, 139, 111, 0.85);
+            background: rgba(180, 139, 111, 0.9);
             backdrop-filter: blur(10px);
-            border-radius: clamp(1rem, 5vw, 2rem);
-            padding: clamp(1rem, 5vw, 1.8rem);
+            border-radius: 24px;
+            padding: 20px 16px;
             color: #fef3e2;
             text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .hero-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .hero-card h1 {
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.35rem;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
 
         .hero-tag {
-            font-size: clamp(1rem, 4vw, 1.3rem);
-            background: rgba(0, 0, 0, 0.4);
-            font-weight: 600;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.3);
             display: inline-block;
-            padding: 0.25rem 1rem;
-            border-radius: 60px;
-            margin: 0.5rem 0;
+            padding: 5px 12px;
+            border-radius: 40px;
+            margin: 8px 0;
         }
 
         .highlight {
             background: #f9e0b5;
             color: #b48b6f;
-            font-weight: bold;
-            padding: 0.2rem 0.6rem;
+            padding: 4px 12px;
             border-radius: 32px;
             display: inline-block;
-            margin: 0.25rem 0;
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            font-size: 13px;
         }
 
         .info-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.8rem;
-            margin-top: 0.8rem;
-            font-size: clamp(0.85rem, 3vw, 1rem);
+            gap: 10px;
+            margin-top: 12px;
         }
 
         .info-links a, .info-links span {
             background: rgba(255, 255, 255, 0.2);
-            padding: 0.3rem 0.9rem;
+            padding: 5px 12px;
             border-radius: 40px;
             text-decoration: none;
             color: white;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-size: 12px;
         }
 
-        .info-links a:hover {
-            background: #f9e0b5;
-            color: #b48b6f;
-            transform: scale(1.05);
-        }
-
-        /* بطاقة السؤال - Glassmorphism */
         .quiz-card {
-            background: rgba(255, 250, 242, 0.92);
+            background: rgba(255, 250, 242, 0.95);
             backdrop-filter: blur(8px);
-            border-radius: clamp(1rem, 4vw, 1.8rem);
-            padding: clamp(1rem, 4vw, 1.5rem);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        .quiz-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         .question-header {
             display: flex;
-            align-items: baseline;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
             border-right: 4px solid #b48b6f;
-            padding-right: 0.8rem;
+            padding-right: 12px;
         }
 
         .q-num {
             background: #b48b6f;
             color: white;
-            border-radius: 60px;
-            width: 2.4rem;
-            height: 2.4rem;
-            display: inline-flex;
+            border-radius: 50px;
+            width: 36px;
+            height: 36px;
+            display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 16px;
             flex-shrink: 0;
         }
 
         .question-text {
-            font-size: clamp(1rem, 4vw, 1.25rem);
+            font-size: 16px;
             font-weight: 600;
             color: #3a2c21;
-            line-height: 1.4;
+            line-height: 1.5;
             flex: 1;
         }
 
-        /* --- تحسين عرض الكود البرمجي (حجم خط مناسب) --- */
-        /* عناصر الكود داخل النص (Inline) */
-        .quiz-card .code-inline {
-            display: inline-block;
+        /* تنسيق الكود البرمجي - بدون كسر للأسطر */
+        .code-block {
             direction: ltr;
             text-align: left;
-            background-color: #f4f4f4;
-            padding: 2px 5px;
-            font-family: 'Courier New', monospace;
-            unicode-bidi: isolate;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin: 0 2px;
-        }
-        
-        /* عناصر الكود كبلوك كامل - حجم خط مناسب */
-        .quiz-card .code-container,
-        .quiz-card pre.code-container {
-            display: block;
-            direction: ltr;
-            text-align: left;
-            background-color: #f4f4f4;
-            padding: 10px;
-            font-family: 'Courier New', monospace;
-            unicode-bidi: isolate;
-            border-radius: 10px;
-            margin: 10px 0;
-            overflow-x: auto;
-            white-space: pre;
-            word-spacing: normal;
-            word-break: normal;
-            line-height: 1.4;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 12px;
-            /* تصغير حجم الخط */
-            font-size: 0.85rem;
-        }
-        
-        /* تنسيق الـ pre و code بشكل عام */
-        .quiz-card pre,
-        .quiz-card code {
-            direction: ltr;
-            text-align: left;
-            unicode-bidi: isolate;
-        }
-        
-        .quiz-card pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 10px 0;
-            overflow-x: auto;
-            white-space: pre;
-            word-spacing: normal;
-            word-break: normal;
-            padding-bottom: 12px;
-            font-size: 0.85rem;
-        }
-        
-        /* تحسين عرض الصور */
-        img {
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            padding: 14px;
+            margin: 12px 0;
             border-radius: 12px;
+            overflow-x: auto;
+            white-space: pre;
+            word-break: normal;
+            word-wrap: normal;
+            tab-size: 4;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.1);
+            border: 1px solid #3c3c3c;
         }
-        
-        /* --- نهاية تحسين عرض الكود --- */
+
+        .code-block code {
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            padding: 0;
+            white-space: pre;
+        }
+
+        .inline-code {
+            background: #2d2a24;
+            color: #f9e0b5;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            direction: ltr;
+            display: inline-block;
+            white-space: nowrap;
+        }
 
         .options {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            margin: 1rem 0 0.8rem;
-            transition: all 0.3s ease;
+            gap: 10px;
+            margin: 16px 0 12px;
         }
-        
-        /* منع التفاعل بعد الإجابة */
+
         .options.disabled {
             pointer-events: none;
             opacity: 0.9;
         }
 
-        /* خيارات كأزرار لمس - تحسين أهداف اللمس */
         .option-btn {
             background: rgba(242, 229, 214, 0.9);
             border: 1px solid #e0cbb2;
             border-radius: 60px;
-            padding: clamp(0.6rem, 2.5vw, 0.8rem) 1rem;
-            font-size: clamp(0.85rem, 3.5vw, 1rem);
-            font-family: 'Amiri', monospace;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: 'Amiri', sans-serif;
             font-weight: 500;
             text-align: right;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             color: #2c241c;
-            min-height: 48px;
-            min-width: 100px;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 10px;
             flex-wrap: wrap;
-            word-break: break-word;
         }
-        
+
+        .option-btn .option-label {
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
         .option-btn .option-text {
             flex: 1;
-            min-width: 0;
             word-break: break-word;
         }
-        
-        .option-btn .option-label {
-            flex-shrink: 0;
-            font-weight: bold;
-        }
 
-        .option-btn:hover {
-            background: rgba(231, 211, 190, 0.9);
-            transform: scale(1.01);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        }
-        
-        .option-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* حالة التحديد - تحسين التغذية الراجعة */
         .option-btn.selected-correct {
-            background: #c8e6d9;
-            border: 2px solid #2e7d64;
-            color: #1a4a3b;
-            font-weight: bold;
-            position: relative;
-        }
-        
-        .option-btn.selected-correct::after {
-            content: " ✓ (الإجابة الصحيحة)";
-            font-size: 0.75rem;
-            font-weight: normal;
-            color: #2e7d64;
-            margin-right: auto;
-            flex-shrink: 0;
+            background: #2e7d64 !important;
+            border: 2px solid #1e5a48 !important;
+            color: white !important;
         }
 
         .option-btn.selected-wrong {
-            background: #ffe0db;
-            border: 2px solid #c23b22;
-            color: #a1301b;
-            position: relative;
-        }
-        
-        .option-btn.selected-wrong::after {
-            content: " ✗ (إجابتك)";
-            font-size: 0.75rem;
-            font-weight: normal;
-            color: #c23b22;
-            margin-right: auto;
-            flex-shrink: 0;
+            background: #c23b22 !important;
+            border: 2px solid #9e2e1a !important;
+            color: white !important;
         }
 
-        /* الفيدباك (التصحيح والشرح) */
         .feedback {
-            border-radius: 24px;
-            padding: 0.8rem 1rem;
-            margin-top: 0.8rem;
-            border-right: 4px solid #b48b6f;
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
-            line-height: 1.5;
-            transition: all 0.3s ease;
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .feedback.correct-feedback {
-            background: #e0f2e9;
-            border-right-color: #2b7a62;
-            box-shadow: 0 2px 8px rgba(43, 122, 98, 0.15);
+            background: #1e7b5e;
+            color: white;
+            border-right: 5px solid #ffd966;
         }
 
         .feedback.wrong-feedback {
-            background: #ffefea;
-            border-right-color: #c23b22;
-            box-shadow: 0 2px 8px rgba(194, 59, 34, 0.15);
-        }
-
-        .feedback-icon {
-            font-weight: bold;
-            margin-left: 0.4rem;
+            background: #c23b22;
+            color: white;
+            border-right: 5px solid #ffb347;
         }
 
         .footer-badge {
             text-align: center;
             background: rgba(232, 213, 191, 0.9);
-            backdrop-filter: blur(8px);
-            border-radius: 24px;
-            padding: 0.8rem;
-            margin-top: 0.5rem;
-            font-size: clamp(0.75rem, 3.2vw, 0.85rem);
+            border-radius: 20px;
+            padding: 12px;
+            font-size: 12px;
             color: #5c4432;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        /* تحسين التمرير للأكواد الطويلة */
-        pre::-webkit-scrollbar,
-        .code-container::-webkit-scrollbar {
-            height: 5px;
+        .code-block::-webkit-scrollbar {
+            height: 6px;
         }
-        
-        pre::-webkit-scrollbar-track,
-        .code-container::-webkit-scrollbar-track {
-            background: #e0cbb2;
-            border-radius: 8px;
+        .code-block::-webkit-scrollbar-track {
+            background: #2d2a24;
+            border-radius: 4px;
         }
-        
-        pre::-webkit-scrollbar-thumb,
-        .code-container::-webkit-scrollbar-thumb {
+        .code-block::-webkit-scrollbar-thumb {
             background: #b48b6f;
-            border-radius: 8px;
+            border-radius: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2d2a24 0%, #1a1815 100%);
+            }
+            .quiz-card {
+                background: rgba(45, 42, 36, 0.95);
+            }
+            .question-text {
+                color: #fef3e2;
+            }
+            .option-btn {
+                background: rgba(242, 229, 214, 0.12);
+                border-color: rgba(224, 203, 178, 0.3);
+                color: #fef3e2;
+            }
+            .footer-badge {
+                background: rgba(232, 213, 191, 0.2);
+                color: #fef3e2;
+            }
         }
         
-        /* تحسين التمرير العام */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* تثبيت الصفحة ومنع الـ floating نهائياً */
-        body {
-            overflow-x: hidden;
-        }
-        
-        .app-container {
-            overflow-x: hidden;
+        @media (max-width: 600px) {
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+            }
+            .option-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            .question-text {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -430,29 +294,26 @@
 <div class="app-container" id="appRoot"></div>
 
 <script>
-    // ----------------------------------------------
-    // مجموعة الأسئلة الكاملة (76 سؤالاً كاملاً)
-    // ----------------------------------------------
     const questionsData = [
-        { text: "ما هو ناتج تنفيذ الكود التالي؟\nlet x = 10;\nlet y = 5;\nconsole.log(x + y);", options: ["105", "15", "x + y", "5"], correct: 1, explanation: "أي عملية جمع أرقام عادية: 10 + 5 = 15. مافيش دمج نصوص هنا." },
+        { text: "ما هو ناتج تنفيذ الكود التالي؟\nlet x = 10;\nlet y = 5;\nconsole.log(x + y);", options: ["105", "15", "x + y", "5"], correct: 1, explanation: "10 + 5 = 15، عملية جمع أرقام عادية." },
         { text: "ما هي القيمة التي ستظهر في النهاية؟\nlet score = 100;\nscore = 150;\nconsole.log(score);", options: ["100", "250", "150", "Error"], correct: 2, explanation: "المتغير score اتغيرت قيمته لـ 150 وطبعت القيمة الجديدة." },
         { text: "حدد الكود الصحيح الذي يقوم بطباعة حاصل ضرب 4 في 3:", options: ["print(4 * 3);", "console.log(4 x 3);", "console.log(4 * 3);", "log.console(12);"], correct: 2, explanation: "في JavaScript بنستخدم console.log وعملية الضرب بعلامة النجمة *." },
-        { text: "ما هو ناتج تنفيذ البرنامج التالي؟\nlet a = 10;\nlet b = 2;\nconsole.log(a / b);\nconsole.log(a * b);", options: ["5 ثم 20", "12 ثم 8", "20 ثم 5", "5 ثم 12"], correct: 0, explanation: "القسمة 10/2 = 5 ، الضرب 10*2 = 20 ، يظهر الأول 5 ثم 20." },
+        { text: "ما هو ناتج تنفيذ البرنامج التالي؟\nlet a = 10;\nlet b = 2;\nconsole.log(a / b);\nconsole.log(a * b);", options: ["5 ثم 20", "12 ثم 8", "20 ثم 5", "5 ثم 12"], correct: 0, explanation: "القسمة 10/2 = 5 ، الضرب 10*2 = 20." },
         { text: "ما القيمة التي تظهر في الكونسول؟\nconsole.log(10 - 2 * 3);", options: ["24", "4", "8", "6"], correct: 1, explanation: "الأولويات: الضرب أولاً 2*3=6 بعدين 10-6=4." },
         { text: "ماذا سيطبع هذا الكود؟\nlet temperature = 25;\nif (temperature > 30) {\n    console.log(\"Hot\");\n} else {\n    console.log(\"Cool\");\n}", options: ["Hot", "Cool", "25", "لا يطبع شيء"], correct: 1, explanation: "25 مش أكبر من 30، فبيقف في else ويطبع Cool." },
-        { text: "حدد المخرجات للبرنامج التالي:\nlet grade = 75;\nif (grade >= 90) {\n    console.log(\"A\");\n} else if (grade >= 70) {\n    console.log(\"B\");\n} else {\n    console.log(\"C\");\n}", options: ["A", "B", "C", "B ثم C"], correct: 1, explanation: "75 أكبر من 70 فبيطبع B وبيخرج من الشروط." },
-        { text: "ما هي الرسالة التي ستظهر؟\nlet time = 20;\nif (time < 12) {\n    console.log(\"Good Morning\");\n} else if (time < 18) {\n    console.log(\"Good Afternoon\");\n} else {\n    console.log(\"Good Evening\");\n}", options: ["Good Morning", "Good Afternoon", "Good Evening", "Error"], correct: 2, explanation: "الساعة 20 (8 م) أكتر من 18 فبيقف في else ويطبع Good Evening." },
-        { text: "ماذا ستكون النتيجة؟\nlet age = 20;\nlet hasID = true;\nif (age >= 18 && hasID == true) {\n    console.log(\"Allowed\");\n} else {\n    console.log(\"Not Allowed\");\n}", options: ["Allowed", "Not Allowed", "True", "False"], correct: 0, explanation: "عمره 18 وفيه ID والشرط && يتحقق فيطبع Allowed." },
-        { text: "ما هو ناتج الكود التالي؟\nlet isWeekend = true;\nlet hasWork = false;\nif (isWeekend || hasWork) {\n    console.log(\"Stay Home\");\n} else {\n    console.log(\"Go Out\");\n}", options: ["Go Out", "Stay Home", "Error", "False"], correct: 1, explanation: "isWeekend = true ، (true OR false) = true => Stay Home." },
-        { text: "ما المخرج البرمجي هنا؟\nlet x = 5;\nif (x > 0 && x < 10) {\n    console.log(\"Inside Range\");\n}", options: ["5", "Inside Range", "0", "لا يطبع شيء"], correct: 1, explanation: "5 بين 0 و 10 فبيطبع Inside Range." },
+        { text: "حدد المخرجات للبرنامج التالي:\nlet grade = 75;\nif (grade >= 90) {\n    console.log(\"A\");\n} else if (grade >= 70) {\n    console.log(\"B\");\n} else {\n    console.log(\"C\");\n}", options: ["A", "B", "C", "B ثم C"], correct: 1, explanation: "75 أكبر من 70 فبيطبع B." },
+        { text: "ما هي الرسالة التي ستظهر؟\nlet time = 20;\nif (time < 12) {\n    console.log(\"Good Morning\");\n} else if (time < 18) {\n    console.log(\"Good Afternoon\");\n} else {\n    console.log(\"Good Evening\");\n}", options: ["Good Morning", "Good Afternoon", "Good Evening", "Error"], correct: 2, explanation: "الساعة 20 > 18 فبيطبع Good Evening." },
+        { text: "ماذا ستكون النتيجة؟\nlet age = 20;\nlet hasID = true;\nif (age >= 18 && hasID == true) {\n    console.log(\"Allowed\");\n} else {\n    console.log(\"Not Allowed\");\n}", options: ["Allowed", "Not Allowed", "True", "False"], correct: 0, explanation: "عمره 18 وفيه ID => Allowed." },
+        { text: "ما هو ناتج الكود التالي؟\nlet isWeekend = true;\nlet hasWork = false;\nif (isWeekend || hasWork) {\n    console.log(\"Stay Home\");\n} else {\n    console.log(\"Go Out\");\n}", options: ["Go Out", "Stay Home", "Error", "False"], correct: 1, explanation: "true OR false = true => Stay Home." },
+        { text: "ما المخرج البرمجي هنا؟\nlet x = 5;\nif (x > 0 && x < 10) {\n    console.log(\"Inside Range\");\n}", options: ["5", "Inside Range", "0", "لا يطبع شيء"], correct: 1, explanation: "5 بين 0 و 10 => Inside Range." },
         { text: "كم مرة ستتكرر كلمة 'Hello'؟\nfor (let i = 0; i < 3; i++) {\n    console.log(\"Hello\");\n}", options: ["مرتين", "3 مرات", "4 مرات", "مرة واحدة"], correct: 1, explanation: "i=0,1,2 => ثلاث مرات." },
         { text: "ما هي الأرقام التي سيتم طباعتها؟\nfor (let i = 1; i <= 3; i++) {\n    console.log(i);\n}", options: ["0, 1, 2", "1, 2, 3", "1, 2", "3, 3, 3"], correct: 1, explanation: "تبدأ من 1 وتنتهي عند 3 => 1 2 3." },
         { text: "ما هو ناتج جمع الأرقام في هذا الكود؟\nlet sum = 0;\nfor (let i = 1; i <= 2; i++) {\n    sum = sum + i;\n}\nconsole.log(sum);", options: ["1", "2", "3", "0"], correct: 2, explanation: "1+2 = 3." },
         { text: "ما هو ناتج الكود التالي؟\nlet x = 10;\nif (x % 2 == 0) {\n    console.log(\"Even\");\n} else {\n    console.log(\"Odd\");\n}", options: ["Odd", "Even", "10", "0"], correct: 1, explanation: "10 يقبل القسمة على 2 => Even." },
-        { text: "ماذا يطبع الكود التالي؟\nlet count = 5;\ncount = count + 1;\nif (count > 5) {\n    console.log(\"Larger\");\n}", options: ["5", "6", "Larger", "لا شيء"], correct: 2, explanation: "count = 6 أكبر من 5 فيطبع Larger." },
-        { text: "ما هي مخرجات هذا التكرار؟\nfor (let i = 5; i > 2; i--) {\n    console.log(i);\n}", options: ["5, 4, 3", "5, 4, 3, 2", "2, 3, 4, 5", "3, 4, 5"], correct: 0, explanation: "i=5,4,3 (لأن i>2) ويوقف عند 2." },
-        { text: "حدد البرنامج الذي يطبع 'Success' فقط إذا كانت الدرجة بين 50 و 100:", options: ["if (degree > 50 || degree < 100)", "if (degree >= 50 && degree <= 100) { console.log(\"Success\"); }", "if (degree == 50) { console.log(\"Success\"); }", "for (let i=50; i<=100; i++) { console.log(\"Success\"); }"], correct: 1, explanation: "باستخدام && علشان تكون بين 50 و 100 (شامل)." },
-        { text: "ماذا سيحدث عند تنفيذ هذا الكود؟\nlet user = \"Admin\";\nlet pass = \"123\";\nif (user == \"Admin\" && pass == \"000\") {\n    console.log(\"Login\");\n} else {\n    console.log(\"Fail\");\n}", options: ["Login", "Admin", "Fail", "123"], correct: 2, explanation: "user صحيح لكن pass != 000 فبيطبع Fail." },
+        { text: "ماذا يطبع الكود التالي؟\nlet count = 5;\ncount = count + 1;\nif (count > 5) {\n    console.log(\"Larger\");\n}", options: ["5", "6", "Larger", "لا شيء"], correct: 2, explanation: "count = 6 أكبر من 5 => Larger." },
+        { text: "ما هي مخرجات هذا التكرار؟\nfor (let i = 5; i > 2; i--) {\n    console.log(i);\n}", options: ["5, 4, 3", "5, 4, 3, 2", "2, 3, 4, 5", "3, 4, 5"], correct: 0, explanation: "i=5,4,3." },
+        { text: "حدد البرنامج الذي يطبع 'Success' فقط إذا كانت الدرجة بين 50 و 100:", options: ["if (degree > 50 || degree < 100)", "if (degree >= 50 && degree <= 100) { console.log(\"Success\"); }", "if (degree == 50) { console.log(\"Success\"); }", "for (let i=50; i<=100; i++) { console.log(\"Success\"); }"], correct: 1, explanation: "باستخدام && علشان تكون بين 50 و 100." },
+        { text: "ماذا سيحدث عند تنفيذ هذا الكود؟\nlet user = \"Admin\";\nlet pass = \"123\";\nif (user == \"Admin\" && pass == \"000\") {\n    console.log(\"Login\");\n} else {\n    console.log(\"Fail\");\n}", options: ["Login", "Admin", "Fail", "123"], correct: 2, explanation: "user صحيح لكن pass != 000 => Fail." },
         { text: "ما القيمة النهائية لـ i التي يتم طباعتها؟\nlet i = 10;\nfor (let i = 0; i < 5; i++) { }\nconsole.log(i);", options: ["0", "5", "4", "10"], correct: 3, explanation: "i اللي بره الحلقة مستقلة، قيمتها 10." },
         { text: "ما هو ناتج تنفيذ الكود التالي؟\nlet a = 12;\nlet b = 4;\nconsole.log(a / b + 2);", options: ["3", "5", "6", "14"], correct: 1, explanation: "12/4 =3 ، 3+2 = 5." },
         { text: "ما القيمة التي ستظهر في الكونسول؟\nlet x = 5;\nx = x * 2;\nx = x + 3;\nconsole.log(x);", options: ["10", "13", "25", "8"], correct: 1, explanation: "5*2=10 ، 10+3=13." },
@@ -536,50 +397,54 @@
         { text: "ماذا سيطبع في النهاية؟\nlet i = 0;\nfor (; i < 2; ) { i++; }\nconsole.log(i);", options: ["0", "1", "2", "Error"], correct: 2, explanation: "i تصبح 2." }
     ];
 
-    // دالة لتحديد إذا كان النص يحتوي على كود برمجي
-    function isCodeLine(line) {
-        return line.trim().match(/[{}();=+\-*/<>!&|]/) || 
-               line.includes('console.log') || 
-               line.includes('let ') || 
-               line.includes('const ') ||
-               line.includes('var ') ||
-               line.includes('if ') || 
-               line.includes('for ') ||
-               line.includes('while ') ||
-               line.includes('return ');
-    }
-    
-    // دالة لتنسيق النص مع الحفاظ على الكود البرمجي
-    function formatQuestionText(text) {
-        const lines = text.split('\n');
-        let formattedLines = [];
+    function formatQuestionText(fullText) {
+        const lines = fullText.split('\n');
+        let result = '';
+        let currentCodeLines = [];
+        let inCode = false;
         
         for (let line of lines) {
-            const trimmedLine = line.trim();
-            if (trimmedLine === '') {
-                formattedLines.push('<br>');
-            } else if (isCodeLine(line)) {
-                formattedLines.push(`<pre class="code-container"><code>${escapeHtml(line)}</code></pre>`);
+            const trimmed = line.trim();
+            const isCodeLine = /[{}();=+\-*/<>!&|]|\b(let|const|var|if|for|while|console\.log|function|return|else)\b/.test(line);
+            
+            if (isCodeLine && trimmed.length > 0) {
+                if (!inCode && currentCodeLines.length > 0) {
+                    if (currentCodeLines.length > 0) {
+                        result += `<pre class="code-block"><code>${escapeHtml(currentCodeLines.join('\n'))}</code></pre>`;
+                        currentCodeLines = [];
+                    }
+                }
+                inCode = true;
+                currentCodeLines.push(line);
             } else {
-                let formattedLine = escapeHtml(line);
-                formattedLine = formattedLine.replace(/`([^`]+)`/g, '<code class="code-inline">$1</code>');
-                formattedLine = formattedLine.replace(/\b(console\.log\([^)]+\)|let\s+\w+\s*=.*?;|const\s+\w+\s*=.*?;|var\s+\w+\s*=.*?;)\b/g, 
-                    '<code class="code-inline">$1</code>');
-                formattedLines.push(`<div>${formattedLine}</div>`);
+                if (inCode && currentCodeLines.length > 0) {
+                    result += `<pre class="code-block"><code>${escapeHtml(currentCodeLines.join('\n'))}</code></pre>`;
+                    currentCodeLines = [];
+                    inCode = false;
+                }
+                if (trimmed === '') {
+                    result += '<br>';
+                } else {
+                    let formattedLine = escapeHtml(line);
+                    formattedLine = formattedLine.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                    result += `<div>${formattedLine}</div>`;
+                }
             }
         }
         
-        return formattedLines.join('');
+        if (currentCodeLines.length > 0) {
+            result += `<pre class="code-block"><code>${escapeHtml(currentCodeLines.join('\n'))}</code></pre>`;
+        }
+        
+        return result || `<div>${escapeHtml(fullText)}</div>`;
     }
-    
-    // دالة لحماية النص من الـ HTML injection
+
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
-    // بناء التطبيق
     function renderApp() {
         const root = document.getElementById('appRoot');
         root.innerHTML = `
@@ -594,8 +459,8 @@
             </div>
             <div id="questionsContainer"></div>
             <div class="footer-badge">
-                ⚡ اختار الإجابة وستظهر لك علامة صح/خطأ مع الشرح بالعامية المصرية.<br>
-                🧠 مساعدة مجانية لتعلم البرمجة.
+                ⚡ اختار الإجابة وستظهر لك علامة صح/خطأ مع الشرح<br>
+                🧠 مساعدة مجانية لتعلم البرمجة
             </div>
         `;
 
@@ -607,7 +472,7 @@
             qCard.className = 'quiz-card';
             qCard.id = `q-${idx}`;
 
-            const formattedText = formatQuestionText(q.text);
+            const formattedQuestion = formatQuestionText(q.text);
 
             const optionsHtml = q.options.map((opt, optIdx) => {
                 const optionLetter = String.fromCharCode(65 + optIdx);
@@ -622,7 +487,7 @@
             qCard.innerHTML = `
                 <div class="question-header">
                     <div class="q-num">${idx+1}</div>
-                    <div class="question-text">${formattedText}</div>
+                    <div class="question-text">${formattedQuestion}</div>
                 </div>
                 <div class="options" id="options-${idx}">
                     ${optionsHtml}
@@ -632,9 +497,8 @@
             container.appendChild(qCard);
         });
 
-        // attach events بعد الإضافة
         document.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', () => {
                 const qIdx = parseInt(btn.dataset.qidx);
                 const selected = parseInt(btn.dataset.optidx);
                 const question = questionsData[qIdx];
@@ -643,10 +507,7 @@
                 const optionsContainer = document.getElementById(`options-${qIdx}`);
                 const allOptions = document.querySelectorAll(`#options-${qIdx} .option-btn`);
                 
-                if (optionsContainer.classList.contains('disabled')) {
-                    return;
-                }
-                
+                if (optionsContainer.classList.contains('disabled')) return;
                 optionsContainer.classList.add('disabled');
                 
                 allOptions.forEach(opt => {
@@ -664,17 +525,14 @@
                 const correctAnswerText = question.options[question.correct];
                 const feedbackMsg = isCorrect ? 
                     `✅✅ <strong>إجابتك صحيحة!</strong> ✅✅<br><br>📝 <strong>الشرح:</strong> ${question.explanation}` : 
-                    `❌❌ <strong>للأسف إجابتك خطأ</strong> ❌❌<br><br>📌 <strong>الإجابة الصحيحة هي:</strong> ${correctAnswerText}<br><br>📖 <strong>الشرح:</strong> ${question.explanation}`;
+                    `❌❌ <strong>للأسف إجابتك خطأ</strong> ❌❌<br><br>📌 <strong>الإجابة الصحيحة:</strong> ${correctAnswerText}<br><br>📖 <strong>الشرح:</strong> ${question.explanation}`;
                 
-                feedbackDiv.innerHTML = `<div class="feedback-icon">${isCorrect ? '✔️' : '⚠️'}</div> ${feedbackMsg}`;
+                feedbackDiv.innerHTML = feedbackMsg;
                 feedbackDiv.style.display = 'block';
                 feedbackDiv.className = `feedback ${isCorrect ? 'correct-feedback' : 'wrong-feedback'}`;
                 
                 setTimeout(() => {
-                    const cardElement = document.getElementById(`q-${qIdx}`);
-                    if (cardElement) {
-                        cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
+                    document.getElementById(`q-${qIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 100);
             });
         });
