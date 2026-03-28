@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>بنك الاسئلة | علوم الصف الثالث الإعدادي | أ. إسماعيل عماد</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(145deg, #eef2f9 0%, #e0e8f2 100%);
+      font-family: system-ui, 'Segoe UI', 'Cairo', 'Tahoma', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: clamp(1rem, 5vw, 2rem);
+      min-height: 100vh;
+    }
+
+    /* الحاوية الرئيسية – تصميم شبيه بالتطبيقات */
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(0px);
+      border-radius: clamp(1.5rem, 6vw, 2.5rem);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* الهيدر مع المعلومات الشخصية */
+    .hero-header {
+      background: linear-gradient(135deg, #0b2b40, #144d5c);
+      padding: clamp(1.5rem, 5vw, 2.2rem) clamp(1.2rem, 4vw, 2rem);
+      color: white;
+      text-align: center;
+      border-bottom-left-radius: 1.8rem;
+      border-bottom-right-radius: 1.8rem;
+    }
+
+    .hero-header h1 {
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .hero-header .teacher-name {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-weight: 500;
+      background: rgba(255,255,255,0.18);
+      display: inline-block;
+      padding: 0.3rem 1.2rem;
+      border-radius: 60px;
+      margin-top: 0.6rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-header .phone {
+      font-size: clamp(1rem, 3.8vw, 1.2rem);
+      direction: ltr;
+      display: inline-block;
+      background: #00000030;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      margin-top: 0.75rem;
+      font-weight: 500;
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-note {
+      background: #ffdfa5;
+      color: #4a2e00;
+      padding: 0.6rem 1rem;
+      border-radius: 60px;
+      font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+      font-weight: 500;
+      margin: 1rem 1.2rem 0 1.2rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* القسم الرئيسي */
+    .questions-section {
+      padding: clamp(1rem, 4vw, 2rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    /* كل بطاقة سؤال */
+    .question-card {
+      background: #ffffff;
+      border-radius: 1.8rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+      transition: transform 0.18s, box-shadow 0.2s;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .question-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 28px -12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* رأس السؤال */
+    .q-header {
+      background: #f8fafd;
+      padding: 1rem 1.4rem;
+      border-bottom: 2px solid #e3eaf2;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .q-num {
+      background: #144d5c;
+      color: white;
+      font-weight: bold;
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+    }
+
+    .q-text {
+      font-size: clamp(1rem, 4.2vw, 1.2rem);
+      font-weight: 700;
+      color: #0a2e3a;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    /* خيارات الإجابة */
+    .options {
+      padding: 0.8rem 1.4rem 0.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .option {
+      background: #fefefe;
+      border: 1px solid #e2e8f0;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1rem;
+      font-size: clamp(0.95rem, 3.8vw, 1rem);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.1s;
+    }
+
+    .option-letter {
+      font-weight: 800;
+      background: #eef2f9;
+      width: 2.2rem;
+      height: 2.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 60px;
+      color: #144d5c;
+      font-size: 1.1rem;
+    }
+
+    .option-text {
+      color: #1e2a3a;
+      font-weight: 500;
+    }
+
+    /* الإجابة الصحيحة والشرح الموسع */
+    .answer-box {
+      background: #eaf9f0;
+      margin: 0.8rem 1.4rem 1.4rem 1.4rem;
+      border-radius: 1.3rem;
+      padding: 1rem 1.2rem;
+      border-right: 5px solid #2c7a4d;
+    }
+
+    .correct-badge {
+      display: inline-block;
+      background: #2c7a4d;
+      color: white;
+      font-weight: bold;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .explanation-title {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #1c6b41;
+      margin: 0.5rem 0 0.3rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .explanation-text {
+      font-size: clamp(0.85rem, 3.6vw, 0.95rem);
+      line-height: 1.55;
+      color: #1f2f3a;
+      margin-top: 0.3rem;
+    }
+
+    .extra-note {
+      background: #fff1db;
+      border-radius: 1rem;
+      padding: 0.6rem 0.9rem;
+      margin-top: 0.7rem;
+      font-size: 0.85rem;
+      color: #8a5a2a;
+      border-right: 3px solid #f4b942;
+    }
+
+    hr {
+      margin: 0.5rem 0;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to left, #ccc0, #ddd, #ccc0);
+    }
+
+    /* جعل العناصر التفاعلية مناسبة للمس */
+    .option, .correct-badge, .badge-note {
+      cursor: default;
+    }
+    /* أزرار افتراضية غير تفاعلية لكنها مريحة */
+    .touch-friendly {
+      min-height: 44px;
+    }
+
+    /* تحسينات للشاشات الصغيرة جداً */
+    @media (max-width: 480px) {
+      body {
+        padding: 0.8rem;
+      }
+      .questions-section {
+        gap: 1.2rem;
+      }
+      .answer-box {
+        margin: 0.8rem 1rem 1rem 1rem;
+      }
+      .options {
+        padding: 0.6rem 1rem 0rem 1rem;
+      }
+    }
+
+    footer {
+      background: #eef2f6;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.75rem;
+      color: #4b6a7c;
+      border-top: 1px solid #d4dee8;
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="hero-header">
+    <h1>📘 بنك الاسئلة</h1>
+    <div class="teacher-name">أ/ إسماعيل عماد</div>
+    <div class="phone">📞 01122104596</div>
+    <div class="badge-note">
+      🧪  |     </div>
+  </div>
+  <div class="questions-section">
+    <!-- ====================== القسم الأول: تفاعلات الإحلال والأكسدة والاختزال ===================== -->
+    <!-- سؤال 1 -->
+    <div class="question-card">
+      <div class="q-header"><span class="q-num">❶</span><span class="q-text">يتصاعد غاز ........ عند تفاعل الصوديوم مع الماء.</span></div>
+      <div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">الأكسجين</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">النيتروجين</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">الهيدروجين</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">ثاني أكسيد الكربون</span></div></div>
+      <div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (ج) الهيدروجين</div><div class="explanation-title">📖 الشرح التفصيلي:</div><div class="explanation-text">الصوديوم فلز قلوي نشط جداً، يسبق الهيدروجين في متسلسلة النشاط الكيميائي. عند تفاعله مع الماء (H₂O) يحل محل الهيدروجين مكونًا هيدروكسيد الصوديوم ويتصاعد غاز الهيدروجين (H₂) الذي يشتعل بفرقعة بسبب حرارة التفاعل الطاردة.</div><div class="extra-note">💡 إضافة علمية: تفاعل الفلزات القلوية مع الماء عنيف جداً؛ فالهيدروجين المتصاعد قد يشتعل تلقائياً بفعل الحرارة.</div></div>
+    </div>
+    <!-- سؤال 2 -->
+    <div class="question-card">
+      <div class="q-header"><span class="q-num">❷</span><span class="q-text">تفاعل حمض مع قلوي لتكوين ملح وماء يسمى تفاعل ........</span></div>
+      <div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أكسدة</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">اختزال</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">تعادل</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">انحلال حراري</span></div></div>
+      <div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (ج) تعادل</div><div class="explanation-title">📖 الشرح التفصيلي:</div><div class="explanation-text">تفاعل التعادل هو اتحاد أيون الهيدروجين (H⁺) من الحمض مع أيون الهيدروكسيد (OH⁻) من القلوي لتكوين جزيئات الماء (H₂O) ، بينما يتحد الجزء المتبقي ليكوّن الملح. يسمى تعادلاً لأن الحمض والقلوي يُبطل كل منهما تأثير الآخر.</div><div class="extra-note">🧪 مثال: HCl + NaOH → NaCl + H₂O ، طاردة للحرارة.</div></div>
+    </div>
+    <!-- سؤال 3 -->
+    <div class="question-card">
+      <div class="q-header"><span class="q-num">❸</span><span class="q-text">عند إضافة محلول نترات الفضة إلى محلول كلوريد الصوديوم يتكون راسب ........</span></div>
+      <div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أسود</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">أبيض</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">أزرق</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">بني محمر</span></div></div>
+      <div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (ب) أبيض</div><div class="explanation-title">📖 الشرح التفصيلي:</div><div class="explanation-text">يحدث تفاعل إحلال مزدوج: AgNO₃ + NaCl → AgCl↓ + NaNO₃. كلوريد الفضة (AgCl) الناتج راسب أبيض جبني لا يذوب في الماء. يُستخدم هذا التفاعل للكشف عن أيون الكلوريد.</div><div class="extra-note">🔍 ملاحظة: إذا تعرض الراسب للضوء يتحلل إلى فضة سوداء، لكن اللون الأصلي أبيض.</div></div>
+    </div>
+    <!-- سؤال 4 -->
+    <div class="question-card">
+      <div class="q-header"><span class="q-num">❹</span><span class="q-text">العملية التي تفقد فيها ذرة العنصر إلكتروناً أو أكثر تسمى ........</span></div>
+      <div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">عملية الأكسدة</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">عملية الاختزال</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">التسامي</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">التكاثف</span></div></div>
+      <div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (أ) عملية الأكسدة</div><div class="explanation-title">📖 الشرح التفصيلي:</div><div class="explanation-text">وفق المفهوم الإلكتروني الحديث: الأكسدة هي فقدان إلكترونات (تزداد الشحنة الموجبة) بينما الاختزال هو اكتساب إلكترونات. مثال: Na → Na⁺ + e⁻ (تأكسد).</div><div class="extra-note">⚡ تذكر: OIL RIG (Oxidation Is Loss, Reduction Is Gain).</div></div>
+    </div>
+    <!-- سؤال 5 -->
+    <div class="question-card">
+      <div class="q-header"><span class="q-num">❺</span><span class="q-text">المادة التي تمنح الأكسجين أو تنتزع الهيدروجين تسمى ........</span></div>
+      <div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">العامل المختزل</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">العامل المؤكسد</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">العامل الحفاز</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">الإنزيم</span></div></div>
+      <div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (ب) العامل المؤكسد</div><div class="explanation-title">📖 الشرح التفصيلي:</div><div class="explanation-text">العامل المؤكسد (مثل الأكسجين أو بيرمنغنات البوتاسيوم) هو الذي يكتسب إلكترونات ويؤكسد غيره، بالمفهوم التقليدي يعطي أكسجين أو ينتزع هيدروجين من المادة الأخرى. العامل المختزل هو العكس.</div><div class="extra-note">🧴 مثال: MnO₂ في تفاعل HCl يعطي Cl₂ ويعتبر عامل مؤكسد.</div></div>
+    </div>
+    
+    <!-- ========== ثانياً: سرعة التفاعل الكيميائي ========= -->
+    <div class="question-card"><div class="q-header"><span class="q-num">❻</span><span class="q-text">تزداد سرعة التفاعل الكيميائي بـ ........ درجة الحرارة.</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">خفض</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">ثبات</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">رفع</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">عدم تغيير</span></div></div><div class="answer-box"><div class="correct-badge">✓ الإجابة الصحيحة: (ج) رفع</div><div class="explanation-text">رفع درجة الحرارة يزيد من الطاقة الحركية للجزيئات، مما يزيد عدد التصادمات الفعالة التي تتجاوز طاقة التنشيط، وبالتالي سرعة التفاعل.</div><div class="extra-note">🔥 قاعدة فانت هوف: كل ارتفاع 10°C يضاعف سرعة التفاعل تقريباً.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">❼</span><span class="q-text">يوجد في البطاطا إنزيم ........ الذي يزيد من سرعة تفكك فوق أكسيد الهيدروجين.</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">الأميليز</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">الأوكسيديز</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">اللايبير</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">البروتين</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) الأوكسيديز</div><div class="explanation-text">إنزيم الكاتالاز أو الأوكسيديز الموجود في البطاطا والكبد يُسرع تحلل H₂O₂ إلى H₂O و O₂، ويعد عاملًا حفازًا حيويًا.</div><div class="extra-note">🧫 التجربة: وضع قطعة بطاطا على H₂O₂ يؤدي لتصاعد فقاعات أكسجين بسرعة.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">❽</span><span class="q-text">تفاعل المركبات الأيونية ........ من تفاعل المركبات التساهمية.</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أبطأ</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">أسرع</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">مساوٍ لـ</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">أقل تأثراً بـ</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) أسرع</div><div class="explanation-text">المركبات الأيونية تتفكك إلى أيونات حرة في الماء، والتفاعل بين الأيونات شبه فوري لأن الأيونات متباعدة ومتحركة. أما التساهمية فتحتاج لكسر روابط تساهمية أولاً.</div><div class="extra-note">⚡ مثال: تفاعل AgNO₃ و NaCl أسرع من تفاعل الإستر بالماء.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">❾</span><span class="q-text">يفضل استخدام "النيكل المجزأ" في هدرجة الزيوت بدلاً من "قطع النيكل" لأن ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">النيكل المجزأ أرخص</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">مساحة السطح المعرض للتفاعل أكبر</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">النيكل المجزأ عامل مؤكسد</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">قطع النيكل تمنع التفاعل</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) مساحة السطح المعرض للتفاعل أكبر</div><div class="explanation-text">تفتيت المادة الصلبة يزيد مساحة سطحها، مما يزيد من نقاط التلامس مع المتفاعلات وبالتالي يزيد من سرعة التفاعل. النيكل المجزأ عامل حفاز أكثر كفاءة في هدرجة الزيوت النباتية.</div><div class="extra-note">🧴 نفس المبدأ: استخدام مسحوق الكربون بدل قطع الفحم.</div></div></div>
+
+    <!-- أسئلة علل وماذا يحدث -->
+    <div class="question-card"><div class="q-header"><span class="q-num">🔟</span><span class="q-text">تزداد سرعة التفاعل الكيميائي بزيادة تركيز المواد المتفاعلة نتيجة ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">نقص عدد الجزيئات</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">زيادة حجم المتفاعلات</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">زيادة عدد التصادمات المحتملة</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">خفض طاقة الحركة</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) زيادة عدد التصادمات المحتملة</div><div class="explanation-text">زيادة التركيز = عدد أكبر من الجزيئات في وحدة الحجم، يزيد تردد التصادم وبالتالي فرصة حدوث تفاعل.</div><div class="extra-note">📈 قانون سرعة التفاعل يتناسب طردياً مع التركيز مرفوعاً لأس معين.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓫</span><span class="q-text">عند وضع سلك تنظيف الألومنيوم في مخبار به أكسجين نقي، يكون احتراقه ........ من احتراقه في الهواء الجوي.</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أبطأ</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">أسرع</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">مماثلاً لـ</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">منعدماً</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) أسرع</div><div class="explanation-text">الهواء الجوي يحتوي على 21% أكسجين فقط، أما الأكسجين النقي فتركيزه 100%، وبالتالي يزداد تركيز المتفاعل (الأكسجين) فتزداد سرعة الاحتراق بشكل كبير.</div><div class="extra-note">✨ تجربة: الألومنيوم يحترق بلهب أبيض مبهر في الأكسجين النقي.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">⓬</span><span class="q-text">ماذا يحدث عند إضافة مسحوق ثاني أكسيد المنجنيز (MnO₂) إلى محلول فوق أكسيد الهيدروجين؟</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">يتوقف التفاعل</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">يستهلك المسحوق تماماً</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">تزداد سرعة التفكك ويتصاعد الأكسجين</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">يقل عدد الفقاعات</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) تزداد سرعة التفكك ويتصاعد الأكسجين</div><div class="explanation-text">MnO₂ يعمل كعامل حفاز (محفز) لتفكك H₂O₂ إلى H₂O + O₂، فيسرع التفاعل دون أن يستهلك نفسه، ويظهر تصاعد سريع للفقاعات.</div><div class="extra-note">🧴 هو نفسه المحفز المستخدم في مختبرات تحضير الأكسجين.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">⓭</span><span class="q-text">عند إضافة شريط من الماغنسيوم إلى محلول كبريتات النحاس (CuSO₄) يتكون راسب ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أبيض</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">أزرق</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">أحمر</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">أسود</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) أحمر</div><div class="explanation-text">الماغنسيوم أكثر نشاطاً من النحاس فيحل محله في المحلول: Mg + CuSO₄ → MgSO₄ + Cu↓. يترسب النحاس المعدني بلون أحمر نحاسي، ويتلاشى اللون الأزرق للمحلول.</div><div class="extra-note">⚙️ مثال كلاسيكي على تفاعل الإحلال البسيط.</div></div></div>
+    
+    <div class="question-card"><div class="q-header"><span class="q-num">⓮</span><span class="q-text">تفاعل حمض الهيدروكلوريك مع كربونات الصوديوم يؤدي لتصاعد غاز ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">الهيدروجين</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">الأكسجين</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">ثاني أكسيد الكربون</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">النيتروجين</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) ثاني أكسيد الكربون</div><div class="explanation-text">2HCl + Na₂CO₃ → 2NaCl + H₂O + CO₂↑. جميع تفاعلات الأحماض مع الكربونات تنتج ملح + ماء + CO₂، والغاز يعكر ماء الجير (راسب أبيض).</div><div class="extra-note">🧪 اختبار CO₂: يطفئ شعلة ويعكر ماء الجير.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓯</span><span class="q-text">جميع العناصر التالية تحل محل هيدروجين الحمض المخفف ما عدا ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">الألومنيوم (Al)</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">الخارصين (Zn)</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">الذهب (Au)</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">القصدير (Sn)</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) الذهب (Au)</div><div class="explanation-text">في متسلسلة النشاط الكيميائي، الذهب والفضة والنحاس تأتي بعد الهيدروجين ولا تستطيع إزاحته من محاليل الأحماض المخففة. بينما Al, Zn, Sn تسبق H وتتفاعل مع الحمض منتجة هيدروجين.</div><div class="extra-note">🏅 الذهب خامل كيميائياً ولا يتأثر بالأحماض المخففة.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓰</span><span class="q-text">تزداد سرعة تفكك فوق أكسيد الهيدروجين بإضافة مسحوق ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">أكسيد الماغنسيوم</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">ثاني أكسيد المنجنيز (MnO₂)</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">كلوريد الصوديوم</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">كربونات الصوديوم</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) ثاني أكسيد المنجنيز</div><div class="explanation-text">MnO₂ عامل حفاز قوي يحفز تحلل H₂O₂ بسرعة كبيرة دون أن يتغير، ويستخدم بشكل شائع في المختبرات.</div><div class="extra-note">⚗️ سرعة التفاعل تزداد بشكل ملحوظ فور إضافة المنجنيز.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓱</span><span class="q-text">المحول الحفزي الموجود في السيارات الحديثة وظيفته ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">زيادة استهلاك الوقود</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">معالجة الغازات الضارة قبل طردها</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">تبريد المحرك</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">زيادة سرعة السيارة</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) معالجة الغازات الضارة قبل طردها</div><div class="explanation-text">يحتوي على معادن ثمينة مثل البلاتين والروديوم تعمل كعوامل حفازة لتحويل غازات العادم السامة (CO, NOx, HC) إلى غازات أقل ضرراً (CO₂, N₂, H₂O).</div><div class="extra-note">🌍 تطبيق عملي للحفز الكيميائي في حماية البيئة.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓲</span><span class="q-text">عند وصول تركيز المتفاعلات إلى الصفر، تكون نسبة نواتج التفاعل ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">0%</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">25%</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">50%</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">100%</span></div></div><div class="answer-box"><div class="correct-badge">✓ (د) 100%</div><div class="explanation-text">إذا وصل تركيز المتفاعلات إلى الصفر معناه أن التفاعل قد استهلك جميع المواد المتفاعلة وتحولت بالكامل إلى نواتج (تفاعل تام).</div><div class="extra-note">📊 في التفاعلات غير العكوسة يتجه التفاعل للنهاية.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓳</span><span class="q-text">ماذا يحدث عند ترك الطعام خارج الثلاجة لفترة طويلة؟</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">تزداد جودته</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">تزداد سرعة التفاعلات الكيميائية التي تحدثها البكتيريا</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">تتوقف حركة الجزيئات</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">يقل نشاط البكتيريا</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ب) تزداد سرعة التفاعلات الكيميائية التي تحدثها البكتيريا</div><div class="explanation-text">ارتفاع درجة الحرارة يزيد من سرعة الأنشطة الأنزيمية للبكتيريا مما يسرع فساد الطعام. الثلاجة تخفض الحرارة وتبطئ التفاعلات.</div><div class="extra-note">❄️ حفظ الأطعمة يعتمد على إبطاء سرعة التفاعل.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">⓴</span><span class="q-text">تزداد سرعة التفاعل الكيميائي بـ "تفتيت" المتفاعلات بسبب ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">زيادة درجة الحرارة</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">زيادة التركيز</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">زيادة مساحة السطح المعرض للتفاعل</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">قوة الروابط الكيميائية</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) زيادة مساحة السطح المعرض للتفاعل</div><div class="explanation-text">بتفتيت المادة الصلبة إلى أجزاء صغيرة، تزداد مساحة السطح التي تتلامس مع المادة الأخرى، مما يزيد من احتمالية التصادمات الفعالة.</div><div class="extra-note">🔨 مثال: مسحوق الفحم يحترق أسرع من قطعة فحم كبيرة.</div></div></div>
+
+    <div class="question-card"><div class="q-header"><span class="q-num">㉑</span><span class="q-text">الصيغة الكيميائية لغاز "خامس أكسيد النيتروجين" هي ........</span></div><div class="options"><div class="option"><span class="option-letter">أ</span><span class="option-text">NO₂</span></div><div class="option"><span class="option-letter">ب</span><span class="option-text">N₂O</span></div><div class="option"><span class="option-letter">ج</span><span class="option-text">N₂O₅</span></div><div class="option"><span class="option-letter">د</span><span class="option-text">5NO</span></div></div><div class="answer-box"><div class="correct-badge">✓ (ج) N₂O₅</div><div class="explanation-text">حسب التسمية: "خامس أكسيد" تعني 5 ذرات أكسجين، والنيتروجين ثنائي (N₂) في الصيغة الجزيئية لتلك الأكاسيد. إذن N₂O₅ هي الصيغة الصحيحة.</div><div class="extra-note">🧪 أكاسيد النيتروجين: N₂O₅ من أكاسيد النيتروجين الحمضية.</div></div></div>
+  </div>
+  <footer>📚 مراجعة شاملة لعلوم الصف الثالث الإعدادي — تصميم متجاوب بأعلى معايير الوضوح والشرح العلمي | أ/ إسماعيل عماد</footer>
+</div>
+</body>
+</html>
