@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>الامتحان النهائي | برمجة أولى ثانوي | Eng Ismail Emad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4f9 0%, #e6ecf3 100%);
+            font-family: 'Cairo', system-ui, sans-serif;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        .exam-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر */
+        .hero-exam {
+            background: linear-gradient(135deg, #1e3a3a 0%, #0f2c2c 100%);
+            border-radius: 24px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+        }
+        .hero-exam h1 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #fef7e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .hero-exam h1 i {
+            color: #f4c542;
+        }
+        .sub-line {
+            font-size: 0.7rem;
+            color: #cfdead;
+            margin-top: 6px;
+            border-right: 2px solid #f4c542;
+            padding-right: 8px;
+        }
+        .eng-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            background: rgba(0,0,0,0.28);
+            border-radius: 60px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+        }
+        .eng-name {
+            color: #f2e2bc;
+            font-weight: 500;
+        }
+        .reset-btn {
+            background: rgba(244, 197, 66, 0.2);
+            border: 1px solid #f4c542;
+            padding: 5px 12px;
+            border-radius: 40px;
+            color: #f7e5b5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.7rem;
+        }
+        .reset-btn:active {
+            transform: scale(0.96);
+            background: #f4c542;
+            color: #1a3f3a;
+        }
+
+        /* بطاقة السؤال */
+        .question-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+            border: 1px solid #e9edf2;
+        }
+
+        /* رأس السؤال */
+        .q-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px solid #f0e4cc;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+        }
+        .q-num {
+            background: #1f4e48;
+            color: #f4c542;
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        .q-title {
+            font-weight: 600;
+            color: #3d5a5c;
+            font-size: 0.8rem;
+        }
+
+        /* النص العربي */
+        .arabic-text {
+            background: #f9fbfe;
+            padding: 12px 14px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1f3d3a;
+            margin-bottom: 14px;
+            border-right: 4px solid #f4c542;
+            line-height: 1.5;
+        }
+
+        /* صندوق الكود - نوت باد محسن */
+        .code-notepad {
+            background: #1e2a2e;
+            color: #eef2f5;
+            padding: 14px;
+            border-radius: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            direction: ltr;
+            text-align: left;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 14px 0;
+            border-right: 4px solid #f4c542;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .code-notepad code {
+            display: block;
+            unicode-bidi: embed;
+        }
+
+        /* خيارات منفصلة - كل خيار في بطاقة مستقلة */
+        .options-separate {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .option-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 60px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .option-card:active {
+            transform: scale(0.98);
+            background: #fff9ef;
+            border-color: #f4c542;
+            transition: transform 0.08s ease;
+        }
+        @media (hover: hover) {
+            .option-card:hover {
+                background: #fff9ef;
+                border-color: #f4c542;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+        }
+        .opt-letter-badge {
+            background: #e9eef3;
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 800;
+            color: #c9811e;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .opt-content {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: #2d3e45;
+        }
+
+        /* التلوين بعد الاختيار */
+        .opt-correct-card {
+            background: #dcfce7;
+            border-color: #2c7a5e;
+            box-shadow: 0 2px 8px rgba(44, 122, 94, 0.2);
+        }
+        .opt-correct-card .opt-letter-badge {
+            background: #c8e6d9;
+            color: #1e5a44;
+        }
+        .opt-wrong-card {
+            background: #ffe6e2;
+            border-color: #d95b3c;
+            box-shadow: 0 2px 8px rgba(217, 91, 60, 0.2);
+        }
+        .opt-wrong-card .opt-letter-badge {
+            background: #fcd5cc;
+            color: #aa3e22;
+        }
+        
+        /* تعطيل الخيارات بعد الاختيار */
+        .options-disabled .option-card {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        /* منطقة الفيدباك */
+        .feedback-area {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .feedback-correct {
+            background: #e2f3ea;
+            border-right: 4px solid #2c7a5e;
+            display: block;
+        }
+        .feedback-wrong {
+            background: #fdefea;
+            border-right: 4px solid #d95b3c;
+            display: block;
+        }
+
+        /* أزرار التنقل */
+        .nav-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 16px 0 12px;
+        }
+        .nav-btn {
+            background: #1f4e48;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 600;
+            font-family: 'Cairo';
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: #f4c542;
+            color: #1a3f3a;
+        }
+        .nav-btn:disabled {
+            background: #b0bec5;
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .progress {
+            text-align: center;
+            margin: 8px 0;
+            font-weight: 600;
+            color: #3d5a5c;
+            background: #ffffffcc;
+            width: fit-content;
+            margin-inline: auto;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+        footer {
+            text-align: center;
+            margin-top: 18px;
+            color: #5f7a6e;
+            font-size: 0.65rem;
+            padding-bottom: 20px;
+        }
+        
+        /* تحسينات الموبايل */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            .question-card {
+                padding: 16px;
+            }
+            .option-card {
+                padding: 12px 16px;
+                gap: 12px;
+            }
+            .opt-letter-badge {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .opt-content {
+                font-size: 0.82rem;
+            }
+            .code-notepad {
+                font-size: 0.68rem;
+                padding: 12px;
+            }
+            .arabic-text {
+                font-size: 0.88rem;
+            }
+            .feedback-area {
+                font-size: 0.78rem;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="exam-wrapper">
+    <div class="hero-exam">
+        <h1><i class="fas fa-graduation-cap"></i> الامتحان النهائي <span style="font-size:1rem;">برمجة أولى ثانوي</span></h1>
+        <div class="sub-line">20 سؤالاً | اختر الإجابة الصحيحة | مع شرح مفصل لكل سؤال</div>
+        <div class="eng-bar">
+            <div class="eng-name"><i class="fas fa-user-tie"></i> Eng Ismail Emad | 01122104596 | manassaeloloom.com</div>
+            <div class="reset-btn" id="resetExamBtn"><i class="fas fa-undo-alt"></i> إعادة تعيين</div>
+        </div>
+    </div>
+
+    <div id="currentQuestionContainer"></div>
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-right"></i> السابق</button>
+        <button class="nav-btn" id="nextBtn">التالي <i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="progress" id="progressIndicator"></div>
+    <footer>📱 اضغط على أي خيار لمعرفة الإجابة الصحيحة مع الشرح المفصل</footer>
+</div>
+
+<script>
+    // ==================== الأسئلة الجديدة (20 سؤالاً) ====================
+    const examQuestions = [
+        { text: "ما هي القيمة النهائية التي سيتم طباعتها في وحدة التحكم (console)؟", code: `let x = 10;\nlet y = 5;\nx = x + y; // 15\ny = x - y; // 10\nx = x - y; // 5\nif (x < y) {\n    x = x * 2;\n} else {\n    y = y * 2;\n}\nconsole.log(x + y);`, options: ["15", "20", "25"], correct: 1, rule: "بعد العمليات الحسابية: x=5, y=10. الشرط x<y (5<10) صحيح، إذن x=5*2=10. المجموع = 10+10=20." },
+        
+        { text: "ماذا سيطبع الكود التالي عند تنفيذه؟", code: `let score = 85;\nlet bonus = 10;\nlet final = score + bonus;\nif (final > 90) {\n    final = final - 5;\n    if (final == 90) {\n        console.log("Grade A");\n    } else {\n        console.log("Grade B");\n    }\n} else {\n    console.log("Retake");\n}`, options: ["Grade A", "Grade B", "Retake"], correct: 1, rule: "final = 85+10=95 > 90 → final=95-5=90 → الشرط الداخلي final==90 صحيح → يطبع 'Grade B'." },
+        
+        { text: "ما هي المخرجات بناءً على قيم المتغيرات التالية؟ (isLogged=true, isAdmin=false, hasSubscription=true)", code: `let isLogged = true;\nlet isAdmin = false;\nlet hasSubscription = true;\n\nif (isLogged) {\n    if (isAdmin) {\n        console.log("Welcome Admin");\n    } else if (hasSubscription) {\n        console.log("Welcome Premium User");\n    } else {\n        console.log("Welcome Guest");\n    }\n} else {\n    console.log("Please Login");\n}`, options: ["Welcome Admin", "Welcome Premium User", "Welcome Guest"], correct: 1, rule: "isLogged=true → ليس Admin (false) ولكن hasSubscription=true → يطبع 'Welcome Premium User'." },
+        
+        { text: "تتبع الكود التالي وحدد المخرجات:", code: `let temp = 35;\nlet humidity = 80;\nlet message = "";\n\nif (temp > 30) {\n    if (humidity > 70) {\n        message = "Very Hot & Humid";\n    } else {\n        message = "Just Hot";\n    }\n} else {\n    message = "Fine Weather";\n}\nconsole.log(message);`, options: ["Very Hot & Humid", "Just Hot", "Fine Weather"], correct: 0, rule: "temp=35>30 و humidity=80>70 → يدخل الشرط الداخلي → 'Very Hot & Humid'." },
+        
+        { text: "ماذا سيطبع هذا الكود؟ (انتبه لعلامة النفي !)", code: `let isOpen = false;\nlet isWeekend = true;\n\nif (!isOpen) {\n    if (isWeekend) {\n        console.log("Store is closed for weekend");\n    } else {\n        console.log("Store is closed for maintenance");\n    }\n} else {\n    console.log("Welcome!");\n}`, options: ["Welcome!", "Store is closed for weekend", "Store is closed for maintenance"], correct: 1, rule: "!isOpen = !false = true → يدخل الشرط الأول، isWeekend=true → يطبع 'Store is closed for weekend'." },
+        
+        { text: "تتبع قيمة المتغير total في نهاية الكود:", code: `let total = 100;\nlet discount = 20;\nlet coupon = true;\n\nif (total > 50) {\n    total = total - discount; // 80\n    if (coupon) {\n        total = total - 10; // 70\n    }\n} else {\n    total = total + 5;\n}\nconsole.log(total);`, options: ["80", "70", "100"], correct: 1, rule: "total=100>50 → total=100-20=80, coupon=true → total=80-10=70." },
+        
+        { text: "هل سيحدث خطأ في الكود التالي؟ ولماذا؟", code: `let x = 5;\nif (x > 0) {\n    let y = 10;\n    x = x + y;\n}\nconsole.log(y);`, options: ["سيطبع 15", "سيحدث خطأ (Error) لأن y معرفة داخل الـ if", "سيطبع 10"], correct: 1, rule: "متغيرات let تكون محبوسة داخل القوسين {} التي عرفت فيها، لذلك y غير معرفة خارج الـ if → يحدث ReferenceError." },
+        
+        { text: "ما هي المخرجات؟", code: `let a = 1;\nlet b = "1";\nif (a === b) {\n    console.log("Perfect Match");\n} else if (a == b) {\n    console.log("Values Match Only");\n} else {\n    console.log("No Match");\n}`, options: ["Perfect Match", "Values Match Only", "No Match"], correct: 1, rule: "=== يقارن النوع أيضاً (number vs string) → false. == يقارن القيمة فقط → true → يطبع 'Values Match Only'." },
+        
+        { text: "ماذا سيطبع الكود التالي؟", code: `let username = "Ismail_Emad";\nlet length = username.length; // 11\n\nif (length > 10) {\n    if (username.includes("_")) {\n        console.log("Valid Long Username");\n    } else {\n        console.log("Long Username");\n    }\n} else {\n    console.log("Short Username");\n}`, options: ["Valid Long Username", "Long Username", "Short Username"], correct: 0, rule: "length=11>10 و username يحتوي على '_' → يطبع 'Valid Long Username'." },
+        
+        { text: "تتبع التحويلات التالية:", code: `let str = "100";\nlet num = 50;\nif (str + num == "10050") {\n    console.log("Concatenation");\n} else {\n    console.log("Addition");\n}`, options: ["Addition", "Concatenation", "Error"], correct: 1, rule: "عند جمع نص مع رقم، جافاسكريبت تحول الرقم لنص وتدمجهما → '100' + 50 = '10050' → يطبع 'Concatenation'." },
+        
+        { text: "تطبيق لنظام إضاءة ذكي:", code: `let motionDetected = true;\nlet isDark = false;\nlet lightStatus = "OFF";\n\nif (motionDetected) {\n    if (isDark) {\n        lightStatus = "ON (Bright)";\n    } else {\n        lightStatus = "ON (Dim)";\n    }\n} else {\n    lightStatus = "OFF";\n}\nconsole.log(lightStatus);`, options: ["ON (Bright)", "ON (Dim)", "OFF"], correct: 1, rule: "motionDetected=true, isDark=false → يدخل else الداخلي → 'ON (Dim)'." },
+        
+        { text: "نظام حجز تذاكر:", code: `let seats = 5;\nlet requested = 3;\nlet pricePerSeat = 100;\nlet totalCost = 0;\n\nif (seats >= requested) {\n    totalCost = requested * pricePerSeat;\n    seats = seats - requested;\n    if (seats == 0) {\n        console.log("Sold Out, Total: " + totalCost);\n    } else {\n        console.log("Available, Total: " + totalCost);\n    }\n} else {\n    console.log("Not Enough Seats");\n}`, options: ["Sold Out, Total: 300", "Available, Total: 300", "Not Enough Seats"], correct: 1, rule: "seats=5 >= requested=3 → totalCost=300, seats=5-3=2 ≠ 0 → يطبع 'Available, Total: 300'." },
+        
+        { text: "ما نتيجة الكود التالي؟", code: `let x = 7;\nif (x > 5 && x < 10) {\n    x = x + 3; // 10\n    if (x >= 10) {\n        x = x * 2; // 20\n    }\n}\nconsole.log(x);`, options: ["10", "20", "7"], correct: 1, rule: "x=7 بين 5 و10 → x=7+3=10, x>=10 صحيح → x=10*2=20." },
+        
+        { text: "ماذا سيحدث في الكود التالي؟", code: `let color = "Red";\nlet action = "";\n\nif (color == "Green") {\n    action = "Go";\n} else if (color == "Yellow") {\n    action = "Slow Down";\n} else if (color == "Red") {\n    action = "Stop";\n} else {\n    action = "Unknown";\n}\nconsole.log(action);`, options: ["Go", "Slow Down", "Stop"], correct: 2, rule: "color='Red' → يطابق الشرط الثالث → action='Stop'." },
+        
+        { text: "تتبع قيمة n بدقة:", code: `let n = 2;\nn = n * n; // 4\nn = n + n; // 8\nif (n > 5) {\n    n = n / 2; // 4\n}\nif (n == 4) {\n    n = n - 1; // 3\n}\nconsole.log(n);`, options: ["4", "3", "2"], correct: 1, rule: "n=2→4→8, 8>5 → n=4, n==4 → n=3." },
+        
+        { text: "نظام درجات متداخل:", code: `let grade = 72;\nlet result = "";\n\nif (grade >= 50) {\n    if (grade >= 90) { result = "Excellent"; }\n    else if (grade >= 70) { result = "Good"; }\n    else { result = "Pass"; }\n} else {\n    result = "Fail";\n}\nconsole.log(result);`, options: ["Excellent", "Good", "Pass"], correct: 1, rule: "grade=72 >=50, grade>=70 صحيح (72>=70) → result='Good'." },
+        
+        { text: "ماذا سيطبع الكود؟", code: `let mode = "Dark";\nlet battery = 15;\n\nif (battery < 20) {\n    mode = "Power Saver";\n}\nif (mode == "Dark") {\n    console.log("Black Background");\n} else if (mode == "Power Saver") {\n    console.log("Gray Background");\n} else {\n    console.log("White Background");\n}`, options: ["Black Background", "Gray Background", "White Background"], correct: 1, rule: "battery=15<20 → mode='Power Saver', الشرط الثاني mode='Power Saver' → 'Gray Background'." },
+        
+        { text: "تتبع المنطق الرياضي:", code: `let num1 = 10;\nlet num2 = 20;\nlet result = 0;\n\nif (num1 < num2) {\n    result = num2 / num1; // 2\n} else {\n    result = num1 * num2;\n}\n\nif (result % 2 == 0) {\n    console.log("Even Result");\n} else {\n    console.log("Odd Result");\n}`, options: ["Even Result", "Odd Result", "2"], correct: 0, rule: "num1=10 < num2=20 → result=20/10=2, 2%2=0 → 'Even Result'." },
+        
+        { text: "توقع المخرج لهذا الكود:", code: `let age = 18;\nlet hasID = true;\n\nif (age >= 18) {\n    if (hasID) {\n        console.log("Enter");\n    } else {\n        console.log("Need ID");\n    }\n} else {\n    console.log("Too Young");\n}`, options: ["Enter", "Need ID", "Too Young"], correct: 0, rule: "age=18>=18 و hasID=true → يدخل الشرط الداخلي الأول → 'Enter'." },
+        
+        { text: "تتبع التغييرات على المتغير power:", code: `let power = 50;\nlet boost = 20;\nlet shield = true;\n\nif (shield) {\n    power = power + boost; // 70\n}\nif (power > 60) {\n    power = power - 10; // 60\n}\nif (power == 60) {\n    power = power + 5; // 65\n}\nconsole.log(power);`, options: ["70", "60", "65"], correct: 2, rule: "power=50, shield=true → 70, power>60 → 60, power==60 → 65." }
+    ];
+
+    // ==================== المتغيرات العامة ====================
+    let currentIdx = 0;
+    const totalQ = examQuestions.length;
+    let userAnswers = {}; // تخزين إجابات المستخدم { questionIndex: { selected, isCorrect } }
+
+    // ==================== دوال مساعدة ====================
+    
+    // دالة لتأمين النصوص (escapeHtml) - تحسين الأمان
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // دالة لحفظ الإجابة
+    function saveAnswer(questionIndex, selectedIndex, isCorrect) {
+        userAnswers[questionIndex] = {
+            selected: selectedIndex,
+            isCorrect: isCorrect
+        };
+    }
+
+    // دالة لإظهار الفيدباك
+    function showFeedback(questionIndex, selectedIndex, isCorrect) {
+        const q = examQuestions[questionIndex];
+        const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
+        if (!feedbackDiv) return;
+        
+        const correctAns = q.options[q.correct];
+        let msg = '';
+        
+        if (isCorrect) {
+            msg = `✅ إجابة صحيحة!<br>📘 ${escapeHtml(q.rule)}`;
+            feedbackDiv.className = 'feedback-area feedback-correct';
+        } else {
+            msg = `❌ إجابة خاطئة.<br>✔️ الإجابة الصحيحة: ${escapeHtml(correctAns)}<br>📘 ${escapeHtml(q.rule)}`;
+            feedbackDiv.className = 'feedback-area feedback-wrong';
+        }
+        
+        feedbackDiv.innerHTML = `<i class="fas fa-lightbulb"></i> ${msg}`;
+        feedbackDiv.style.display = 'block';
+    }
+    
+    // دالة لاستعادة الإجابة المحفوظة
+    function restoreAnswer(questionIndex) {
+        const answer = userAnswers[questionIndex];
+        if (answer !== undefined) {
+            const optionsDiv = document.getElementById(`options-sep-${questionIndex}`);
+            if (optionsDiv) {
+                const allOpts = optionsDiv.querySelectorAll('.option-card');
+                const q = examQuestions[questionIndex];
+                
+                allOpts.forEach(opt => {
+                    const optIndex = parseInt(opt.getAttribute("data-opt-index"));
+                    if (optIndex === answer.selected) {
+                        if (answer.isCorrect) {
+                            opt.classList.add('opt-correct-card');
+                        } else {
+                            opt.classList.add('opt-wrong-card');
+                        }
+                    }
+                });
+                
+                if (!answer.isCorrect) {
+                    const correctOpt = allOpts[q.correct];
+                    if (correctOpt) correctOpt.classList.add('opt-correct-card');
+                }
+                
+                showFeedback(questionIndex, answer.selected, answer.isCorrect);
+                optionsDiv.classList.add('options-disabled');
+            }
+        }
+    }
+    
+    // دالة لمعالجة اختيار الإجابة
+    function handleOptionClick(e) {
+        // استخدام e.currentTarget بدلاً من e.target لضمان الحصول على الكارت
+        const optCard = e.currentTarget;
+        const optionsContainer = optCard.parentElement;
+        const questionIndex = parseInt(optionsContainer.id.split('-')[2]);
+        const q = examQuestions[questionIndex];
+        
+        // منع تغيير الإجابة بعد الاختيار
+        if (userAnswers[questionIndex] !== undefined) {
+            return;
+        }
+        
+        // استخدام getAttribute بدلاً من dataset للتوافق مع جميع الأجهزة
+        const selected = parseInt(optCard.getAttribute("data-opt-index"));
+        const isCorrect = (selected === q.correct);
+        
+        const allOpts = optionsContainer.querySelectorAll('.option-card');
+        
+        // تطبيق التلوين
+        if (isCorrect) {
+            optCard.classList.add('opt-correct-card');
+        } else {
+            optCard.classList.add('opt-wrong-card');
+            const correctOpt = allOpts[q.correct];
+            if (correctOpt) correctOpt.classList.add('opt-correct-card');
+        }
+        
+        // حفظ الإجابة
+        saveAnswer(questionIndex, selected, isCorrect);
+        
+        // إظهار الفيدباك
+        showFeedback(questionIndex, selected, isCorrect);
+        
+        // تعطيل جميع الخيارات بعد الاختيار
+        optionsContainer.classList.add('options-disabled');
+    }
+    
+    // دالة لعرض السؤال الحالي
+    function renderCurrent() {
+        const container = document.getElementById('currentQuestionContainer');
+        if (!container) return;
+        
+        const q = examQuestions[currentIdx];
+        const qNumber = currentIdx + 1;
+        
+        // بناء HTML مع التأمين الكامل (escapeHtml)
+        const arabicHtml = `<div class="arabic-text"><i class="fas fa-question-circle"></i> ${escapeHtml(q.text)}</div>`;
+        const codeHtml = `<div class="code-notepad"><code>${escapeHtml(q.code).replace(/\n/g, '<br>')}</code></div>`;
+        
+        let optionsHtml = `<div class="options-separate" id="options-sep-${currentIdx}">`;
+        q.options.forEach((opt, idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            optionsHtml += `
+                <div class="option-card" data-opt-index="${idx}">
+                    <div class="opt-letter-badge">${letter}</div>
+                    <div class="opt-content">${escapeHtml(opt)}</div>
+                </div>
+            `;
+        });
+        optionsHtml += `</div>`;
+        
+        const feedbackHtml = `<div class="feedback-area" id="feedback-${currentIdx}"></div>`;
+        
+        const cardHtml = `
+            <div class="question-card">
+                <div class="q-head">
+                    <div class="q-num">${qNumber}</div>
+                    <div class="q-title">السؤال ${qNumber} من ${totalQ}</div>
+                </div>
+                ${arabicHtml}
+                ${codeHtml}
+                ${optionsHtml}
+                ${feedbackHtml}
+            </div>
+        `;
+        
+        container.innerHTML = cardHtml;
+        
+        // ربط الأحداث للخيارات
+        const optionsDiv = document.getElementById(`options-sep-${currentIdx}`);
+        if (optionsDiv) {
+            const allOpts = optionsDiv.querySelectorAll('.option-card');
+            allOpts.forEach(opt => {
+                opt.removeEventListener('click', handleOptionClick);
+                opt.addEventListener('click', handleOptionClick);
+            });
+            
+            // استعادة الإجابة إذا كانت موجودة
+            restoreAnswer(currentIdx);
+        }
+        
+        // تحديث حالة الأزرار
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        if (prevBtn) prevBtn.disabled = (currentIdx === 0);
+        if (nextBtn) nextBtn.disabled = (currentIdx === totalQ - 1);
+        
+        const progressIndicator = document.getElementById('progressIndicator');
+        if (progressIndicator) {
+            progressIndicator.innerText = `السؤال ${currentIdx + 1} / ${totalQ}`;
+        }
+    }
+    
+    // دالة للانتقال للسؤال التالي
+    function nextQuestion() {
+        if (currentIdx < totalQ - 1) {
+            currentIdx++;
+            renderCurrent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    // دالة للانتقال للسؤال السابق
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            renderCurrent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    // دالة لإعادة تعيين جميع الإجابات
+    function resetAllAnswers() {
+        userAnswers = {};
+        renderCurrent();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // ==================== تهيئة الأحداث ====================
+    function init() {
+        renderCurrent();
+        
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetExamBtn');
+        
+        if (prevBtn) prevBtn.addEventListener('click', prevQuestion);
+        if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
+        if (resetBtn) resetBtn.addEventListener('click', resetAllAnswers);
+    }
+    
+    // بدء التطبيق
+    init();
+</script>
+</body>
+</html>
