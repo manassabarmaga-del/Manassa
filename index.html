@@ -73,7 +73,110 @@
       padding: 28px 24px;
       box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(109, 79, 199, 0.3);
+      position: relative;
+      overflow: hidden;
     }
+
+    /* Overlay وضع الصيانة */
+    .maintenance-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, rgba(15, 10, 31, 0.92), rgba(26, 19, 48, 0.95));
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+    .maintenance-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .maintenance-box {
+      background: linear-gradient(145deg, rgba(109, 79, 199, 0.2), rgba(138, 108, 255, 0.1));
+      backdrop-filter: blur(12px);
+      border-radius: 32px;
+      padding: 28px 24px;
+      margin: 20px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      text-align: center;
+      animation: slideUp 0.5s ease-out;
+      max-width: 360px;
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .maintenance-icon {
+      font-size: 56px;
+      animation: bounce 1s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .maintenance-title {
+      font-size: 26px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffd700, #b49aff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 16px 0 12px;
+    }
+    .maintenance-text {
+      color: #d0c2e6;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .maintenance-list {
+      text-align: right;
+      margin: 20px 0;
+      padding-right: 20px;
+    }
+    .maintenance-list li {
+      color: #ffd700;
+      font-size: 13px;
+      margin: 10px 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .maintenance-list li i {
+      color: #6d4fc7;
+      font-size: 16px;
+    }
+    .maintenance-list li span {
+      color: #b1a4c2;
+    }
+    .maintenance-footer {
+      color: #6d4fc7;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(109, 79, 199, 0.3);
+    }
+    .maintenance-footer i {
+      color: #ffd700;
+      margin-left: 6px;
+    }
+
     .header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
@@ -228,6 +331,30 @@
   <div id="mainContent" class="main-content">
     <div class="container">
       <div class="card">
+        <!-- Overlay وضع الصيانة -->
+        <div id="maintenanceOverlay" class="maintenance-overlay">
+          <div class="maintenance-box">
+            <div class="maintenance-icon">🚧</div>
+            <div class="maintenance-title">المنصة قيد التحديث حالياً</div>
+            <div class="maintenance-text">
+              نقوم حالياً بتطوير المنصة وإضافة مميزات جديدة لتحسين تجربتك
+            </div>
+            <ul class="maintenance-list">
+              <li><i class="fas fa-robot"></i> <span>إضافة ذكاء اصطناعي متقدم</span></li>
+              <li><i class="fas fa-chart-line"></i> <span>تحسين السرعة والأداء</span></li>
+              <li><i class="fas fa-tasks"></i> <span>نظام متابعة متطور</span></li>
+              <li><i class="fas fa-graduation-cap"></i> <span>كورسات جديدة وحصرية</span></li>
+              <li><i class="fas fa-users"></i> <span>منتدى للمناقشات والتفاعل</span></li>
+            </ul>
+            <div class="maintenance-footer">
+              <i class="fas fa-calendar-alt"></i> التحديث سيتم الانتهاء منه يوم الثلاثاء القادم
+            </div>
+            <div class="maintenance-footer" style="margin-top: 12px;">
+              <i class="fas fa-clock"></i> يرجى المحاولة لاحقاً
+            </div>
+          </div>
+        </div>
+
         <div class="header">
           <div class="logo"><i class="fas fa-laptop-code"></i><span>منصة البرمجة</span></div>
           <div class="badge"><i class="fas fa-star"></i> تعلم البرمجة</div>
@@ -312,6 +439,9 @@
   </script>
 
   <script type="module">
+    // ========== وضع الصيانة ==========
+    const MAINTENANCE_MODE = true;  // غير إلى false لإلغاء وضع الصيانة
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
     import { 
@@ -358,11 +488,36 @@
     const signupBtn = document.getElementById('signupActionBtn');
     const signupHint = document.getElementById('signupPhoneHint');
     const whatsappLink = document.getElementById('whatsappForgotLink');
+    const maintenanceOverlay = document.getElementById('maintenanceOverlay');
 
     let currentName = '', currentPhone = '';
     let isProcessing = false;
     let splashCompleted = false;
-    let authUnsubscribe = null; // لتخزين دالة إلغاء الاشتراك
+    let authUnsubscribe = null;
+
+    // ========== تفعيل وضع الصيانة ==========
+    if (MAINTENANCE_MODE) {
+      // إظهار الـ overlay
+      if (maintenanceOverlay) {
+        maintenanceOverlay.classList.add('active');
+      }
+      
+      // تعطيل الأزرار وتغيير شكلها
+      if (loginBtn) {
+        loginBtn.disabled = true;
+        loginBtn.style.opacity = '0.6';
+        loginBtn.style.cursor = 'not-allowed';
+      }
+      if (signupBtn) {
+        signupBtn.disabled = true;
+        signupBtn.style.opacity = '0.6';
+        signupBtn.style.cursor = 'not-allowed';
+      }
+      
+      // تعطيل التبويبات أيضاً (اختياري لمنع التبديل)
+      if (tabLogin) tabLogin.style.cursor = 'not-allowed';
+      if (tabSignup) tabSignup.style.cursor = 'not-allowed';
+    }
 
     function showMessage(text, isSuccess = true) {
       globalMsg.classList.remove('hidden', 'message-success', 'message-error');
@@ -405,15 +560,21 @@
         await signOut(auth);
         localStorage.removeItem('edu_user');
       } catch (e) { console.warn('خطأ في تسجيل الخروج:', e); }
-      window.location.replace('index.html');
+      if (!MAINTENANCE_MODE) {
+        window.location.replace('index.html');
+      }
     }
 
-    // === الدالة المعدلة: إلغاء الاشتراك فور الحصول على أول نتيجة ===
+    // الدالة المعدلة مع منع إعادة التوجيه في وضع الصيانة
     async function checkSessionAndRedirect() {
+      // في وضع الصيانة، لا ننفذ أي إعادة توجيه
+      if (MAINTENANCE_MODE) {
+        console.log('وضع الصيانة مفعل - تم منع إعادة التوجيه');
+        return;
+      }
+      
       return new Promise((resolve) => {
-        // إنشاء مراقب لمرة واحدة فقط
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-          // فور دخولنا هنا نلغي الاشتراك لمنع التنفيذ المتكرر
           unsubscribe();
           
           if (user) {
@@ -433,7 +594,6 @@
           }
           resolve(user);
         });
-        // تخزين الدالة لاستخدامها لاحقاً إذا لزم الأمر (اختياري)
         authUnsubscribe = unsubscribe;
       });
     }
@@ -454,6 +614,7 @@
     }
 
     const showLoginTab = () => {
+      if (MAINTENANCE_MODE) return; // منع التبديل في وضع الصيانة
       loginFormDiv.classList.remove('hidden');
       signupFormDiv.classList.add('hidden');
       tabLogin.classList.add('active');
@@ -461,7 +622,9 @@
       switchSpan.textContent = 'إنشاء حساب';
       globalMsg.classList.add('hidden');
     };
+    
     const showSignupTab = () => {
+      if (MAINTENANCE_MODE) return; // منع التبديل في وضع الصيانة
       signupFormDiv.classList.remove('hidden');
       loginFormDiv.classList.add('hidden');
       tabSignup.classList.add('active');
@@ -470,12 +633,14 @@
       globalMsg.classList.add('hidden');
     };
 
-    tabLogin.addEventListener('click', showLoginTab);
-    tabSignup.addEventListener('click', showSignupTab);
-    switchSpan.addEventListener('click', () => {
-      if (loginFormDiv.classList.contains('hidden')) showLoginTab();
-      else showSignupTab();
-    });
+    if (!MAINTENANCE_MODE) {
+      tabLogin.addEventListener('click', showLoginTab);
+      tabSignup.addEventListener('click', showSignupTab);
+      switchSpan.addEventListener('click', () => {
+        if (loginFormDiv.classList.contains('hidden')) showLoginTab();
+        else showSignupTab();
+      });
+    }
 
     signupPhone?.addEventListener('input', function() {
       this.value = this.value.replace(/\D/g, '').slice(0, 11);
@@ -489,8 +654,13 @@
     signupPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
     loginPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
 
-    // ========== إنشاء حساب ==========
+    // ========== إنشاء حساب (معطل في وضع الصيانة) ==========
     signupBtn.addEventListener('click', async () => {
+      if (MAINTENANCE_MODE) {
+        showMessage('⚠️ المنصة في وضع الصيانة حالياً، يرجى المحاولة لاحقاً', false);
+        return;
+      }
+      
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
@@ -566,8 +736,13 @@
       }
     });
 
-    // ========== تسجيل الدخول المعدل: التأكد من اكتمال lastLogin قبل التوجيه ==========
+    // ========== تسجيل الدخول (معطل في وضع الصيانة) ==========
     loginBtn.addEventListener('click', async () => {
+      if (MAINTENANCE_MODE) {
+        showMessage('⚠️ المنصة في وضع الصيانة حالياً، يرجى المحاولة لاحقاً', false);
+        return;
+      }
+      
       if (!checkOnlineStatus()) {
         showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
         return;
@@ -591,7 +766,6 @@
       setButtonLoading(loginBtn, true);
 
       try {
-        // البحث في Firestore عن المستخدم بهذا الرقم
         const usersRef = collection(db, 'STU_users');
         const q = query(usersRef, where('phone', '==', phone));
         const querySnapshot = await getDocs(q);
@@ -607,11 +781,9 @@
         const userData = userDoc.data();
         const email = userData.email || generateEmailFromPhone(phone);
 
-        // تنفيذ تسجيل الدخول
         const userCred = await signInWithEmailAndPassword(auth, email, pass);
         const user = userCred.user;
 
-        // التأكد من وجود المستند في Firestore
         const userDocExists = await getDoc(doc(db, 'STU_users', user.uid));
         if (!userDocExists.exists()) {
           console.error('مستخدم بدون بيانات في Firestore');
@@ -622,10 +794,8 @@
           return;
         }
 
-        // ⭐ تحديث lastLogin وانتظار اكتمال العملية بشكل صريح
         await setDoc(doc(db, 'STU_users', user.uid), { lastLogin: serverTimestamp() }, { merge: true });
 
-        // تخزين البيانات في localStorage بعد التأكد من اكتمال الكتابة
         localStorage.setItem('edu_user', JSON.stringify({
           uid: user.uid,
           name: userData.name || 'مستخدم',
@@ -634,7 +804,6 @@
         }));
 
         showMessage('✅ تم تسجيل الدخول بنجاح! جاري التحويل...', true);
-        // التوجيه بعد التأكد من اكتمال جميع العمليات (setDoc تم الانتهاء منه)
         setTimeout(() => window.location.replace('home.html'), 1200);
 
       } catch (error) {
