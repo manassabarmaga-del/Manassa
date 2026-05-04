@@ -1,874 +1,821 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>منصة البرمجة | دخول الطلاب</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Tajawal', sans-serif;
-      background: linear-gradient(145deg, #0f0a1f 0%, #1a1330 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      direction: rtl;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>أ/ إسماعيل عماد | منصة العلم</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --surface: #ffffff;
+            --primary: #007a5e;
+            --primary-dark: #005a44;
+            --primary-light: #e8f5e9;
+            --text: #1a1a1a;
+            --text2: #666;
+            --text3: #999;
+            --gold: #f9a825;
+            --gold-light: #fff8e1;
+            --user-bg: #e3f2fd;
+            --user-border: #bbdefb;
+            --border: #e0e0e0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+            --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            --radius-xs: 6px;
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 28px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    /* شاشة الترحيب */
-    .splash-screen {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(145deg, #0a0718 0%, #0f0a1f 100%);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 20000; transition: opacity 0.8s ease-in-out; opacity: 1;
-    }
-    .splash-screen.fade-out { opacity: 0; pointer-events: none; }
-    .splash-content { text-align: center; animation: fadeInScale 0.6s ease-out; }
-    .splash-image {
-      width: 180px; height: 180px; margin: 0 auto 20px;
-      border-radius: 60px; overflow: hidden;
-      box-shadow: 0 20px 40px rgba(109, 79, 199, 0.4);
-      background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .splash-image img { width: 100%; height: 100%; object-fit: cover; }
-    .splash-image .no-image { font-size: 70px; color: #ffd700; }
-    .splash-title {
-      font-size: 26px; font-weight: 900;
-      background: linear-gradient(135deg, #ffd700, #b49aff);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-    .splash-sub { font-size: 13px; color: #b1a4c2; }
-    .splash-loader {
-      width: 36px; height: 36px;
-      border: 3px solid rgba(109, 79, 199, 0.3);
-      border-top-color: #ffd700;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 16px auto 0;
-    }
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* المحتوى الرئيسي */
-    .main-content { opacity: 0; transition: opacity 0.5s ease-in-out; }
-    .main-content.visible { opacity: 1; }
-    .container { width: 100%; max-width: 450px; margin: 0 auto; }
+        body {
+            font-family: var(--font);
+            background: linear-gradient(180deg, #e8f5e9 0%, #f0f2f5 100%);
+            color: var(--text);
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-width: 520px;
+            margin: 0 auto;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .card {
-      background: rgba(26, 19, 48, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 40px;
-      padding: 28px 24px;
-      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(109, 79, 199, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
+        /* ======= SPLASH ======= */
+        #splash {
+            position: fixed; inset: 0; z-index: 9999;
+            background: linear-gradient(135deg, #007a5e 0%, #005a44 100%);
+            display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+            animation: splashOut 0.5s ease 4s forwards;
+        }
+        #splash .s-logo { font-size: 4.5rem; animation: float 2s ease-in-out infinite; }
+        #splash .s-title { color: #fff; font-size: 1.3rem; font-weight: 800; letter-spacing: 0.5px; animation: fadeUp 0.6s ease 0.4s both; }
+        #splash .s-sub { color: rgba(255,255,255,0.85); font-size: 0.8rem; animation: fadeUp 0.6s ease 0.7s both; }
+        #splash .s-bar { width: 80px; height: 3px; background: var(--gold); border-radius: 2px; animation: widen 1.5s ease 1s both; }
+        
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes widen { from{width:0} to{width:80px} }
+        @keyframes splashOut { to{opacity:0;visibility:hidden;pointer-events:none} }
 
-    /* Overlay وضع الصيانة */
-    .maintenance-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(145deg, rgba(15, 10, 31, 0.92), rgba(26, 19, 48, 0.95));
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
-    }
-    .maintenance-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .maintenance-box {
-      background: linear-gradient(145deg, rgba(109, 79, 199, 0.2), rgba(138, 108, 255, 0.1));
-      backdrop-filter: blur(12px);
-      border-radius: 32px;
-      padding: 28px 24px;
-      margin: 20px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      text-align: center;
-      animation: slideUp 0.5s ease-out;
-      max-width: 360px;
-    }
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .maintenance-icon {
-      font-size: 56px;
-      animation: bounce 1s ease-in-out infinite;
-      display: inline-block;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .maintenance-title {
-      font-size: 26px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ffd700, #b49aff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 16px 0 12px;
-    }
-    .maintenance-text {
-      color: #d0c2e6;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-    .maintenance-list {
-      text-align: right;
-      margin: 20px 0;
-      padding-right: 20px;
-    }
-    .maintenance-list li {
-      color: #ffd700;
-      font-size: 13px;
-      margin: 10px 0;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .maintenance-list li i {
-      color: #6d4fc7;
-      font-size: 16px;
-    }
-    .maintenance-list li span {
-      color: #b1a4c2;
-    }
-    .maintenance-footer {
-      color: #6d4fc7;
-      font-size: 13px;
-      font-weight: 600;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(109, 79, 199, 0.3);
-    }
-    .maintenance-footer i {
-      color: #ffd700;
-      margin-left: 6px;
-    }
+        /* ======= HEADER ======= */
+        #main-header {
+            background: linear-gradient(135deg, #007a5e 0%, #006b52 100%);
+            color: #fff;
+            padding: 10px 14px 8px;
+            flex-shrink: 0;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,122,94,0.2);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        #main-header.collapsed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .h-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .h-teacher { display: flex; align-items: center; gap: 8px; }
+        .h-avatar-wrap { position: relative; flex-shrink: 0; }
+        .h-avatar {
+            width: 38px; height: 38px; border-radius: 50%; border: 2.5px solid #fff;
+            object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .h-online {
+            width: 11px; height: 11px; background: #4caf50; border-radius: 50%;
+            border: 2.5px solid #007a5e; position: absolute; bottom: 1px; right: 0;
+        }
+        .h-name { font-size: 0.92rem; font-weight: 700; }
+        .h-status { font-size: 0.62rem; opacity: 0.85; display: flex; align-items: center; gap: 4px; }
+        .h-actions { display: flex; gap: 4px; }
+        .h-btn {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: rgba(255,255,255,0.2); color: #fff; font-size: 0.85rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .h-btn:active { background: rgba(255,255,255,0.4); transform: scale(0.9); }
+        .h-selects { display: flex; gap: 5px; margin-top: 8px; }
+        .h-selects select {
+            flex: 1; padding: 7px 4px; font-size: 0.68rem; font-family: var(--font);
+            background: rgba(255,255,255,0.95); color: #1a1a1a;
+            border: 2px solid transparent; border-radius: var(--radius-xs);
+            outline: none; cursor: pointer; text-align: center; transition: var(--transition);
+        }
+        .h-selects select:focus { border-color: #004d3a; }
+        .h-selects select.pulse-guide {
+            animation: pulseSelect 1s ease-in-out 3;
+            border-color: var(--gold); box-shadow: 0 0 16px rgba(249,168,37,0.5);
+        }
+        @keyframes pulseSelect {
+            0%,100%{border-color:var(--gold)} 50%{border-color:#ff9900;box-shadow:0 0 20px rgba(255,153,0,0.7)}
+        }
 
-    .header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
-    }
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      background: linear-gradient(145deg, #6d4fc7, #5b3eb0);
-      padding: 8px 20px; border-radius: 40px;
-      color: white; box-shadow: 0 6px 12px rgba(109, 79, 199, 0.3);
-    }
-    .logo i { font-size: 18px; color: #ffd700; }
-    .logo span { font-weight: 800; font-size: 16px; }
-    .badge {
-      background: rgba(255, 215, 0, 0.15);
-      color: #ffd700; padding: 8px 18px; border-radius: 40px;
-      font-size: 13px; font-weight: 700;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-    }
-    .title-section { margin-bottom: 28px; text-align: center; }
-    .main-title {
-      font-size: 36px; font-weight: 900;
-      background: linear-gradient(135deg, #6d4fc7, #b49aff);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1.2; margin-bottom: 8px;
-    }
-    .sub-title {
-      font-size: 14px; font-weight: 600; color: #b1a4c2;
-      display: inline-block; padding: 6px 20px;
-      border-radius: 40px; background: rgba(109, 79, 199, 0.1);
-    }
-    .tab-buttons { display: flex; gap: 12px; margin-bottom: 24px; }
-    .tab-btn {
-      flex: 1; background: transparent; color: #b1a4c2;
-      border: 2px solid #2d224a; padding: 14px 0;
-      border-radius: 40px; font-family: 'Tajawal', sans-serif;
-      font-size: 16px; font-weight: 800; cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .tab-btn.active {
-      background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      color: white; border-color: #ffd700;
-      box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
-    }
-    .tab-btn:active { transform: scale(0.97); }
-    .form-container { transition: opacity 0.25s ease; }
-    .hidden { display: none !important; }
-    .form-group { margin-bottom: 20px; }
-    label {
-      display: block; margin-bottom: 8px; font-size: 14px;
-      font-weight: 600; color: #d0c2e6; padding-right: 8px;
-    }
-    label i { margin-left: 8px; color: #ffd700; }
-    .input-wrapper { position: relative; }
-    input {
-      width: 100%; padding: 14px 18px; background: #0f0a1f;
-      border: 2px solid #2d224a; border-radius: 28px;
-      font-family: 'Tajawal', sans-serif; font-size: 15px;
-      color: white; transition: all 0.2s ease;
-    }
-    input:focus {
-      outline: none; border-color: #6d4fc7;
-      box-shadow: 0 0 0 3px rgba(109, 79, 199, 0.2);
-    }
-    input::placeholder { color: #4a3b62; }
-    .password-toggle {
-      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-      cursor: pointer; color: #6d4fc7; font-size: 18px;
-    }
-    .phone-hint {
-      font-size: 12px; color: #2e8b57; margin-top: 6px; margin-right: 12px;
-      display: none; align-items: center; gap: 6px;
-      background: rgba(46, 139, 86, 0.1); padding: 6px 14px;
-      border-radius: 30px; width: fit-content;
-    }
-    .phone-hint.show { display: inline-flex; }
-    .btn-submit {
-      width: 100%; background: linear-gradient(145deg, #6d4fc7, #8a6cff);
-      color: white; border: none; padding: 16px;
-      border-radius: 40px; font-family: 'Tajawal', sans-serif;
-      font-size: 18px; font-weight: 800; cursor: pointer;
-      margin: 8px 0 12px; transition: all 0.2s ease;
-      box-shadow: 0 5px 15px rgba(109, 79, 199, 0.3);
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
-    .btn-submit:active:not(:disabled) { transform: scale(0.97); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-    .spinner {
-      display: inline-block; width: 20px; height: 20px;
-      border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
-      border-top-color: white; animation: spin 0.6s linear infinite;
-    }
-    .message {
-      padding: 14px 18px; border-radius: 30px; font-size: 14px;
-      font-weight: 600; text-align: center; margin: 16px 0 8px;
-      animation: fadeSlide 0.3s ease;
-    }
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .message-success {
-      background: rgba(46, 139, 86, 0.2);
-      color: #a0e6c0; border: 1px solid #2e8b57;
-    }
-    .message-error {
-      background: rgba(196, 69, 69, 0.2);
-      color: #ff9b9b; border: 1px solid #c44545;
-    }
-    .forgot-link { text-align: center; margin: 12px 0 6px; }
-    .forgot-link a {
-      color: #ffd700; font-size: 13px; font-weight: 600;
-      text-decoration: none; background: rgba(109, 79, 199, 0.1);
-      padding: 8px 20px; border-radius: 40px;
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid rgba(109, 79, 199, 0.3);
-    }
-    .forgot-link a:hover { background: #ffd700; color: #0f0a1f; }
-    .switch-form {
-      text-align: center; margin-top: 20px; font-size: 14px;
-      color: #b1a4c2;
-    }
-    .switch-form span {
-      color: #ffd700; font-weight: 900; cursor: pointer;
-      text-decoration: underline; text-underline-offset: 4px;
-      margin-right: 6px;
-    }
-    .footer-note {
-      text-align: center; margin-top: 24px; font-size: 12px;
-      color: #4a3b62;
-    }
-    .offline-banner {
-      background: #c44545; color: white; text-align: center;
-      padding: 8px; font-size: 12px; font-weight: 600;
-      position: fixed; top: 0; left: 0; right: 0; z-index: 10001;
-      transform: translateY(-100%); transition: transform 0.3s;
-    }
-    .offline-banner.show { transform: translateY(0); }
-  </style>
+        /* ======= STATS BAR ======= */
+        #stats-bar {
+            display: flex; gap: 6px; padding: 6px 10px; overflow-x: auto;
+            background: #fff; margin: 0 8px; border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm); flex-shrink: 0;
+            -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
+        #stats-bar::-webkit-scrollbar { display: none; }
+        .stat-chip {
+            display: flex; align-items: center; gap: 5px; padding: 6px 10px;
+            background: #f8f9fa; border-radius: var(--radius-lg); font-size: 0.65rem;
+            white-space: nowrap; flex-shrink: 0; font-weight: 600;
+        }
+        .stat-chip .sc-icon { font-size: 0.9rem; }
+        .stat-chip .sc-val { color: var(--primary); font-weight: 800; }
+        .stat-chip.premium { background: var(--gold-light); }
+
+        /* ======= CHAT ======= */
+        #chat-container {
+            flex: 1; overflow-y: auto; padding: 8px 8px 4px;
+            display: flex; flex-direction: column; gap: 6px;
+            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+        }
+        #chat-container::-webkit-scrollbar { width: 3px; }
+        #chat-container::-webkit-scrollbar-track { background: transparent; }
+        #chat-container::-webkit-scrollbar-thumb { background: #c0c0c0; border-radius: 10px; }
+
+        /* رسالة ترحيب */
+        .welcome-bubble {
+            align-self: center; text-align: center; padding: 20px 16px;
+            background: #fff; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow); max-width: 90%; margin: 8px 0;
+        }
+        .welcome-bubble .wb-icon { font-size: 3rem; margin-bottom: 6px; }
+        .welcome-bubble .wb-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+        .welcome-bubble .wb-sub { font-size: 0.7rem; color: var(--text2); margin: 4px 0 10px; }
+        .wb-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+        .wb-chip {
+            padding: 7px 14px; background: var(--primary-light); border: 1.5px solid #c8e6c9;
+            border-radius: var(--radius-lg); font-size: 0.7rem; cursor: pointer;
+            transition: var(--transition); white-space: nowrap; font-family: var(--font);
+        }
+        .wb-chip:active { background: var(--primary); color: #fff; transform: scale(0.95); }
+
+        /* رسالة إرشاد */
+        .guide-bubble {
+            align-self: center; text-align: center; padding: 8px 14px;
+            background: #fffef5; border: 1px solid #ffe082; border-radius: var(--radius-lg);
+            font-size: 0.68rem; color: #665500; max-width: 85%;
+            animation: popIn 0.35s ease;
+        }
+        @keyframes popIn {
+            from{opacity:0;transform:scale(0.9) translateY(-8px)}
+            to{opacity:1;transform:scale(1) translateY(0)}
+        }
+
+        /* رسالة المستخدم */
+        .user-msg-wrap {
+            display: flex; justify-content: flex-end; animation: popIn 0.25s ease;
+        }
+        .user-msg {
+            background: #e3f2fd; color: #1a237e; padding: 7px 14px;
+            border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg);
+            max-width: 75%; font-size: 0.82rem; line-height: 1.5;
+            word-break: break-word; box-shadow: var(--shadow-sm);
+            border: 1px solid #bbdefb;
+        }
+
+        /* رسالة الذكاء */
+        .ai-msg-wrap {
+            display: flex; gap: 6px; animation: popIn 0.25s ease; align-items: flex-start;
+        }
+        .ai-avatar-small {
+            width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+            object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 2px 6px rgba(0,122,94,0.2);
+        }
+        .ai-msg {
+            background: #fff; color: #1a1a1a; padding: 7px 14px;
+            border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-xs);
+            font-size: 0.82rem; line-height: 1.7; word-break: break-word;
+            box-shadow: var(--shadow-sm); max-width: 85%;
+        }
+
+        /* كتل الكود */
+        .ai-msg pre {
+            background: #1e1e2e; color: #cdd6f4; border-radius: var(--radius-xs);
+            padding: 12px; overflow-x: auto; font-family: var(--font-mono);
+            font-size: 0.68rem; line-height: 1.5; direction: ltr; text-align: left;
+            margin: 8px 0; border: 1px solid #313244; position: relative;
+        }
+        .ai-msg pre .lang-tag {
+            position: absolute; top: 4px; right: 8px;
+            font-size: 0.55rem; color: #888; text-transform: uppercase;
+        }
+        .ai-msg code { font-family: var(--font-mono); font-size: 0.68rem; }
+        .ai-msg .katex { font-size: 1.05em; }
+        .ai-msg .katex-display { margin: 6px 0; overflow-x: auto; overflow-y: hidden; }
+
+        /* Typing */
+        .typing-indicator {
+            display: flex; gap: 4px; padding: 8px 14px; background: #fff;
+            border-radius: var(--radius-lg); align-self: flex-start; margin-right: 36px;
+            box-shadow: var(--shadow-sm);
+        }
+        .typing-indicator span {
+            width: 7px; height: 7px; background: #b0bec5; border-radius: 50%;
+            animation: typeBounce 1.2s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typeBounce {
+            0%,60%,100%{transform:translateY(0);opacity:0.3}
+            30%{transform:translateY(-8px);opacity:1}
+        }
+
+        /* Banner النفاذ */
+        .limit-banner {
+            background: linear-gradient(135deg, #fff3cd, #ffe082);
+            border: 1.5px solid #ffc107; border-radius: var(--radius);
+            padding: 14px; text-align: center; font-size: 0.78rem; color: #5d4037;
+            margin: 4px 0; animation: popIn 0.4s ease;
+        }
+        .limit-banner button {
+            background: var(--primary); color: #fff; border: none; border-radius: 16px;
+            padding: 8px 20px; font-weight: 700; font-size: 0.75rem; cursor: pointer; margin-top: 8px;
+        }
+
+        /* ======= INPUT AREA ======= */
+        #input-area {
+            flex-shrink: 0; padding: 6px 8px; background: #fff;
+            display: flex; gap: 6px; align-items: flex-end;
+            border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+        }
+        #input-area textarea {
+            flex: 1; background: #f5f5f5; border: 2px solid transparent;
+            border-radius: var(--radius-lg); padding: 10px 16px; color: #1a1a1a;
+            font-family: var(--font); font-size: 0.82rem; resize: none; outline: none;
+            max-height: 100px; min-height: 42px; line-height: 1.4;
+            transition: var(--transition);
+        }
+        #input-area textarea:focus { border-color: var(--primary); background: #fff; }
+        #send-btn {
+            width: 42px; height: 42px; border-radius: 50%; background: var(--primary);
+            border: none; color: #fff; font-size: 1rem; cursor: pointer;
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,122,94,0.3);
+        }
+        #send-btn:active { transform: scale(0.9); background: var(--primary-dark); }
+        #send-btn:disabled { background: #bdbdbd; box-shadow: none; }
+        #camera-btn {
+            width: 38px; height: 38px; border-radius: 50%; background: #f5f5f5;
+            border: 1.5px solid #e0e0e0; color: var(--primary); font-size: 1rem;
+            cursor: pointer; flex-shrink: 0; display: flex; align-items: center;
+            justify-content: center; transition: all 0.2s;
+        }
+        #camera-btn:active { background: var(--primary-light); transform: scale(0.9); }
+
+        /* ======= CODE AREA ======= */
+        #code-area {
+            display: flex; align-items: center; gap: 6px; padding: 5px 10px;
+            background: #fafafa; border-top: 1px solid #eee;
+        }
+        #code-area.hidden { display: none; }
+        #code-area label { font-size: 0.65rem; color: var(--text2); white-space: nowrap; }
+        #code-area input {
+            flex: 1; border: 1px solid #ddd; border-radius: 14px; padding: 6px 12px;
+            font-size: 0.68rem; font-family: var(--font); background: #fff; outline: none; text-align: center;
+        }
+        #code-area input:focus { border-color: var(--primary); }
+        #code-area button {
+            background: var(--primary); color: #fff; border: none; border-radius: 14px;
+            padding: 6px 14px; font-size: 0.68rem; font-weight: 600; cursor: pointer;
+        }
+
+        /* ======= MODAL ======= */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 2000;
+            display: flex; align-items: flex-end; justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal {
+            background: #fff; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 24px 20px 30px; width: 100%; max-width: 500px; text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+        .modal h3 { font-size: 1rem; margin-bottom: 4px; color: var(--primary); }
+        .modal p { font-size: 0.75rem; color: var(--text2); margin-bottom: 12px; }
+        .modal input {
+            width: 100%; padding: 12px; margin: 5px 0; background: #f5f5f5;
+            border: 2px solid #e0e0e0; border-radius: 12px; font-family: var(--font);
+            font-size: 0.82rem; outline: none; text-align: center; transition: var(--transition);
+        }
+        .modal input:focus { border-color: var(--primary); background: #fff; }
+        .modal button {
+            width: 100%; padding: 12px; margin-top: 10px; background: var(--primary);
+            color: #fff; border: none; border-radius: 12px; font-family: var(--font);
+            font-weight: 700; font-size: 0.82rem; cursor: pointer;
+        }
+        .modal button:active { background: var(--primary-dark); transform: scale(0.98); }
+
+        /* ======= TOAST ======= */
+        #toast {
+            position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: var(--radius-lg);
+            font-size: 0.78rem; z-index: 3000;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
+            pointer-events: none; max-width: 90%; text-align: center;
+        }
+        @keyframes toastIn { from{opacity:0;transform:translateX(-50%) translateY(-20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+        @keyframes toastOut { from{opacity:1} to{opacity:0} }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
-  <div id="splashScreen" class="splash-screen">
-    <div class="splash-content">
-      <div class="splash-image">
-        <img src="intro.png" alt="منصة البرمجة" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-laptop-code\'></i></div>'">
-      </div>
-      <div class="splash-title">منصة البرمجة</div>
-      <div class="splash-sub">Eng.Ismail Emad</div>
-      <div class="splash-loader"></div>
+
+    <!-- SPLASH -->
+    <div id="splash">
+        <div class="s-logo">💎</div>
+        <div class="s-title">أ/ إسماعيل عماد</div>
+        <div class="s-sub">#اتعلم_بشكل_جديد</div>
+        <div class="s-bar"></div>
     </div>
-  </div>
 
-  <div id="mainContent" class="main-content">
-    <div class="container">
-      <div class="card">
-        <!-- Overlay وضع الصيانة -->
-        <div id="maintenanceOverlay" class="maintenance-overlay">
-          <div class="maintenance-box">
-            <div class="maintenance-icon">🚧</div>
-            <div class="maintenance-title">المنصة قيد التحديث حالياً</div>
-            <div class="maintenance-text">
-              نقوم حالياً بتطوير المنصة وإضافة مميزات جديدة لتحسين تجربتك
-            </div>
-            <ul class="maintenance-list">
-              <li><i class="fas fa-robot"></i> <span>إضافة ذكاء اصطناعي متقدم</span></li>
-              <li><i class="fas fa-chart-line"></i> <span>تحسين السرعة والأداء</span></li>
-              <li><i class="fas fa-tasks"></i> <span>نظام متابعة متطور</span></li>
-              <li><i class="fas fa-graduation-cap"></i> <span>كورسات جديدة وحصرية</span></li>
-              <li><i class="fas fa-users"></i> <span>منتدى للمناقشات والتفاعل</span></li>
-            </ul>
-            <div class="maintenance-footer">
-              <i class="fas fa-calendar-alt"></i> التحديث سيتم الانتهاء منه يوم الثلاثاء القادم
-            </div>
-            <div class="maintenance-footer" style="margin-top: 12px;">
-              <i class="fas fa-clock"></i> يرجى المحاولة لاحقاً
-            </div>
-          </div>
-        </div>
+    <!-- TOAST -->
+    <div id="toast" class="hidden"></div>
 
-        <div class="header">
-          <div class="logo"><i class="fas fa-laptop-code"></i><span>منصة البرمجة</span></div>
-          <div class="badge"><i class="fas fa-star"></i> تعلم البرمجة</div>
-        </div>
-        <div class="title-section">
-          <h1 class="main-title">Eng.Ismail</h1>
-          <div class="sub-title"><i class="fas fa-graduation-cap"></i> اعمل حساب يا بشمهندس</div>
-        </div>
-        <div class="tab-buttons">
-          <button id="tabLoginBtn" class="tab-btn active">تسجيل دخول</button>
-          <button id="tabSignupBtn" class="tab-btn">إنشاء حساب</button>
-        </div>
-
-        <div id="loginFormContainer" class="form-container">
-          <div class="form-group">
-            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-            <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-            <div class="phone-hint" id="loginPhoneHint"><i class="fas fa-envelope"></i></div>
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-lock"></i> كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('loginPassword', this)"></i>
+    <!-- HEADER -->
+    <header id="main-header">
+        <div class="h-top">
+            <div class="h-teacher">
+                <div class="h-avatar-wrap">
+                    <img src="my.png" alt="أ/ إسماعيل" class="h-avatar" onerror="this.style.display='none';">
+                    <span class="h-online"></span>
+                </div>
+                <div>
+                    <div class="h-name">أ/ إسماعيل عماد</div>
+                    <div class="h-status">🟢 متواجد للشرح</div>
+                </div>
             </div>
-          </div>
-          <div class="forgot-link">
-            <a href="#" id="whatsappForgotLink" target="_blank"><i class="fab fa-whatsapp"></i> نسيت كلمة المرور؟ تواصل مع الدعم</a>
-          </div>
-          <button id="loginActionBtn" class="btn-submit"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
-        </div>
-
-        <div id="signupFormContainer" class="form-container hidden">
-          <div class="form-group">
-            <label><i class="fas fa-user"></i> الاسم الثلاثي</label>
-            <input type="text" id="signupName" placeholder="مثال: أحمد محمد علي" maxlength="50">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-phone-alt"></i> رقم الهاتف</label>
-            <input type="tel" id="signupPhone" placeholder="01xxxxxxxxx" maxlength="11" inputmode="numeric">
-            <div class="phone-hint" id="signupPhoneHint"><i class="fas fa-envelope"></i></div>
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-school"></i> المدرسة (اختياري)</label>
-            <input type="text" id="signupSchool" placeholder="اسم المدرسة">
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-lock"></i> كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="signupPassword" placeholder="8 أحرف على الأقل" minlength="8">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupPassword', this)"></i>
+            <div class="h-actions">
+                <button class="h-btn" onclick="logoutUser()" title="خروج">🚪</button>
             </div>
-          </div>
-          <div class="form-group">
-            <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label>
-            <div class="input-wrapper">
-              <input type="password" id="signupConfirm" placeholder="أعد كتابة كلمة المرور">
-              <i class="fas fa-eye password-toggle" onclick="window.togglePassword('signupConfirm', this)"></i>
-            </div>
-          </div>
-          <button id="signupActionBtn" class="btn-submit"><i class="fas fa-user-plus"></i> إنشاء حساب جديد</button>
         </div>
+        <div class="h-selects">
+            <select id="stage-select">
+                <option value="" disabled selected>📚 المرحلة</option>
+                <optgroup label="الابتدائي">
+                    <option value="أولى ابتدائي">أولى</option><option value="تانية ابتدائي">تانية</option>
+                    <option value="تالتة ابتدائي">تالتة</option><option value="رابعة ابتدائي">رابعة</option>
+                    <option value="خامسة ابتدائي">خامسة</option><option value="سادسة ابتدائي">سادسة</option>
+                </optgroup>
+                <optgroup label="الإعدادي">
+                    <option value="أولى إعدادي">أولى إعدادي</option>
+                    <option value="تانية إعدادي">تانية إعدادي</option>
+                    <option value="تالتة إعدادي">تالتة إعدادي</option>
+                </optgroup>
+                <optgroup label="الثانوي">
+                    <option value="أولى ثانوي">أولى ثانوي</option>
+                    <option value="تانية ثانوي">تانية ثانوي</option>
+                    <option value="تالتة ثانوي">تالتة ثانوي</option>
+                </optgroup>
+            </select>
+            <select id="subject-select" disabled>
+                <option value="" disabled selected>📖 المادة</option>
+            </select>
+        </div>
+    </header>
 
-        <div id="globalMessage" class="hidden"></div>
-        <div class="switch-form" id="switchFormText">ليس لديك حساب؟ <span id="switchFormSpan">إنشاء حساب</span></div>
-        <div class="footer-note">منصة البرمجة © 2025 — تعلم بالعربية</div>
-      </div>
+    <!-- STATS BAR -->
+    <div id="stats-bar">
+        <div class="stat-chip" id="chip-gemini">🔵 ismail2: <span class="sc-val" id="gemini-left">--</span></div>
+        <div class="stat-chip" id="chip-deepseek">🟣 ismail: <span class="sc-val" id="deepseek-left">--</span></div>
+        <div class="stat-chip">📊 الكل: <span class="sc-val" id="words-left">--</span></div>
+        <div class="stat-chip premium hidden" id="chip-premium">⭐ مشترك</div>
     </div>
-  </div>
 
-  <div id="offlineBanner" class="offline-banner"><i class="fas fa-wifi"></i> لا يوجد اتصال بالإنترنت</div>
+    <!-- CHAT -->
+    <div id="chat-container"></div>
 
-  <script>
-    window.togglePassword = function(inputId, icon) {
-      const input = document.getElementById(inputId);
-      if (!input) return;
-      const type = input.type === 'password' ? 'text' : 'password';
-      input.type = type;
-      icon.classList.toggle('fa-eye');
-      icon.classList.toggle('fa-eye-slash');
-    };
-  </script>
+    <!-- INPUT -->
+    <div id="input-area">
+        <button id="camera-btn" title="تصوير سؤال">📷</button>
+        <textarea id="user-input" placeholder="اكتب سؤالك يا بطل..." rows="1" disabled></textarea>
+        <button id="send-btn" disabled>➤</button>
+    </div>
 
-  <script type="module">
-    // ========== وضع الصيانة ==========
-    const MAINTENANCE_MODE = true;  // غير إلى false لإلغاء وضع الصيانة
+    <!-- CODE -->
+    <div id="code-area" class="hidden">
+        <label>🔑 الكود:</label>
+        <input type="text" id="activation-code" placeholder="كود التفعيل" maxlength="10">
+        <button id="activate-btn">تفعيل</button>
+    </div>
 
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-    import { 
-      getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-      onAuthStateChanged, signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { 
-      getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- MODAL -->
+    <div id="user-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>👋 أهلًا بيك في منصة المعلم</h3>
+            <p>سجل بياناتك عشان نبدأ رحلة التعلم</p>
+            <input type="text" id="user-name" placeholder="اسمك">
+            <input type="tel" id="user-phone" placeholder="رقم الهاتف (01xxxxxxxxx)">
+            <button id="save-user-btn">🚀 ابدأ التعلم</button>
+        </div>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
-      authDomain: "manassa-oloom.firebaseapp.com",
-      projectId: "manassa-oloom",
-      storageBucket: "manassa-oloom.firebasestorage.app",
-      messagingSenderId: "475047988456",
-      appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d"
-    };
+    <script>
+        // ============================================
+        const API = 'https://mo3alem.islammanassa1.workers.dev/api/chat';
+        const SUBJECTS = {
+            'أولى ابتدائي': ['عربي','إنجليزي','رياضيات','دين'],
+            'تانية ابتدائي': ['عربي','إنجليزي','رياضيات','دين'],
+            'تالتة ابتدائي': ['عربي','إنجليزي','رياضيات','دين'],
+            'رابعة ابتدائي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'خامسة ابتدائي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'سادسة ابتدائي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'أولى إعدادي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'تانية إعدادي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'تالتة إعدادي': ['عربي','إنجليزي','رياضيات','علوم','دراسات','دين'],
+            'أولى ثانوي': ['عربي','إنجليزي','رياضيات','علوم متكاملة','برمجة','تاريخ','فلسفة ومنطق','لغة ثانية'],
+            'تانية ثانوي': ['عربي','إنجليزي','رياضيات','فيزياء','كيمياء','تاريخ','فلسفة','لغة ثانية'],
+            'تالتة ثانوي': ['عربي','إنجليزي','رياضيات','فيزياء','كيمياء','أحياء','جيولوجيا','تاريخ','جغرافيا','فلسفة','لغة ثانية']
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        const S = {
+            user: null, stage: null, subject: null,
+            subscribed: false, streaming: false,
+        };
 
-    // DOM Elements
-    const splashScreen = document.getElementById('splashScreen');
-    const mainContent = document.getElementById('mainContent');
-    const offlineBanner = document.getElementById('offlineBanner');
-    const globalMsg = document.getElementById('globalMessage');
-    const tabLogin = document.getElementById('tabLoginBtn');
-    const tabSignup = document.getElementById('tabSignupBtn');
-    const loginFormDiv = document.getElementById('loginFormContainer');
-    const signupFormDiv = document.getElementById('signupFormContainer');
-    const switchSpan = document.getElementById('switchFormSpan');
-    const loginPhone = document.getElementById('loginPhone');
-    const loginPass = document.getElementById('loginPassword');
-    const loginBtn = document.getElementById('loginActionBtn');
-    const loginHint = document.getElementById('loginPhoneHint');
-    const signupName = document.getElementById('signupName');
-    const signupPhone = document.getElementById('signupPhone');
-    const signupSchool = document.getElementById('signupSchool');
-    const signupPass = document.getElementById('signupPassword');
-    const signupConfirm = document.getElementById('signupConfirm');
-    const signupBtn = document.getElementById('signupActionBtn');
-    const signupHint = document.getElementById('signupPhoneHint');
-    const whatsappLink = document.getElementById('whatsappForgotLink');
-    const maintenanceOverlay = document.getElementById('maintenanceOverlay');
+        const $ = id => document.getElementById(id);
 
-    let currentName = '', currentPhone = '';
-    let isProcessing = false;
-    let splashCompleted = false;
-    let authUnsubscribe = null;
+        // ======= SPLASH =======
+        if (!localStorage.getItem('seenSplash_v6')) {
+            setTimeout(() => { $('splash').style.display = 'none'; localStorage.setItem('seenSplash_v6', '1'); }, 4500);
+        } else { $('splash').style.display = 'none'; }
 
-    // ========== تفعيل وضع الصيانة ==========
-    if (MAINTENANCE_MODE) {
-      // إظهار الـ overlay
-      if (maintenanceOverlay) {
-        maintenanceOverlay.classList.add('active');
-      }
-      
-      // تعطيل الأزرار وتغيير شكلها
-      if (loginBtn) {
-        loginBtn.disabled = true;
-        loginBtn.style.opacity = '0.6';
-        loginBtn.style.cursor = 'not-allowed';
-      }
-      if (signupBtn) {
-        signupBtn.disabled = true;
-        signupBtn.style.opacity = '0.6';
-        signupBtn.style.cursor = 'not-allowed';
-      }
-      
-      // تعطيل التبويبات أيضاً (اختياري لمنع التبديل)
-      if (tabLogin) tabLogin.style.cursor = 'not-allowed';
-      if (tabSignup) tabSignup.style.cursor = 'not-allowed';
-    }
+        // ======= LOGOUT =======
+        function logoutUser() {
+            ['mo3alem_user_v4','mo3alem_stage_v4','mo3alem_subject_v4'].forEach(k => localStorage.removeItem(k));
+            S.user = null; S.subscribed = false;
+            $('code-area').classList.remove('hidden'); $('chat-container').innerHTML = '';
+            $('stage-select').value = ''; $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
+            $('subject-select').disabled = true;
+            $('user-input').disabled = true; $('send-btn').disabled = true;
+            $('words-left').textContent = '--'; $('gemini-left').textContent = '--'; $('deepseek-left').textContent = '--';
+            $('chip-premium').classList.add('hidden');
+            showWelcomeScreen(); toastMsg('👋 تم تسجيل الخروج');
+            setTimeout(() => $('user-modal').classList.remove('hidden'), 500);
+        }
 
-    function showMessage(text, isSuccess = true) {
-      globalMsg.classList.remove('hidden', 'message-success', 'message-error');
-      globalMsg.classList.add('message', isSuccess ? 'message-success' : 'message-error');
-      globalMsg.textContent = text;
-      setTimeout(() => globalMsg.classList.add('hidden'), 5000);
-    }
-
-    function setButtonLoading(btn, loading, originalText = null) {
-      if (loading) {
-        btn.dataset.originalText = btn.innerHTML;
-        btn.innerHTML = '<span class="spinner"></span> جاري...';
-        btn.disabled = true;
-      } else {
-        btn.innerHTML = btn.dataset.originalText || (originalText || 'زر');
-        btn.disabled = false;
-      }
-    }
-
-    function sanitize(str) { if (!str) return ''; return str.trim().replace(/[<>]/g, ''); }
-    function validatePhone(phone) { return /^01[0-9]{9}$/.test(phone); }
-    function validateName(name) { return /^[\u0600-\u06FF\s]{3,50}$/.test(name); }
-    
-    function generateEmailFromPhone(phone) {
-      return `${phone}@manassa.com`;
-    }
-
-    async function verifyUserInFirestore(uid) {
-      try {
-        const userDoc = await getDoc(doc(db, 'STU_users', uid));
-        return userDoc.exists();
-      } catch (error) {
-        console.error('خطأ في التحقق من Firestore:', error);
-        return false;
-      }
-    }
-
-    async function forceLogoutAndRedirect() {
-      try {
-        await signOut(auth);
-        localStorage.removeItem('edu_user');
-      } catch (e) { console.warn('خطأ في تسجيل الخروج:', e); }
-      if (!MAINTENANCE_MODE) {
-        window.location.replace('index.html');
-      }
-    }
-
-    // الدالة المعدلة مع منع إعادة التوجيه في وضع الصيانة
-    async function checkSessionAndRedirect() {
-      // في وضع الصيانة، لا ننفذ أي إعادة توجيه
-      if (MAINTENANCE_MODE) {
-        console.log('وضع الصيانة مفعل - تم منع إعادة التوجيه');
-        return;
-      }
-      
-      return new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-          unsubscribe();
-          
-          if (user) {
-            const existsInFirestore = await verifyUserInFirestore(user.uid);
-            if (existsInFirestore) {
-              const userDoc = await getDoc(doc(db, 'STU_users', user.uid));
-              const userData = userDoc.data();
-              localStorage.setItem('edu_user', JSON.stringify({
-                uid: user.uid, name: userData.name || 'مستخدم',
-                phone: userData.phone || '', lastVerified: Date.now()
-              }));
-              window.location.replace('home.html');
-            } else {
-              console.warn('مستخدم بدون بيانات في Firestore، جاري تسجيل الخروج');
-              await forceLogoutAndRedirect();
+        // ======= USER =======
+        async function checkUser() {
+            const saved = localStorage.getItem('mo3alem_user_v4');
+            if (saved) {
+                S.user = JSON.parse(saved);
+                await refreshStatus();
+                if (S.subscribed) $('code-area').classList.add('hidden');
+                enableInput();
+                return;
             }
-          }
-          resolve(user);
-        });
-        authUnsubscribe = unsubscribe;
-      });
-    }
+            setTimeout(() => $('user-modal').classList.remove('hidden'), $('splash').style.display === 'none' ? 400 : 4800);
+        }
 
-    function updateWhatsAppLink() {
-      const name = encodeURIComponent(currentName || 'الطالب');
-      const phone = encodeURIComponent(currentPhone || 'غير مدخل');
-      whatsappLink.href = `https://wa.me/201202326992?text=${encodeURIComponent(`السلام عليكم، أرغب في استعادة كلمة المرور للحساب التالي:\nالاسم: ${name}\nرقم الهاتف: ${phone}`)}`;
-    }
+        $('save-user-btn').addEventListener('click', async () => {
+            const name = $('user-name').value.trim();
+            const phone = $('user-phone').value.trim();
+            if (!name || !phone) return toastMsg('محتاجين اسمك ورقمك');
+            if (!/^01[0-9]{9}$/.test(phone)) return toastMsg('رقم الهاتف مش صحيح');
 
-    function checkOnlineStatus() {
-      if (!navigator.onLine) {
-        offlineBanner.classList.add('show');
-        return false;
-      }
-      offlineBanner.classList.remove('show');
-      return true;
-    }
-
-    const showLoginTab = () => {
-      if (MAINTENANCE_MODE) return; // منع التبديل في وضع الصيانة
-      loginFormDiv.classList.remove('hidden');
-      signupFormDiv.classList.add('hidden');
-      tabLogin.classList.add('active');
-      tabSignup.classList.remove('active');
-      switchSpan.textContent = 'إنشاء حساب';
-      globalMsg.classList.add('hidden');
-    };
-    
-    const showSignupTab = () => {
-      if (MAINTENANCE_MODE) return; // منع التبديل في وضع الصيانة
-      signupFormDiv.classList.remove('hidden');
-      loginFormDiv.classList.add('hidden');
-      tabSignup.classList.add('active');
-      tabLogin.classList.remove('active');
-      switchSpan.textContent = 'تسجيل دخول';
-      globalMsg.classList.add('hidden');
-    };
-
-    if (!MAINTENANCE_MODE) {
-      tabLogin.addEventListener('click', showLoginTab);
-      tabSignup.addEventListener('click', showSignupTab);
-      switchSpan.addEventListener('click', () => {
-        if (loginFormDiv.classList.contains('hidden')) showLoginTab();
-        else showSignupTab();
-      });
-    }
-
-    signupPhone?.addEventListener('input', function() {
-      this.value = this.value.replace(/\D/g, '').slice(0, 11);
-      signupHint.classList.toggle('show', this.value.length >= 11);
-    });
-    loginPhone?.addEventListener('input', function() {
-      this.value = this.value.replace(/\D/g, '').slice(0, 11);
-      loginHint.classList.toggle('show', this.value.length >= 11);
-    });
-    signupName?.addEventListener('input', (e) => { currentName = sanitize(e.target.value); updateWhatsAppLink(); });
-    signupPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
-    loginPhone?.addEventListener('input', (e) => { currentPhone = sanitize(e.target.value); updateWhatsAppLink(); });
-
-    // ========== إنشاء حساب (معطل في وضع الصيانة) ==========
-    signupBtn.addEventListener('click', async () => {
-      if (MAINTENANCE_MODE) {
-        showMessage('⚠️ المنصة في وضع الصيانة حالياً، يرجى المحاولة لاحقاً', false);
-        return;
-      }
-      
-      if (!checkOnlineStatus()) {
-        showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
-        return;
-      }
-      if (isProcessing) {
-        showMessage('جاري المعالجة، يرجى الانتظار...', false);
-        return;
-      }
-
-      const name = sanitize(signupName.value);
-      const phone = sanitize(signupPhone.value);
-      const school = sanitize(signupSchool.value) || '';
-      const pass = signupPass.value;
-      const confirm = signupConfirm.value;
-
-      if (!name || !phone || !pass || !confirm) {
-        return showMessage('جميع الحقول مطلوبة (المدرسة اختيارية)', false);
-      }
-      if (!validateName(name)) {
-        return showMessage('الاسم يجب أن يكون بالعربية فقط (3-50 حرف)', false);
-      }
-      if (!validatePhone(phone)) {
-        return showMessage('رقم الهاتف غير صحيح (11 رقم، يبدأ بـ 01)', false);
-      }
-      if (pass.length < 8) {
-        return showMessage('كلمة المرور يجب أن تكون 8 أحرف على الأقل', false);
-      }
-      if (pass !== confirm) {
-        return showMessage('كلمة المرور غير متطابقة', false);
-      }
-
-      isProcessing = true;
-      setButtonLoading(signupBtn, true);
-      const email = generateEmailFromPhone(phone);
-
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-        const user = userCred.user;
-
-        await setDoc(doc(db, 'STU_users', user.uid), {
-          uid: user.uid,
-          name: name,
-          phone: phone,
-          email: email,
-          school: school,
-          role: 'student',
-          activePackages: {},
-          createdAt: serverTimestamp(),
-          lastLogin: serverTimestamp()
+            $('save-user-btn').disabled = true; $('save-user-btn').textContent = '⏳';
+            try {
+                const res = await fetch(API, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'register', name, phone, stage: S.stage || '' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                S.user = { name, phone, status: data.student?.status || 'free' };
+                S.subscribed = data.student?.status === 'active';
+                localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
+                $('user-modal').classList.add('hidden');
+                if (S.subscribed) $('code-area').classList.add('hidden');
+                enableInput();
+                showWelcomeScreen();
+                toastMsg('👋 نورتنا يا ' + name + '! 💚');
+            } catch (e) { toastMsg('⚠️ ' + (e.message || 'حصل خطأ')); }
+            finally { $('save-user-btn').disabled = false; $('save-user-btn').textContent = '🚀 ابدأ التعلم'; }
         });
 
-        localStorage.setItem('edu_user', JSON.stringify({
-          uid: user.uid, name: name, phone: phone, lastVerified: Date.now()
-        }));
-
-        showMessage('✅ تم إنشاء الحساب بنجاح! جاري التحويل...', true);
-        setTimeout(() => window.location.replace('home.html'), 1500);
-
-      } catch (error) {
-        console.error('خطأ في إنشاء الحساب:', error);
-        setButtonLoading(signupBtn, false);
-        if (error.code === 'auth/email-already-in-use') {
-          showMessage('⚠️ رقم الهاتف مسجل مسبقاً. يرجى تسجيل الدخول.', false);
-        } else if (error.code === 'auth/weak-password') {
-          showMessage('كلمة المرور ضعيفة جداً. استخدم 8 أحرف على الأقل.', false);
-        } else if (error.code === 'auth/network-request-failed') {
-          showMessage('❌ فشل الاتصال بالإنترنت. يرجى المحاولة مرة أخرى.', false);
-        } else {
-          showMessage('❌ فشل في إنشاء الحساب: ' + (error.message || 'حاول لاحقاً'), false);
-        }
-      } finally {
-        isProcessing = false;
-      }
-    });
-
-    // ========== تسجيل الدخول (معطل في وضع الصيانة) ==========
-    loginBtn.addEventListener('click', async () => {
-      if (MAINTENANCE_MODE) {
-        showMessage('⚠️ المنصة في وضع الصيانة حالياً، يرجى المحاولة لاحقاً', false);
-        return;
-      }
-      
-      if (!checkOnlineStatus()) {
-        showMessage('لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.', false);
-        return;
-      }
-      if (isProcessing) {
-        showMessage('جاري المعالجة، يرجى الانتظار...', false);
-        return;
-      }
-
-      const phone = sanitize(loginPhone.value);
-      const pass = loginPass.value;
-
-      if (!phone || !pass) {
-        return showMessage('رقم الهاتف وكلمة المرور مطلوبان', false);
-      }
-      if (!validatePhone(phone)) {
-        return showMessage('رقم الهاتف غير صحيح', false);
-      }
-
-      isProcessing = true;
-      setButtonLoading(loginBtn, true);
-
-      try {
-        const usersRef = collection(db, 'STU_users');
-        const q = query(usersRef, where('phone', '==', phone));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-          showMessage('⚠️ هذا الرقم غير مسجل. يرجى إنشاء حساب أولاً.', false);
-          setButtonLoading(loginBtn, false);
-          isProcessing = false;
-          return;
+        async function refreshStatus() {
+            if (!S.user?.phone) return;
+            try {
+                const res = await fetch(API, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'status', phone: S.user.phone })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    S.subscribed = data.isSubscribed; S.user.status = data.status;
+                    if (data.remaining) {
+                        $('words-left').textContent = (data.remaining.total || 0).toLocaleString();
+                        $('gemini-left').textContent = (data.remaining.gemini || 0).toLocaleString();
+                        $('deepseek-left').textContent = (data.remaining.deepseek || 0).toLocaleString();
+                    }
+                    if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.remove('hidden'); }
+                    localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
+                }
+            } catch (e) {}
         }
 
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data();
-        const email = userData.email || generateEmailFromPhone(phone);
-
-        const userCred = await signInWithEmailAndPassword(auth, email, pass);
-        const user = userCred.user;
-
-        const userDocExists = await getDoc(doc(db, 'STU_users', user.uid));
-        if (!userDocExists.exists()) {
-          console.error('مستخدم بدون بيانات في Firestore');
-          await signOut(auth);
-          showMessage('⚠️ بيانات الحساب غير مكتملة. يرجى إنشاء حساب جديد.', false);
-          setButtonLoading(loginBtn, false);
-          isProcessing = false;
-          return;
+        function enableInput() {
+            $('user-input').disabled = false;
+            if (S.stage && S.subject) $('send-btn').disabled = false;
         }
 
-        await setDoc(doc(db, 'STU_users', user.uid), { lastLogin: serverTimestamp() }, { merge: true });
-
-        localStorage.setItem('edu_user', JSON.stringify({
-          uid: user.uid,
-          name: userData.name || 'مستخدم',
-          phone: userData.phone || phone,
-          lastVerified: Date.now()
-        }));
-
-        showMessage('✅ تم تسجيل الدخول بنجاح! جاري التحويل...', true);
-        setTimeout(() => window.location.replace('home.html'), 1200);
-
-      } catch (error) {
-        console.error('خطأ في تسجيل الدخول:', error);
-        setButtonLoading(loginBtn, false);
-        
-        if (error.code === 'auth/user-not-found') {
-          showMessage('⚠️ لا يوجد حساب بهذا الرقم. يرجى إنشاء حساب أولاً.', false);
-        } else if (error.code === 'auth/wrong-password') {
-          showMessage('كلمة المرور غير صحيحة', false);
-        } else if (error.code === 'auth/invalid-credential') {
-          showMessage('بيانات الدخول غير صحيحة', false);
-        } else if (error.code === 'auth/network-request-failed') {
-          showMessage('❌ فشل الاتصال بالإنترنت. يرجى المحاولة مرة أخرى.', false);
-        } else {
-          showMessage('❌ خطأ في تسجيل الدخول: ' + (error.message || 'حاول لاحقاً'), false);
+        function showWelcomeScreen() {
+            const chat = $('chat-container');
+            chat.innerHTML = `
+                <div class="welcome-bubble">
+                    <div class="wb-icon">👋</div>
+                    <div class="wb-title">${S.user ? 'أهلًا ' + S.user.name + '!' : 'أهلًا بيك في منصة المعلم'}</div>
+                    <div class="wb-sub">اختر المرحلة والمادة فوق، وابدأ اسأل</div>
+                    <div class="wb-actions">
+                        <button class="wb-chip" onclick="quickAsk('اشرح لي')">📖 شرح درس</button>
+                        <button class="wb-chip" onclick="quickAsk('حل السؤال')">✍️ حل سؤال</button>
+                        <button class="wb-chip" onclick="quickAsk('اختبرني')">🎯 اختبرني</button>
+                        <button class="wb-chip" onclick="quickAsk('لخص')">📝 تلخيص</button>
+                    </div>
+                </div>`;
         }
-      } finally {
-        isProcessing = false;
-      }
-    });
 
-    // شاشة الترحيب
-    function hideSplashAndShowContent() {
-      splashScreen.classList.add('fade-out');
-      setTimeout(() => {
-        splashScreen.style.display = 'none';
-        mainContent.classList.add('visible');
-        checkSessionAndRedirect();
-      }, 800);
-    }
-    
-    function startSplashScreen() {
-      setTimeout(() => {
-        if (!splashCompleted) {
-          splashCompleted = true;
-          hideSplashAndShowContent();
+        function quickAsk(prefix) {
+            if (!S.stage || !S.subject) return toastMsg('⚠️ اختر المرحلة والمادة الأول');
+            $('user-input').value = prefix + ' ';
+            $('user-input').focus();
         }
-      }, 3000);
-    }
 
-    window.addEventListener('online', () => {
-      offlineBanner.classList.remove('show');
-      showMessage('تم استعادة الاتصال بالإنترنت', true);
-    });
-    window.addEventListener('offline', () => offlineBanner.classList.add('show'));
+        // ======= SELECTS =======
+        $('stage-select').addEventListener('change', () => {
+            S.stage = $('stage-select').value;
+            $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
+            $('subject-select').disabled = false;
+            (SUBJECTS[S.stage] || []).forEach(sub => {
+                $('subject-select').innerHTML += `<option value="${sub}">${sub}</option>`;
+            });
+            S.subject = null; $('send-btn').disabled = true;
+            localStorage.setItem('mo3alem_stage_v4', S.stage);
+            if (S.user) $('user-input').disabled = false;
+            addGuide('✅ تمام! اختر المادة من القائمة التانية');
+            $('subject-select').classList.add('pulse-guide');
+            setTimeout(() => $('subject-select').classList.remove('pulse-guide'), 3000);
+        });
 
-    async function init() {
-      checkOnlineStatus();
-      startSplashScreen();
-      setTimeout(() => {
-        if (!splashCompleted) {
-          splashCompleted = true;
-          hideSplashAndShowContent();
+        $('subject-select').addEventListener('change', () => {
+            S.subject = $('subject-select').value;
+            localStorage.setItem('mo3alem_subject_v4', S.subject);
+            if (S.user) $('send-btn').disabled = false;
+            addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' | أنا معاك، اسأل براحتك!');
+        });
+
+        // ======= CHAT HELPERS =======
+        function addUserMsg(text) {
+            const wrap = document.createElement('div'); wrap.className = 'user-msg-wrap';
+            const div = document.createElement('div'); div.className = 'user-msg'; div.textContent = text;
+            wrap.appendChild(div); $('chat-container').appendChild(wrap); scrollDown();
         }
-      }, 3500);
-    }
-    init();
-    updateWhatsAppLink();
-    window.debugLogout = async () => { 
-      if (authUnsubscribe && typeof authUnsubscribe === 'function') authUnsubscribe();
-      await signOut(auth); 
-      localStorage.removeItem('edu_user'); 
-      window.location.reload(); 
-    };
-  </script>
+
+        function addAIMsg(text) {
+            const wrap = document.createElement('div'); wrap.className = 'ai-msg-wrap';
+            const av = document.createElement('img'); av.className = 'ai-avatar-small'; av.src = 'my.png';
+            av.onerror = function() { this.style.display = 'none'; };
+            const msg = document.createElement('div'); msg.className = 'ai-msg';
+            msg.innerHTML = formatMsg(text);
+            wrap.appendChild(av); wrap.appendChild(msg);
+            $('chat-container').appendChild(wrap);
+            renderMathInElement(msg); scrollDown();
+            return { wrap, msg };
+        }
+
+        function addTyping() {
+            const el = document.createElement('div'); el.className = 'typing-indicator';
+            el.id = 'typing-ind'; el.innerHTML = '<span></span><span></span><span></span>';
+            $('chat-container').appendChild(el); scrollDown(); return el;
+        }
+
+        function removeTyping() { const el = document.getElementById('typing-ind'); if (el) el.remove(); }
+
+        function addGuide(text) {
+            const div = document.createElement('div'); div.className = 'guide-bubble'; div.textContent = text;
+            $('chat-container').appendChild(div); scrollDown();
+        }
+
+        function addLimitBanner(msg) {
+            const div = document.createElement('div'); div.className = 'limit-banner';
+            div.innerHTML = `${msg}<br><button onclick="window.location.href='payment.html'">💎 اشترك الآن - 70ج شهريًا</button>`;
+            $('chat-container').appendChild(div); scrollDown();
+        }
+
+        function scrollDown() {
+            requestAnimationFrame(() => {
+                $('chat-container').scrollTop = $('chat-container').scrollHeight;
+            });
+        }
+
+        // ======= FORMAT MSG (إصلاح الأسس) =======
+        function formatMsg(text) {
+            let out = text;
+            
+            // 1. إصلاح الأسس: X 2 → X^{2}
+            out = out.replace(/([XxYyZz])\s*(\d+)/g, '$1^{$2}');
+            
+            // 2. إصلاح الأسس السالبة: X -2 → X^{-2}
+            out = out.replace(/([XxYyZz])\s*-\s*(\d+)/g, '$1^{-$2}');
+            
+            // 3. إصلاح تعبيرات داخل $$
+            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => {
+                let clean = tex.trim();
+                clean = clean.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}');
+                try { return katex.renderToString(clean, { throwOnError: false, displayMode: true }); }
+                catch (e) { return _; }
+            });
+            
+            // 4. إصلاح تعبيرات داخل $
+            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => {
+                let clean = tex.trim();
+                clean = clean.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}');
+                try { return katex.renderToString(clean, { throwOnError: false }); }
+                catch (e) { return _; }
+            });
+            
+            // 5. Code blocks
+            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+                const langTag = lang ? `<span class="lang-tag">${lang}</span>` : '';
+                return `<pre>${langTag}<code>${escHtml(code.trim())}</code></pre>`;
+            });
+            
+            return out;
+        }
+
+        function renderMathInElement(el) {
+            try { renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); }
+            catch (e) {}
+        }
+
+        function escHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+        // ======= SEND =======
+        $('send-btn').addEventListener('click', sendMsg);
+        $('user-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+        $('user-input').addEventListener('input', () => {
+            $('user-input').style.height = 'auto';
+            $('user-input').style.height = Math.min($('user-input').scrollHeight, 100) + 'px';
+        });
+
+        async function sendMsg() {
+            if (S.streaming) return;
+            const text = $('user-input').value.trim();
+            if (!text || !S.stage || !S.subject || !S.user) return;
+
+            addUserMsg(text);
+            $('user-input').value = ''; $('user-input').style.height = 'auto';
+            $('send-btn').disabled = true; S.streaming = true;
+            addTyping();
+
+            let fullResponse = '';
+            try {
+                const res = await fetch(API, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'ask', phone: S.user.phone, name: S.user.name, stage: S.stage, subject: S.subject, text })
+                });
+
+                if (!res.ok) {
+                    removeTyping();
+                    const err = await res.json().catch(() => ({}));
+                    if (err.code === 'LIMIT_REACHED') addLimitBanner(err.error + '<br>' + err.message);
+                    else addAIMsg('⚠️ ' + (err.error || 'حصل خطأ'));
+                    S.streaming = false; $('send-btn').disabled = false; await refreshStatus(); return;
+                }
+
+                removeTyping();
+                const { msg } = addAIMsg('');
+                const reader = res.body.getReader(); const decoder = new TextDecoder(); let buffer = '';
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n'); buffer = lines.pop() || '';
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const d = line.slice(6).trim();
+                            if (!d || d === '[DONE]') continue;
+                            try {
+                                const p = JSON.parse(d);
+                                if (p.text) { fullResponse += p.text; msg.innerHTML = formatMsg(fullResponse); renderMathInElement(msg); scrollDown(); }
+                                if (p.error) msg.innerHTML = '⚠️ ' + p.error;
+                            } catch (e) {}
+                        }
+                    }
+                }
+                if (!fullResponse) msg.innerHTML = '⚠️ مقدرتش أوصل للخدمة.';
+                await refreshStatus();
+            } catch (e) {
+                removeTyping(); addAIMsg('⚠️ ' + (e.message || 'حصل خطأ'));
+            } finally {
+                S.streaming = false; $('send-btn').disabled = false; $('user-input').focus();
+            }
+        }
+
+        // ======= CAMERA =======
+        $('camera-btn').addEventListener('click', () => {
+            const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.capture = 'environment';
+            inp.onchange = async (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                addUserMsg('📷 صورة');
+                S.streaming = true; $('send-btn').disabled = true; addTyping();
+                let fullResponse = '';
+                try {
+                    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(file); });
+                    const res = await fetch(API, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'image', phone: S.user.phone, stage: S.stage, subject: S.subject, image: b64 })
+                    });
+                    if (!res.ok) {
+                        removeTyping();
+                        const err = await res.json().catch(() => ({}));
+                        if (err.code === 'PREMIUM_ONLY' || err.code === 'LIMIT_REACHED') addLimitBanner(err.error + '<br>' + err.message);
+                        else addAIMsg('⚠️ ' + (err.error || 'خطأ'));
+                        S.streaming = false; $('send-btn').disabled = false; return;
+                    }
+                    removeTyping();
+                    const { msg } = addAIMsg('');
+                    const sr = res.body.getReader(); const dec = new TextDecoder(); let buf = '';
+                    while (true) {
+                        const { done, value } = await sr.read();
+                        if (done) break;
+                        buf += dec.decode(value, { stream: true });
+                        const lines = buf.split('\n'); buf = lines.pop() || '';
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const d = line.slice(6).trim();
+                                if (!d || d === '[DONE]') continue;
+                                try {
+                                    const p = JSON.parse(d);
+                                    if (p.text) { fullResponse += p.text; msg.innerHTML = formatMsg(fullResponse); renderMathInElement(msg); scrollDown(); }
+                                    if (p.error) msg.innerHTML = '⚠️ ' + p.error;
+                                } catch (e) {}
+                            }
+                        }
+                    }
+                    await refreshStatus();
+                } catch (e) { removeTyping(); addAIMsg('⚠️ خطأ'); }
+                finally { S.streaming = false; $('send-btn').disabled = false; }
+            };
+            inp.click();
+        });
+
+        // ======= ACTIVATION =======
+        $('activate-btn').addEventListener('click', async () => {
+            const code = $('activation-code').value.trim();
+            if (!code || code.length < 8) return toastMsg('⚠️ الكود 8 حروف');
+            if (!S.user?.phone) return toastMsg('⚠️ سجل الأول');
+            $('activate-btn').disabled = true; $('activate-btn').textContent = '⏳';
+            try {
+                const res = await fetch(API, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'activate', phone: S.user.phone, activationCode: code })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    S.subscribed = true; S.user.status = 'active';
+                    localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
+                    $('code-area').classList.add('hidden'); $('chip-premium').classList.remove('hidden');
+                    toastMsg('🎉 تم التفعيل!'); await refreshStatus();
+                } else toastMsg('⚠️ ' + (data.error || 'كود خطأ'));
+            } catch (e) { toastMsg('⚠️ خطأ'); }
+            finally { $('activate-btn').disabled = false; $('activate-btn').textContent = 'تفعيل'; $('activation-code').value = ''; }
+        });
+
+        function toastMsg(msg) {
+            const t = $('toast'); t.textContent = msg; t.classList.remove('hidden');
+            t.style.animation = 'none'; t.offsetHeight;
+            t.style.animation = 'toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards';
+            setTimeout(() => t.classList.add('hidden'), 2500);
+        }
+
+        // ======= INIT =======
+        async function init() {
+            const ss = localStorage.getItem('mo3alem_stage_v4');
+            const sb = localStorage.getItem('mo3alem_subject_v4');
+            if (ss) {
+                $('stage-select').value = ss; $('stage-select').dispatchEvent(new Event('change'));
+                if (sb) setTimeout(() => { $('subject-select').value = sb; $('subject-select').dispatchEvent(new Event('change')); }, 150);
+            }
+            showWelcomeScreen();
+            await checkUser();
+        }
+        init();
+    </script>
 </body>
 </html>
