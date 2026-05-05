@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>علوم الصف الرابع - أ. إسماعيل عماد</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #c8e8ff 0%, #b0d4ee 100%);
+            font-family: 'Segoe UI', 'Tahoma', 'Comic Neue', 'Comic Neue', 'Cairo', 'Tajawal', sans-serif;
+            padding: 16px 12px 40px 12px;
+            direction: rtl;
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر المرح */
+        .hero {
+            background: #ffc857;
+            background-image: radial-gradient(circle at 10% 30%, rgba(255,235,160,0.6) 2%, transparent 2.5%);
+            background-size: 28px 28px;
+            border-radius: 56px 56px 48px 48px;
+            padding: 20px 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 0 #e09312;
+            text-align: center;
+            border: 2px solid #fff9e8;
+        }
+
+        .hero h1 {
+            font-size: 1.75rem;
+            background: #2d3e50;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 60px;
+            color: #ffeaac;
+            letter-spacing: 1px;
+            box-shadow: inset 0 -2px 0 #1f2e3c, 0 6px 0 #1a2a36;
+            margin-bottom: 12px;
+        }
+
+        .teacher {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: white;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #d35400;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 8px 0;
+        }
+
+        .teacher span {
+            direction: ltr;
+            display: inline-block;
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: #f4f0e0;
+            padding: 2px 12px;
+            border-radius: 30px;
+            margin-right: 8px;
+        }
+
+        .grade {
+            background: #2e5e3b;
+            color: #f9e0a0;
+            font-size: 1.2rem;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* بطاقات الأسئلة */
+        .question-card {
+            background-color: #fffff2;
+            border-radius: 48px 32px 48px 32px;
+            margin-bottom: 28px;
+            padding: 18px 20px 20px 20px;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+            border: 2px solid #fff3cf;
+        }
+
+        .question-card:hover {
+            transform: scale(0.99);
+        }
+
+        /* رأس السؤال */
+        .q-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            background: #fdebb3;
+            padding: 6px 15px;
+            border-radius: 60px;
+            width: fit-content;
+        }
+
+        .q-icon {
+            font-size: 1.8rem;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #b64926;
+            line-height: 1.4;
+        }
+
+        .question-stem {
+            font-size: 1.1rem;
+            background: #fef5e0;
+            padding: 12px 16px;
+            border-radius: 32px;
+            margin: 10px 0 12px 0;
+            color: #2c3e2f;
+            font-weight: 600;
+            border-right: 8px solid #ffaa33;
+        }
+
+        /* الحل والشرح بطريقة مرحة */
+        .solution-box {
+            background: #e6f4e8;
+            border-radius: 28px;
+            padding: 12px 18px;
+            margin: 10px 0 8px;
+            border-left: 6px solid #2e8b57;
+        }
+
+        .solution-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            background: #2e8b57;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .solution-answer {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #1c6b3c;
+            background: #fff7e0;
+            display: inline-block;
+            padding: 4px 15px;
+            border-radius: 30px;
+            margin: 6px 0;
+        }
+
+        .explanation {
+            font-size: 1rem;
+            background: #fffbf0;
+            padding: 12px 16px;
+            border-radius: 24px;
+            color: #3d3b2c;
+            line-height: 1.5;
+            margin-top: 10px;
+            border: 1px dashed #ffb347;
+        }
+
+        .explanation:before {
+            content: "📖✨ ";
+            font-size: 1rem;
+        }
+
+        hr {
+            margin: 20px 0 8px;
+            border: 2px dotted #ffcd94;
+        }
+
+        /* تذييل مرح */
+        .footer-note {
+            background: #ffda99;
+            border-radius: 40px;
+            text-align: center;
+            padding: 16px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 25px;
+            color: #965a1e;
+        }
+
+        /* تكييف الخطوط على الهواتف الصغيرة */
+        @media (max-width: 500px) {
+            body {
+                padding: 10px 8px;
+            }
+            .q-text {
+                font-size: 1rem;
+            }
+            .question-stem {
+                font-size: 1rem;
+            }
+            .solution-answer {
+                font-size: 1.1rem;
+            }
+            .explanation {
+                font-size: 0.95rem;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .teacher {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>🌍 علوم الصف الرابع 🌱</h1>
+        <div class="teacher">أ/ إسماعيل عماد <span>📞 01122104596</span></div>
+        <div class="grade">🧪 اسئلة 
+مهمة 💡</div>
+    </div>
+
+    <!-- أولاً: أكمل العبارات (15 سؤال) -->
+    <!-- سؤال 1 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">❄️🌀</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">1. تتفتت الصخور إلى قطع صغيرة في مكانها وتنقل بعملية ....... إلى مكان آخر.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">التعرية</div>
+        <div class="explanation">بص يا بطل، الصخور لما تتكسر وهي واقفة مكانها دي "تجوية"، لكن أول ما الهواء أو الميه يخدوها ويمشوا بيها لمكان تاني، دي بنسميها "تعرية" يعني كشفوا المكان ونقلوا اللي فيه.</div></div>
+    </div>
+    <!-- سؤال 2 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">⏳🗻</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">2. ....... عملية طبيعية تستغرق سنوات ليتضح أثرها على الصخور.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">التجوية</div>
+        <div class="explanation">الصخور مش بتتكسر في يوم وليلة، دي بتقعد سنين طويلة جداً الميه والهواء يأثروا فيها لحد ما تبدأ تتفتت، عشان كدة هي عملية بطيئة جداً.</div></div>
+    </div>
+    <!-- سؤال 3 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌾🏞️</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">3. بسبب عمليات التجوية والتعرية والترسيب تكونت ....... شمال مصر.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الدلتا</div>
+        <div class="explanation">الرواسب اللي النيل جابها معاه من زمان وترسبت في الشمال هي اللي عملت شكل الدلتا اللي إحنا عايشين عليها دلوقتي.</div></div>
+    </div>
+    <!-- سؤال 4 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">💨🏜️</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">4. تحمل الرياح الرمال وتستقر على الأرض في مكان جديد بعملية تسمى .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الترسيب</div>
+        <div class="explanation">تخيل الرياح دي شايلة رمال في إيدها، أول ما تتعب أو سرعتها تقل بترميهم على الأرض، الرمية دي وتجمع الرمل في مكان جديد اسمه "ترسيب".</div></div>
+    </div>
+    <!-- سؤال 5 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧊⚙️</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">5. تساعد دورة الانصهار والتجمد للمياه داخل شقوق الصخور في التجوية ....... للصخور.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الميكانيكية</div>
+        <div class="explanation">الميه لما تدخل في شق الصخر وتتجمد حجمها بيزيد فبتزق الصخر وتكسره، ده كسر "بالقوة" من غير ما نغير طبيعة الصخر، فبنسميها تجوية ميكانيكية.</div></div>
+    </div>
+    <!-- سؤال 6 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧪🍄</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">6. ....... تتسبب في تآكل الصخور مثل الأشنات بمرور الزمن تنتج الحمض داخل الصخر.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">التجوية الكيميائية</div>
+        <div class="explanation">"الأشنات" دي كائنات حية صغيرة بتطلع "حمض"، الحمض ده بيدوب المعادن اللي جوه الصخر ويغير شكله تماماً، طالما فيها مواد كيميائية وتغيير في طبيعة الصخر تبقى تجوية كيميائية.</div></div>
+    </div>
+    <!-- سؤال 7 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌳🪨</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">7. تنمو ....... في شقوق الصخور وتعمل على تفتتها إلى قطع صغيرة.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">جذور الأشجار</div>
+        <div class="explanation">الشجر الصغير لما بيطلع جوه شقوق الصخور، جذوره بتكبر وتقوى فبتضغط على الصخر وتفلقه نصين.</div></div>
+    </div>
+    <!-- سؤال 8 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🏔️🕳️</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">8. تكونت الكهوف في قلب الجبل بسبب التجوية ....... التي تكون الصدأ بفعل الهواء والمطر.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الكيميائية</div>
+        <div class="explanation">الميه لما تتفاعل مع المعادن اللي جوه الصخور وتعمل "صدأ" أو تدوب الصخور الجيرية، ده بيعمل فتحات كبيرة هي الكهوف، وده تغيير كيميائي.</div></div>
+    </div>
+    <!-- سؤال 9 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🏖️🧂</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">9. تستمر التجوية الميكانيكية في تكسير وتفتيت الصخور إلى أن تصبح .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">رمالاً (أو رواسب)</div>
+        <div class="explanation">الصخرة الكبيرة بتبقى أصغر فأصغر، لحد ما في الآخر خالص تبقى حتت ناعمة جداً وهي الرملة اللي بنشوفها.</div></div>
+    </div>
+    <!-- سؤال 10 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌍🌈</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">10. من الأخاديد الكبيرة، وادي نخر في دولة ....... والوادي الملون في دولة .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">سلطنة عمان / مصر</div>
+        <div class="explanation">دي أماكن مشهورة جداً، وادي نخر في عمان والوادي الملون الجميل بتاعنا اللي في سيناء بمصر.</div></div>
+    </div>
+    <!-- سؤال 11 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">⚡💧</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">11. الطاقة الناتجة من اندفاع الماء عبر المولدات الضخمة تسمى .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الطاقة الكهرومائية</div>
+        <div class="explanation">كلمة "كهرومائية" مقسومة نصين: "كهرو" يعني كهرباء، و"مائية" يعني جاية من الميه، فدي الكهرباء اللي بنخدها من السد.</div></div>
+    </div>
+    <!-- سؤال 12 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌞💨</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">12. المياه والرياح والطاقة الشمسية من مصادر الطاقة .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">المتجددة</div>
+        <div class="explanation">دي مصادر "شاطرة" مابتخلصش أبداً، كل يوم فيه شمس وفيه هواء وميه، فعشان كدة بنسميها متجددة.</div></div>
+    </div>
+    <!-- سؤال 13 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🛢️🔥</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">13. الفحم والنفط والغاز الطبيعي من مصادر الطاقة .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">غير المتجددة</div>
+        <div class="explanation">المصادر دي بنطلعها من تحت الأرض، ولو خلصت مش هنعرف نعمل غيرها بسهولة لأنها بتاخد ملايين السنين عشان تتكون، فبنخاف تخلص.</div></div>
+    </div>
+    <!-- سؤال 14 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🍲♻️</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">14. طلب منك تسخين الطعام بطريقة آمنة ونظيفة ورخيصة قد تستخدم .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">السخان الشمسي (أو الفرن الشمسي)</div>
+        <div class="explanation">الشمس موجودة ببلاش ونظيفة جداً ومش بتبوظ البيئة، فممكن نستخدم مرايا مجمعة تسخن الأكل بكل سهولة.</div></div>
+    </div>
+    <!-- سؤال 15 -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌊💨</span><span class="q-text">أكمل العبارة</span></div>
+        <div class="question-stem">15. الطواحين المائية والهوائية تعتبر مصادر للطاقة .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">المتجددة</div>
+        <div class="explanation">لأنها بتعتمد على حركة الميه أو الهواء، ودول حاجات مابتخلصش ونظيفة.</div></div>
+    </div>
+
+    <!-- ثانياً: أكمل (السد، التجوية، التوربينات، الأخاديد) -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">⛰️🏞️</span><span class="q-text">ثانياً : أكمل</span></div>
+        <div class="question-stem">1. المنحدرات المتموجة والقمم العالية تدل على تكوين .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">الأخاديد</div><div class="explanation">الأخاديد هي جبال ووديان منحدرة وشكلها مموج بسبب نحت الميه فيها لسنين طويلة.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🌊🚧</span><span class="q-text">ثانياً : أكمل</span></div>
+        <div class="question-stem">2. يمكن التحكم في تدفق المياه عبر ....... لتتزايد طاقة وضعها.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">السد</div><div class="explanation">السد ده زي "حنفية" كبيرة بنقفلها عشان نحوش الميه وراها، فالميه تعلى وتخزن طاقة كبيرة اسمها "طاقة وضع".</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">⚙️💡</span><span class="q-text">ثانياً : أكمل</span></div>
+        <div class="question-stem">3. تولد ....... الكهرباء عبر المولدات الموجودة في السد.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">التوربينات</div><div class="explanation">التوربينات دي عاملة زي "المروحة"، الميه بتخبط فيها تخليها تلف بسرعة جداً، والحركة دي هي اللي بتشغل المولد وتطلع كهرباء.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🗿🌀</span><span class="q-text">ثانياً : أكمل</span></div>
+        <div class="question-stem">4. من العمليات التي تغير تضاريس الأرض .......</div>
+        <div class="solution-box"><div class="solution-label">✔️ الحل</div><div class="solution-answer">التجوية</div><div class="explanation">التجوية هي اللي بتبدأ الحكاية، بتكسر الجبال وتغير شكل الأرض خالص من حال لحال.</div></div>
+    </div>
+
+    <!-- ثالثاً : علل -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">1. إذا تعرضت الصخور للتجوية فإنها تتفتت إلى قطع أصغر وتنقل إلى مكان بعيد.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">بسبب تأثير العوامل الجوية (رياح، مياه، حرارة) التي تضعف الصخر وتكسره، ثم تقوم الرياح أو المياه بنقل هذه الفتات.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">2. تعتبر عملية الترسيب المرحلة النهائية للصخور المفتتة.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">لأنها المرحلة التي تستقر فيها الرواسب في مكانها الجديد بعدما تضعف القوة الناقلة (الريح أو الميه).</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">3. يؤدي تراكم الرواسب إلى ظهور تضاريس جديدة.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">لأن الرواسب لما بتتجمع فوق بعضها بتعمل أشكال زي "الكثبان الرملية" أو "دلتا الأنهار"، وده بيغير شكل خريطة الأرض.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">4. هناك ارتباط بين التجوية والتعرية والترسيب.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">لأنهم بيكملوا بعض؛ التجوية تكسر، والتعرية تنقل، والترسيب يحط في المكان الجديد. ماينفعش واحدة تحصل من غير التانية بالترتيب ده.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">5. تكونت الصحراء الغربية في مصر على مر السنين من كثبان رملية.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">بسبب حركة الرياح القوية التي حملت الرمال لمسافات طويلة ثم رسبتها في مساحات واسعة.</div></div>
+    </div>
+    <div class="question-card">
+        <div class="q-title"><span class="q-icon">🧐❓</span><span class="q-text">علل : ليه ؟</span></div>
+        <div class="question-stem">6. اختفاء القلاع الرملية بالقرب من الشاطئ.</div>
+        <div class="solution-box"><div class="solution-label">✔️ الإجابة</div><div class="explanation">بسبب "التعرية" المائية؛ أمواج البحر بتخبط في القلعة وتدوب الرمل وتاخده معاها جوه البحر تاني، فبتختفي بسرعة.</div></div>
+    </div>
+
+    <div class="footer-note">
+        🧠✨    </div>
+</div>
+</body>
+</html>
