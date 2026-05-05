@@ -3,38 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>أ/ إسماعيل عماد |  </title>
+    <title>أ/ إسماعيل عماد | منصة التعليم الذكية</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
     <style>
         :root {
-            --bg-deep: #0a0015;
-            --bg-surface: #120822;
-            --bg-elevated: #1a0d2e;
-            --bg-glass: rgba(26, 13, 46, 0.7);
-            --primary: #9b6dff;
-            --primary-glow: #b794ff;
-            --primary-soft: rgba(155, 109, 255, 0.15);
-            --accent: #e2b04a;
-            --accent-soft: rgba(226, 176, 74, 0.2);
-            --gold-gradient: linear-gradient(135deg, #e2b04a 0%, #f0d078 50%, #c8963e 100%);
-            --text-primary: #f0e6ff;
-            --text-secondary: #b8a9d4;
-            --text-muted: #7a6b93;
-            --user-bubble: linear-gradient(135deg, #2d1b69 0%, #1e1048 100%);
-            --ai-bubble: linear-gradient(135deg, #1a0d2e 0%, #120822 100%);
-            --border-subtle: rgba(155, 109, 255, 0.2);
-            --border-gold: rgba(226, 176, 74, 0.4);
-            --shadow-glow: 0 0 30px rgba(155, 109, 255, 0.15);
-            --shadow-gold: 0 0 25px rgba(226, 176, 74, 0.2);
+            --bg-deep: #0a1a1f;
+            --bg-surface: #0f2a2f;
+            --bg-elevated: #1a3a3f;
+            --bg-glass: rgba(15, 42, 47, 0.75);
+            --primary: #2d9cdb;
+            --primary-glow: #5dbcdb;
+            --primary-soft: rgba(45, 156, 219, 0.12);
+            --accent: #f2c94c;
+            --accent-soft: rgba(242, 201, 76, 0.15);
+            --gold-gradient: linear-gradient(135deg, #f2c94c 0%, #f5d76e 50%, #e2b13b 100%);
+            --text-primary: #eaf7f9;
+            --text-secondary: #b0d4d9;
+            --text-muted: #6b9ea3;
+            --user-bubble: linear-gradient(135deg, #1e5555 0%, #143a3a 100%);
+            --ai-bubble: linear-gradient(135deg, #0f2a2f 0%, #0a1f22 100%);
+            --border-subtle: rgba(45, 156, 219, 0.2);
+            --border-gold: rgba(242, 201, 76, 0.35);
+            --shadow-glow: 0 0 30px rgba(45, 156, 219, 0.12);
+            --shadow-gold: 0 0 25px rgba(242, 201, 76, 0.2);
             --radius-lg: 24px;
             --radius-md: 16px;
             --radius-sm: 10px;
@@ -57,9 +55,8 @@
             font-family: var(--font-ar);
             background: var(--bg-deep);
             background-image:
-                radial-gradient(ellipse at 20% 10%, rgba(155, 109, 255, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 90%, rgba(226, 176, 74, 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 50%, rgba(155, 109, 255, 0.03) 0%, transparent 80%);
+                radial-gradient(ellipse at 20% 10%, rgba(45, 156, 219, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 90%, rgba(242, 201, 76, 0.06) 0%, transparent 60%);
             color: var(--text-primary);
             height: 100dvh;
             overflow: hidden;
@@ -79,10 +76,10 @@
             right: 0;
             bottom: 0;
             background:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(155, 109, 255, 0.008) 2px, rgba(155, 109, 255, 0.008) 4px);
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(45, 156, 219, 0.04) 2px, rgba(45, 156, 219, 0.04) 4px);
             pointer-events: none;
             z-index: 0;
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
         /* ======= SPLASH ======= */
@@ -90,7 +87,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: radial-gradient(ellipse at center, #1a0d2e 0%, #0a0015 100%);
+            background: radial-gradient(ellipse at center, #0f2a2f 0%, #0a1a1f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,7 +98,7 @@
         #splash .s-logo {
             font-size: 5rem;
             animation: floatLux 2.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(226, 176, 74, 0.5));
+            filter: drop-shadow(0 0 30px rgba(242, 201, 76, 0.4));
         }
         #splash .s-title {
             background: var(--gold-gradient);
@@ -127,40 +124,19 @@
             animation: widenLux 1.8s ease 0.9s both;
         }
         @keyframes floatLux {
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-14px) scale(1.05);
-            }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-14px) scale(1.05); }
         }
         @keyframes fadeUpLux {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes widenLux {
-            from {
-                width: 0;
-                opacity: 0;
-            }
-            to {
-                width: 70px;
-                opacity: 1;
-            }
+            from { width: 0; opacity: 0; }
+            to { width: 70px; opacity: 1; }
         }
         @keyframes splashOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
+            to { opacity: 0; visibility: hidden; pointer-events: none; }
         }
 
         /* ======= HEADER ======= */
@@ -169,111 +145,90 @@
             backdrop-filter: var(--backdrop-blur);
             -webkit-backdrop-filter: var(--backdrop-blur);
             border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 10px 14px 8px;
+            padding: 8px 12px 10px;
             flex-shrink: 0;
             z-index: 10;
             box-shadow: var(--shadow-glow);
             border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-            transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
-            margin: 0 2px;
-        }
-        #main-header.collapsed {
-            transform: translateY(-110%);
-            opacity: 0;
-            pointer-events: none;
+            margin: 0 4px;
         }
         .h-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 8px;
         }
         .h-teacher {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .h-avatar-wrap {
             position: relative;
             flex-shrink: 0;
         }
         .h-avatar {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             border: 2px solid var(--accent);
             object-fit: cover;
             box-shadow: var(--shadow-gold);
-            transition: var(--transition-smooth);
         }
         .h-online {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             background: #4ade80;
             border-radius: 50%;
-            border: 2.5px solid #120822;
+            border: 2.5px solid #0f2a2f;
             position: absolute;
             bottom: 1px;
             right: -1px;
             box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
-            animation: pulseOnline 2s ease-in-out infinite;
-        }
-        @keyframes pulseOnline {
-            0%,
-            100% {
-                box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
-            }
         }
         .h-name {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #f0e6ff 0%, #d4c5f0 100%);
+            background: linear-gradient(135deg, #eaf7f9 0%, #c4e2e6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .h-status {
-            font-size: 0.62rem;
+            font-size: 0.58rem;
             color: var(--text-muted);
-            letter-spacing: 0.03em;
         }
         .h-actions {
             display: flex;
             gap: 6px;
         }
         .h-btn {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 1px solid var(--border-subtle);
-            background: rgba(155, 109, 255, 0.1);
+            background: rgba(45, 156, 219, 0.1);
             color: var(--text-primary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition-smooth);
-            backdrop-filter: blur(10px);
         }
         .h-btn:active {
-            background: rgba(155, 109, 255, 0.3);
-            transform: scale(0.88);
-            box-shadow: 0 0 20px rgba(155, 109, 255, 0.4);
+            background: rgba(45, 156, 219, 0.3);
+            transform: scale(0.9);
         }
         .h-selects {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             margin-top: 8px;
         }
         .h-selects select {
             flex: 1;
             padding: 7px 6px;
-            font-size: 0.67rem;
+            font-size: 0.68rem;
             font-family: var(--font-ar);
             background: var(--bg-elevated);
             color: var(--text-primary);
@@ -285,32 +240,26 @@
             transition: var(--transition-smooth);
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b6dff' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d9cdb' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: left 8px center;
+            font-weight: 500;
         }
         .h-selects select:focus {
             border-color: var(--accent);
             box-shadow: var(--shadow-gold);
         }
         .h-selects select.pulse-guide {
-            animation: pulseSelectLux 1s ease-in-out 3;
+            animation: pulseSelect 0.8s ease-in-out 3;
             border-color: var(--accent);
-            box-shadow: 0 0 18px rgba(226, 176, 74, 0.5);
+            box-shadow: 0 0 18px rgba(242, 201, 76, 0.5);
         }
-        @keyframes pulseSelectLux {
-            0%,
-            100% {
-                border-color: var(--accent);
-                box-shadow: 0 0 12px rgba(226, 176, 74, 0.3);
-            }
-            50% {
-                border-color: #f0d078;
-                box-shadow: 0 0 28px rgba(240, 208, 120, 0.7);
-            }
+        @keyframes pulseSelect {
+            0%, 100% { border-color: var(--accent); box-shadow: 0 0 8px rgba(242, 201, 76, 0.3); }
+            50% { border-color: #f5d76e; box-shadow: 0 0 22px rgba(242, 201, 76, 0.7); }
         }
 
-        /* ======= STATS BAR ======= */
+        /* ======= STATS BAR (Code moved to top) ======= */
         #stats-bar {
             display: flex;
             gap: 6px;
@@ -318,32 +267,29 @@
             overflow-x: auto;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border: 1px solid var(--border-subtle);
-            margin: 8px 10px;
+            margin: 6px 10px;
             border-radius: var(--radius-full);
             box-shadow: var(--shadow-glow);
             flex-shrink: 0;
             align-items: center;
             scrollbar-width: none;
+            justify-content: space-between;
         }
-        #stats-bar::-webkit-scrollbar {
-            display: none;
-        }
+        #stats-bar::-webkit-scrollbar { display: none; }
         .stat-chip {
             display: flex;
             align-items: center;
             gap: 5px;
-            padding: 6px 12px;
-            background: rgba(26, 13, 46, 0.6);
+            padding: 5px 10px;
+            background: rgba(26, 58, 63, 0.7);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             white-space: nowrap;
             flex-shrink: 0;
             font-weight: 500;
             color: var(--text-secondary);
-            transition: var(--transition-smooth);
         }
         .stat-chip .sc-val {
             color: var(--accent);
@@ -359,7 +305,7 @@
         }
         .stat-chip.code-btn:active {
             background: var(--accent);
-            color: #0a0015;
+            color: #0a1a1f;
             box-shadow: var(--shadow-gold);
         }
         .stat-chip.premium {
@@ -368,9 +314,7 @@
             color: #4ade80;
             display: none;
         }
-        .stat-chip.premium.show {
-            display: flex;
-        }
+        .stat-chip.premium.show { display: flex; }
 
         /* ======= CHAT ======= */
         #chat-container {
@@ -385,48 +329,41 @@
             position: relative;
             z-index: 1;
         }
-        #chat-container::-webkit-scrollbar {
-            width: 3px;
-        }
-        #chat-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #chat-container::-webkit-scrollbar-thumb {
-            background: rgba(155, 109, 255, 0.3);
-            border-radius: 10px;
-        }
+        #chat-container::-webkit-scrollbar { width: 3px; }
+        #chat-container::-webkit-scrollbar-track { background: transparent; }
+        #chat-container::-webkit-scrollbar-thumb { background: rgba(45, 156, 219, 0.3); border-radius: 10px; }
 
         .welcome-bubble {
             align-self: center;
             text-align: center;
-            padding: 28px 20px;
+            padding: 24px 18px;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-glow);
             max-width: 92%;
-            margin: 12px 0;
-            animation: cardReveal 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+            margin: 8px 0;
+            animation: cardReveal 0.6s ease both;
         }
         .welcome-bubble .wb-icon {
-            font-size: 3.5rem;
-            margin-bottom: 8px;
-            animation: floatLux 3s ease-in-out infinite;
+            font-size: 3rem;
+            margin-bottom: 6px;
         }
         .welcome-bubble .wb-title {
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: 1rem;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 6px;
         }
         .welcome-bubble .wb-sub {
             font-size: 0.7rem;
-            color: var(--text-muted);
-            margin: 6px 0 14px;
+            color: var(--text-secondary);
+            margin: 6px 0 12px;
+            line-height: 1.5;
         }
         .wb-actions {
             display: flex;
@@ -435,11 +372,11 @@
             justify-content: center;
         }
         .wb-chip {
-            padding: 7px 14px;
+            padding: 6px 12px;
             background: var(--primary-soft);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             cursor: pointer;
             transition: var(--transition-bounce);
             white-space: nowrap;
@@ -451,22 +388,49 @@
             background: var(--primary);
             color: #fff;
             transform: scale(0.93);
-            box-shadow: 0 0 24px rgba(155, 109, 255, 0.5);
+            box-shadow: 0 0 20px rgba(45, 156, 219, 0.5);
         }
 
         .guide-bubble {
             align-self: center;
             text-align: center;
-            padding: 8px 16px;
+            padding: 7px 14px;
             background: var(--accent-soft);
             border: 1px solid var(--border-gold);
             border-radius: var(--radius-full);
-            font-size: 0.68rem;
+            font-size: 0.66rem;
             color: var(--accent);
             max-width: 88%;
-            animation: cardReveal 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+            animation: cardReveal 0.4s ease both;
             font-weight: 500;
         }
+
+        .limit-banner {
+            background: var(--accent-soft);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin: 6px 0;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+        .limit-banner button {
+            background: var(--gold-gradient);
+            color: #0a1a1f;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: var(--font-ar);
+            box-shadow: var(--shadow-gold);
+        }
+        .limit-banner button:active { transform: scale(0.94); }
 
         .user-msg-wrap {
             display: flex;
@@ -475,16 +439,15 @@
         }
         .user-msg {
             background: var(--user-bubble);
-            color: #f0e6ff;
+            color: #eaf7f9;
             padding: 9px 16px;
             border-radius: 20px 20px 6px 20px;
             max-width: 78%;
             font-size: 0.82rem;
             line-height: 1.6;
             word-break: break-word;
-            box-shadow: 0 4px 20px rgba(45, 27, 105, 0.3);
-            border: 1px solid rgba(155, 109, 255, 0.25);
-            font-family: var(--font-ar);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            border: 1px solid rgba(45, 156, 219, 0.3);
         }
 
         .ai-msg-wrap {
@@ -494,8 +457,8 @@
             align-items: flex-start;
         }
         .ai-avatar-small {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             flex-shrink: 0;
             object-fit: cover;
@@ -511,155 +474,72 @@
             font-size: 0.82rem;
             line-height: 1.75;
             word-break: break-word;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
             border: 1px solid var(--border-subtle);
             max-width: 86%;
-            font-family: var(--font-ar);
             backdrop-filter: blur(10px);
         }
-
         .ai-msg pre {
-            background: #0d021f;
-            color: #d4c5f0;
+            background: #051214;
+            color: #c4e2e6;
             border-radius: var(--radius-sm);
-            padding: 14px;
+            padding: 12px;
             overflow-x: auto;
             font-family: var(--font-mono);
-            font-size: 0.68rem;
-            line-height: 1.6;
+            font-size: 0.66rem;
             direction: ltr;
             text-align: left;
             margin: 8px 0;
-            border: 1px solid rgba(155, 109, 255, 0.3);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(45, 156, 219, 0.3);
         }
-        .ai-msg code {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-        }
-        .ai-msg .katex {
-            font-size: 1.05em;
-        }
-        .ai-msg .katex-display {
-            margin: 8px 0;
-            overflow-x: auto;
-        }
-
+        .ai-msg code { font-family: var(--font-mono); font-size: 0.66rem; }
         .typing-indicator {
             display: flex;
             gap: 5px;
-            padding: 10px 16px;
+            padding: 9px 16px;
             background: var(--ai-bubble);
             border-radius: 20px 20px 20px 6px;
             align-self: flex-start;
             margin-right: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-subtle);
-            animation: msgSlideInLeft 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
         .typing-indicator span {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background: var(--text-muted);
             border-radius: 50%;
-            animation: typeBounceLux 1.3s infinite;
+            animation: typeBounce 1.2s infinite;
         }
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        @keyframes typeBounceLux {
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-                opacity: 0.3;
-                background: var(--text-muted);
-            }
-            30% {
-                transform: translateY(-10px);
-                opacity: 1;
-                background: var(--accent);
-            }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typeBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; background: var(--text-muted); }
+            30% { transform: translateY(-8px); opacity: 1; background: var(--accent); }
         }
         @keyframes msgSlideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
+            from { opacity: 0; transform: translateX(30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
         }
         @keyframes msgSlideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
+            from { opacity: 0; transform: translateX(-30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
         }
         @keyframes cardReveal {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .limit-banner {
-            background: var(--accent-soft);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            text-align: center;
-            font-size: 0.78rem;
-            color: var(--accent);
-            margin: 6px 0;
-            animation: cardReveal 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-        }
-        .limit-banner button {
-            background: var(--gold-gradient);
-            color: #0a0015;
-            border: none;
-            border-radius: var(--radius-full);
-            padding: 9px 24px;
-            font-weight: 700;
-            font-size: 0.74rem;
-            cursor: pointer;
-            margin-top: 10px;
-            font-family: var(--font-ar);
-            box-shadow: var(--shadow-gold);
-            transition: var(--transition-bounce);
-        }
-        .limit-banner button:active {
-            transform: scale(0.94);
-            box-shadow: 0 0 30px rgba(226, 176, 74, 0.6);
-        }
-
-        /* ======= INPUT ======= */
         #input-area {
             flex-shrink: 0;
             padding: 8px 10px;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             display: flex;
             gap: 7px;
             align-items: flex-end;
             border-top: 1px solid var(--border-subtle);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-            margin: 0 2px 2px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            margin: 0 4px 2px;
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
         }
         #input-area textarea {
@@ -667,33 +547,28 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            padding: 10px 18px;
+            padding: 9px 16px;
             color: var(--text-primary);
             font-family: var(--font-ar);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             resize: none;
             outline: none;
-            max-height: 110px;
-            min-height: 42px;
+            max-height: 100px;
+            min-height: 40px;
             line-height: 1.5;
-            transition: var(--transition-smooth);
-        }
-        #input-area textarea::placeholder {
-            color: var(--text-muted);
         }
         #input-area textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(155, 109, 255, 0.2);
-            background: rgba(26, 13, 46, 0.8);
+            box-shadow: 0 0 16px rgba(45, 156, 219, 0.2);
         }
         #send-btn {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: var(--gold-gradient);
             border: none;
-            color: #0a0015;
-            font-size: 1.1rem;
+            color: #0a1a1f;
+            font-size: 1rem;
             cursor: pointer;
             flex-shrink: 0;
             display: flex;
@@ -702,53 +577,45 @@
             transition: var(--transition-bounce);
             box-shadow: var(--shadow-gold);
         }
-        #send-btn:active {
-            transform: scale(0.85);
-            box-shadow: 0 0 35px rgba(226, 176, 74, 0.7);
-        }
+        #send-btn:active { transform: scale(0.85); }
         #send-btn:disabled {
-            background: rgba(120, 100, 150, 0.3);
+            background: rgba(100, 120, 110, 0.4);
             box-shadow: none;
             color: var(--text-muted);
         }
         #camera-btn {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             color: var(--primary);
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition-bounce);
         }
         #camera-btn:active {
             background: var(--primary-soft);
-            transform: scale(0.88);
-            box-shadow: 0 0 20px rgba(155, 109, 255, 0.4);
+            transform: scale(0.9);
         }
 
-        /* ======= CODE INPUT ======= */
         #code-area {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
             padding: 8px 10px;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border-top: 1px solid var(--border-subtle);
-            animation: cardReveal 0.4s ease both;
+            margin: 0 4px;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
         }
-        #code-area.hidden {
-            display: none;
-        }
+        #code-area.hidden { display: none; }
         #code-area label {
-            font-size: 0.66rem;
+            font-size: 0.62rem;
             color: var(--text-secondary);
             white-space: nowrap;
             font-weight: 600;
@@ -757,99 +624,70 @@
             flex: 1;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            padding: 7px 14px;
+            padding: 6px 12px;
             font-size: 0.68rem;
             font-family: var(--font-en);
             background: var(--bg-elevated);
             color: var(--text-primary);
             outline: none;
             text-align: center;
-            letter-spacing: 0.05em;
         }
-        #code-area input:focus {
-            border-color: var(--accent);
-            box-shadow: var(--shadow-gold);
-        }
+        #code-area input:focus { border-color: var(--accent); box-shadow: var(--shadow-gold); }
         #code-area button {
             background: var(--gold-gradient);
-            color: #0a0015;
+            color: #0a1a1f;
             border: none;
             border-radius: var(--radius-full);
-            padding: 7px 16px;
-            font-size: 0.68rem;
+            padding: 6px 14px;
+            font-size: 0.66rem;
             font-weight: 700;
             cursor: pointer;
             font-family: var(--font-ar);
-            white-space: nowrap;
-            transition: var(--transition-bounce);
         }
-        #code-area button:active {
-            transform: scale(0.92);
-        }
-        #code-area button:disabled {
-            opacity: 0.4;
-        }
+        #code-area button:active { transform: scale(0.94); }
 
-        /* ======= MODAL ======= */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5, 0, 20, 0.75);
+            background: rgba(5, 20, 22, 0.85);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            animation: fadeIn 0.35s ease;
+            animation: fadeIn 0.3s ease;
         }
         .modal {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-            padding: 28px 22px 34px;
+            padding: 24px 20px 30px;
             width: 100%;
             max-width: 520px;
             text-align: center;
-            box-shadow: 0 -10px 50px rgba(155, 109, 255, 0.2);
         }
-        .modal h3 {
-            font-size: 1.1rem;
-            margin-bottom: 6px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .modal p {
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            margin-bottom: 14px;
-        }
+        .modal h3 { font-size: 1.1rem; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .modal p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px; }
         .modal input {
             width: 100%;
-            padding: 13px;
+            padding: 12px;
             margin: 5px 0;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
             font-family: var(--font-ar);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             outline: none;
             text-align: center;
-            transition: var(--transition-smooth);
             color: var(--text-primary);
         }
-        .modal input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 16px rgba(155, 109, 255, 0.2);
-        }
+        .modal input:focus { border-color: var(--primary); box-shadow: 0 0 12px rgba(45, 156, 219, 0.2); }
         .modal button {
             width: 100%;
-            padding: 13px;
+            padding: 12px;
             margin-top: 12px;
             background: var(--gold-gradient);
-            color: #0a0015;
+            color: #0a1a1f;
             border: none;
             border-radius: var(--radius-full);
             font-family: var(--font-ar);
@@ -857,13 +695,9 @@
             font-size: 0.85rem;
             cursor: pointer;
             box-shadow: var(--shadow-gold);
-            transition: var(--transition-bounce);
         }
-        .modal button:active {
-            transform: scale(0.95);
-        }
+        .modal button:active { transform: scale(0.96); }
 
-        /* ======= TOAST ======= */
         #toast {
             position: fixed;
             top: 16px;
@@ -872,96 +706,37 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
-            padding: 11px 22px;
+            padding: 10px 20px;
             border-radius: var(--radius-full);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             z-index: 3000;
-            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), toastOut 0.35s ease 2.2s forwards;
+            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards;
             pointer-events: none;
             max-width: 90%;
             text-align: center;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             box-shadow: var(--shadow-glow);
         }
         @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-24px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateX(-50%) translateY(-24px) scale(0.9); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
         }
-        @keyframes toastOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Staggered animation for multiple AI messages */
-        .ai-msg-wrap:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .ai-msg-wrap:nth-child(2) {
-            animation-delay: 0.08s;
-        }
-        .ai-msg-wrap:nth-child(3) {
-            animation-delay: 0.16s;
-        }
-        .ai-msg-wrap:nth-child(4) {
-            animation-delay: 0.24s;
-        }
-        .ai-msg-wrap:nth-child(5) {
-            animation-delay: 0.32s;
-        }
-        .user-msg-wrap:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .user-msg-wrap:nth-child(2) {
-            animation-delay: 0.06s;
-        }
-        .user-msg-wrap:nth-child(3) {
-            animation-delay: 0.12s;
-        }
-        .user-msg-wrap:nth-child(4) {
-            animation-delay: 0.18s;
-        }
-        .user-msg-wrap:nth-child(5) {
-            animation-delay: 0.24s;
-        }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- SPLASH -->
     <div id="splash">
-        <div class="s-logo">💎</div>
+        <div class="s-logo">🌟</div>
         <div class="s-title">أ/ إسماعيل عماد</div>
         <div class="s-sub">✨ #اتعلم_بشكل_جديد</div>
         <div class="s-bar"></div>
     </div>
 
-    <!-- TOAST -->
     <div id="toast" class="hidden"></div>
 
-    <!-- HEADER -->
     <header id="main-header">
         <div class="h-top">
             <div class="h-teacher">
@@ -971,9 +746,7 @@
                 </div>
                 <div>
                     <div class="h-name">أ/ إسماعيل عماد</div>
-                    <div class="h-status">🟣 
- 
-</div>
+                    <div class="h-status">🟢 متصل الآن</div>
                 </div>
             </div>
             <div class="h-actions">
@@ -1008,35 +781,32 @@
         </div>
     </header>
 
-    <!-- STATS -->
+    <!-- STATS BAR WITH CODE BUTTON (TOP) -->
     <div id="stats-bar">
         <div class="stat-chip">📊 المتاح: <span class="sc-val" id="words-left">--</span> كلمة</div>
         <div class="stat-chip premium" id="chip-premium">⭐ مميّز</div>
         <div class="stat-chip code-btn" id="chip-code" onclick="toggleCodeArea()">🔑 كود التفعيل</div>
     </div>
 
-    <!-- CHAT -->
     <div id="chat-container"></div>
 
-    <!-- INPUT -->
     <div id="input-area">
         <button id="camera-btn" title="تصوير سؤال">📷</button>
         <textarea id="user-input" placeholder="اكتب سؤالك يا بطل..." rows="1" disabled></textarea>
         <button id="send-btn" disabled>➤</button>
     </div>
 
-    <!-- CODE AREA -->
+    <!-- CODE AREA (BOTTOM) -->
     <div id="code-area" class="hidden">
         <label>🔑 الكود:</label>
         <input type="text" id="activation-code" placeholder="ACT-XXXXXX" maxlength="10">
         <button id="activate-btn">تفعيل</button>
     </div>
 
-    <!-- MODAL -->
     <div id="user-modal" class="modal-overlay hidden">
         <div class="modal">
             <h3>👋 أهلًا بيك</h3>
-            <p>سجل بياناتك عشان نبدأ</p>
+            <p>سجل بياناتك عشان نبدأ الرحلة</p>
             <input type="text" id="user-name" placeholder="اسمك">
             <input type="tel" id="user-phone" placeholder="رقم الهاتف (01xxxxxxxxx)">
             <button id="save-user-btn">🚀 ابدأ</button>
@@ -1055,29 +825,21 @@
             'أولى إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
             'تانية إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
             'تالتة إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'أولى ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم متكاملة', 'برمجة', 'تاريخ', 'فلسفة ومنطق',
-            'لغة ثانية'],
+            'أولى ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم متكاملة', 'برمجة', 'تاريخ', 'فلسفة ومنطق', 'لغة ثانية'],
             'تانية ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'تاريخ', 'فلسفة', 'لغة ثانية'],
-            'تالتة ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'أحياء', 'جيولوجيا', 'تاريخ', 'جغرافيا',
-                'فلسفة', 'لغة ثانية'
-            ]
+            'تالتة ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'أحياء', 'جيولوجيا', 'تاريخ', 'جغرافيا', 'فلسفة', 'لغة ثانية']
         };
         const S = { user: null, stage: null, subject: null, subscribed: false, streaming: false };
         const $ = id => document.getElementById(id);
 
-        // ======= SPLASH =======
-        if (!localStorage.getItem('splash_v8')) {
-            setTimeout(() => {
-                $('splash').style.display = 'none';
-                localStorage.setItem('splash_v8', '1');
-            }, 3800);
+        // splash
+        if (!localStorage.getItem('splash_v9')) {
+            setTimeout(() => { $('splash').style.display = 'none'; localStorage.setItem('splash_v9', '1'); }, 3800);
         } else $('splash').style.display = 'none';
 
-        // ======= LOGOUT =======
         function logoutUser() {
             ['mo3alem_user_v4', 'mo3alem_stage_v4', 'mo3alem_subject_v4'].forEach(k => localStorage.removeItem(k));
-            S.user = null;
-            S.subscribed = false;
+            S.user = null; S.subscribed = false; S.stage = null; S.subject = null;
             $('code-area').classList.add('hidden');
             $('chip-premium').classList.remove('show');
             $('chat-container').innerHTML = '';
@@ -1088,39 +850,47 @@
             $('send-btn').disabled = true;
             $('words-left').textContent = '--';
             showWelcome();
-            toastMsg('👋 تم الخروج');
+            toastMsg('👋 تم تسجيل الخروج');
             setTimeout(() => $('user-modal').classList.remove('hidden'), 500);
         }
 
-        // ======= CODE TOGGLE =======
         function toggleCodeArea() {
             const el = $('code-area');
             el.classList.toggle('hidden');
             if (!el.classList.contains('hidden')) $('activation-code').focus();
         }
 
-        // ======= USER =======
         async function checkUser() {
             const saved = localStorage.getItem('mo3alem_user_v4');
             if (saved) {
                 S.user = JSON.parse(saved);
                 await refreshStatus();
-                if (S.subscribed) { $('code-area').classList.add('hidden');
-                    $('chip-premium').classList.add('show'); }
-                enableInput();
+                if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
+                enableInputIfReady();
+                restoreStageSubject();
                 return;
             }
-            setTimeout(() => $('user-modal').classList.remove('hidden'), $('splash').style.display === 'none' ? 400 :
-                4000);
+            setTimeout(() => $('user-modal').classList.remove('hidden'), $('splash').style.display === 'none' ? 400 : 4000);
+        }
+
+        function restoreStageSubject() {
+            const ss = localStorage.getItem('mo3alem_stage_v4');
+            const sb = localStorage.getItem('mo3alem_subject_v4');
+            if (ss) {
+                $('stage-select').value = ss;
+                $('stage-select').dispatchEvent(new Event('change'));
+                if (sb) setTimeout(() => {
+                    $('subject-select').value = sb;
+                    $('subject-select').dispatchEvent(new Event('change'));
+                }, 200);
+            }
         }
 
         $('save-user-btn').addEventListener('click', async () => {
-            const name = $('user-name').value.trim(),
-                phone = $('user-phone').value.trim();
+            const name = $('user-name').value.trim(), phone = $('user-phone').value.trim();
             if (!name || !phone) return toastMsg('محتاجين اسمك ورقمك');
-            if (!/^01[0-9]{9}$/.test(phone)) return toastMsg('رقم مش صحيح');
-            $('save-user-btn').disabled = true;
-            $('save-user-btn').textContent = '⏳';
+            if (!/^01[0-9]{9}$/.test(phone)) return toastMsg('رقم غير صحيح');
+            $('save-user-btn').disabled = true; $('save-user-btn').textContent = '⏳';
             try {
                 const res = await fetch(API, {
                     method: 'POST',
@@ -1133,11 +903,11 @@
                 S.subscribed = data.student?.status === 'active';
                 localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
                 $('user-modal').classList.add('hidden');
-                if (S.subscribed) { $('code-area').classList.add('hidden');
-                    $('chip-premium').classList.add('show'); }
-                enableInput();
+                if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
+                enableInputIfReady();
                 showWelcome();
-                toastMsg('👋 نورتنا يا ' + name + '! 💎');
+                toastMsg('👋 نورتنا يا ' + name + '! 🌟');
+                restoreStageSubject();
             } catch (e) { toastMsg('⚠️ ' + (e.message || 'خطأ')); } finally {
                 $('save-user-btn').disabled = false;
                 $('save-user-btn').textContent = '🚀 ابدأ';
@@ -1157,187 +927,135 @@
                     S.subscribed = data.isSubscribed;
                     S.user.status = data.status;
                     if (data.remaining) $('words-left').textContent = (data.remaining.total || 0).toLocaleString();
-                    if (S.subscribed) { $('code-area').classList.add('hidden');
-                        $('chip-premium').classList.add('show'); } else { $('chip-premium').classList.remove(
-                        'show'); }
+                    if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
+                    else $('chip-premium').classList.remove('show');
                     localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
                 }
             } catch (e) {}
         }
 
-        function enableInput() { $('user-input').disabled = false; if (S.stage && S.subject) $('send-btn').disabled =
-                false; }
+        function enableInputIfReady() {
+            if (S.user) $('user-input').disabled = false;
+            if (S.stage && S.subject && S.user) $('send-btn').disabled = false;
+            else $('send-btn').disabled = true;
+        }
 
         function showWelcome() {
             $('chat-container').innerHTML = `
                 <div class="welcome-bubble">
-                    <div class="wb-icon">👋</div>
-                    <div class="wb-title">${S.user?'أهلًا '+S.user.name+'!':'أهلًا بيك'}</div>
-                    <div class="wb-sub">اختر المرحلة والمادة وابدأ</div>
+                    <div class="wb-icon">📚✨</div>
+                    <div class="wb-title">${S.user ? 'أهلًا ' + S.user.name + '!' : 'أهلًا بك'}</div>
+                    <div class="wb-sub">👈 أولًا: اختار المرحلة والمادة من الأعلى<br>بعد كدا اسأل أي سؤال أو اطلب شرح أي درس 📖</div>
                     <div class="wb-actions">
-                        <button class="wb-chip" onclick="quickAsk('اشرح لي')">📖 شرح</button>
-                        <button class="wb-chip" onclick="quickAsk('حل السؤال')">✍️ حل</button>
-                        <button class="wb-chip" onclick="quickAsk('اختبرني')">🎯 اختبار</button>
-                        <button class="wb-chip" onclick="quickAsk('لخص')">📝 تلخيص</button>
+                        <button class="wb-chip" onclick="quickAsk('اشرح لي درس ')">📖 شرح درس</button>
+                        <button class="wb-chip" onclick="quickAsk('حل السؤال: ')">✍️ حل مسألة</button>
+                        <button class="wb-chip" onclick="quickAsk('اختبرني في ')">🎯 اختبار</button>
+                        <button class="wb-chip" onclick="quickAsk('لخص لي ')">📝 تلخيص</button>
                     </div>
                 </div>`;
         }
 
         function quickAsk(p) {
-            if (!S.stage || !S.subject) return toastMsg('⚠️ اختر المرحلة والمادة');
-            $('user-input').value = p + ' ';
+            if (!S.stage || !S.subject) {
+                toastMsg('⚠️ لازم تختار المرحلة والمادة أولًا!');
+                $('stage-select').classList.add('pulse-guide');
+                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 2000);
+                return;
+            }
+            $('user-input').value = p;
             $('user-input').focus();
+            if (p === 'اشرح لي درس ') {
+                toastMsg('✏️ اكتب اسم الدرس بعد كلمة "شرح"');
+            }
         }
 
-        // ======= SELECTS =======
+        // SELECTS
         $('stage-select').addEventListener('change', () => {
             S.stage = $('stage-select').value;
             $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
             $('subject-select').disabled = false;
-            (SUBJECTS[S.stage] || []).forEach(s => $('subject-select').innerHTML +=
-                `<option value="${s}">${s}</option>`);
+            (SUBJECTS[S.stage] || []).forEach(s => $('subject-select').innerHTML += `<option value="${s}">${s}</option>`);
             S.subject = null;
             $('send-btn').disabled = true;
             localStorage.setItem('mo3alem_stage_v4', S.stage);
-            if (S.user) $('user-input').disabled = false;
-            addGuide('✅ اختر المادة');
+            addGuide('✅ تم اختيار ' + S.stage + '، اختر المادة الآن');
             $('subject-select').classList.add('pulse-guide');
-            setTimeout(() => $('subject-select').classList.remove('pulse-guide'), 3000);
+            setTimeout(() => $('subject-select').classList.remove('pulse-guide'), 2500);
+            enableInputIfReady();
         });
+
         $('subject-select').addEventListener('change', () => {
             S.subject = $('subject-select').value;
             localStorage.setItem('mo3alem_subject_v4', S.subject);
-            if (S.user) $('send-btn').disabled = false;
-            addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' | أنا معاك!');
+            enableInputIfReady();
+            addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' | اسأل الآن يا بطل!');
         });
 
-        // ======= CHAT =======
+        // Chat helpers
         function addUserMsg(t) {
-            const w = document.createElement('div');
-            w.className = 'user-msg-wrap';
-            const d = document.createElement('div');
-            d.className = 'user-msg';
-            d.textContent = t;
-            w.appendChild(d);
-            $('chat-container').appendChild(w);
-            scrollDown();
+            const w = document.createElement('div'); w.className = 'user-msg-wrap';
+            const d = document.createElement('div'); d.className = 'user-msg'; d.textContent = t;
+            w.appendChild(d); $('chat-container').appendChild(w); scrollDown();
         }
-
         function addAIMsgContainer() {
-            const w = document.createElement('div');
-            w.className = 'ai-msg-wrap';
-            const a = document.createElement('img');
-            a.className = 'ai-avatar-small';
-            a.src = 'my.png';
-            a.onerror = function() { this.style.display = 'none'; };
-            const m = document.createElement('div');
-            m.className = 'ai-msg';
-            m.innerHTML = '';
-            w.appendChild(a);
-            w.appendChild(m);
-            $('chat-container').appendChild(w);
+            const w = document.createElement('div'); w.className = 'ai-msg-wrap';
+            const a = document.createElement('img'); a.className = 'ai-avatar-small'; a.src = 'my.png'; a.onerror = function() { this.style.display = 'none'; };
+            const m = document.createElement('div'); m.className = 'ai-msg'; m.innerHTML = '';
+            w.appendChild(a); w.appendChild(m); $('chat-container').appendChild(w);
             return { w, m };
         }
-
-        function addAIMsg(t) {
-            const { m } = addAIMsgContainer();
-            m.innerHTML = formatMsg(t);
-            renderMath(m);
-            scrollDown();
-            return { w: m.parentElement, m };
-        }
-
         function addTyping() {
-            const e = document.createElement('div');
-            e.className = 'typing-indicator';
-            e.id = 'typing';
+            const e = document.createElement('div'); e.className = 'typing-indicator'; e.id = 'typing';
             e.innerHTML = '<span></span><span></span><span></span>';
-            $('chat-container').appendChild(e);
-            scrollDown();
+            $('chat-container').appendChild(e); scrollDown();
         }
-
         function removeTyping() { const e = document.getElementById('typing'); if (e) e.remove(); }
-
         function addGuide(t) {
-            const d = document.createElement('div');
-            d.className = 'guide-bubble';
-            d.textContent = t;
-            $('chat-container').appendChild(d);
-            scrollDown();
+            const d = document.createElement('div'); d.className = 'guide-bubble'; d.textContent = t;
+            $('chat-container').appendChild(d); scrollDown();
         }
-
         function addLimitBanner(m) {
-            const d = document.createElement('div');
-            d.className = 'limit-banner';
-            d.innerHTML = m +
-                '<br><button onclick="location.href=\'payment.html\'">💎 اشترك - 70ج شهريًا</button>';
-            $('chat-container').appendChild(d);
-            scrollDown();
+            const d = document.createElement('div'); d.className = 'limit-banner';
+            d.innerHTML = m + '<br><button onclick="location.href=\'payment.html\'">💎 اشترك - 70ج شهريًا</button>';
+            $('chat-container').appendChild(d); scrollDown();
         }
-
-        function scrollDown() { requestAnimationFrame(() => { $('chat-container').scrollTop = $('chat-container')
-                .scrollHeight; }); }
-
+        function scrollDown() { requestAnimationFrame(() => { $('chat-container').scrollTop = $('chat-container').scrollHeight; }); }
         function formatMsg(text) {
             let out = text;
             out = out.replace(/([XxYyZz])\s*(\d+)/g, '$1^{$2}');
             out = out.replace(/([XxYyZz])\s*-\s*(\d+)/g, '$1^{-$2}');
-            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => { let c = tex.trim();
-                c = c.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}'); try { return katex.renderToString(c, { throwOnError: false,
-                        displayMode: true }); } catch (e) { return _; } });
-            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => { let c = tex.trim();
-                c = c.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}'); try { return katex.renderToString(c, { throwOnError: false }); } catch (
-                    e) { return _; } });
-            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-                `<pre>${lang?`<span style="position:absolute;top:6px;right:10px;font-size:0.5rem;color:var(--text-muted);font-family:var(--font-en);">${lang}</span>`:''}<code>${code.trim().replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>`
-                );
+            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => { let c = tex.trim(); c = c.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}'); try { return katex.renderToString(c, { throwOnError: false, displayMode: true }); } catch(e) { return _; } });
+            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => { let c = tex.trim(); c = c.replace(/([a-zA-Z])\s*(\d+)/g, '$1^{$2}'); try { return katex.renderToString(c, { throwOnError: false }); } catch(e) { return _; } });
+            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => `<pre>${lang?`<span style="position:absolute;top:4px;right:8px;font-size:0.5rem;color:var(--text-muted);">${lang}</span>`:''}<code>${code.trim().replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>`);
             return out;
         }
+        function renderMath(el) { try { renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); } catch(e) {} }
 
-        function renderMath(el) { try { renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$',
-                    display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); } catch (
-            e) {} }
-
-        // ======= SIMULATED STREAMING (تتابع الرد) =======
-        async function simulateStreaming(targetElement, fullText) {
-            let currentIndex = 0;
-            const chunkSize = Math.max(1, Math.floor(fullText.length / 40));
-            targetElement.innerHTML = '';
-
-            return new Promise((resolve) => {
-                function typeChunk() {
-                    if (currentIndex >= fullText.length) {
-                        targetElement.innerHTML = formatMsg(fullText);
-                        renderMath(targetElement);
-                        scrollDown();
-                        resolve();
-                        return;
-                    }
-                    currentIndex += chunkSize;
-                    if (currentIndex > fullText.length) currentIndex = fullText.length;
-                    const partial = fullText.substring(0, currentIndex);
-                    targetElement.innerHTML = formatMsg(partial);
-                    renderMath(targetElement);
-                    scrollDown();
-                    requestAnimationFrame(() => {
-                        setTimeout(typeChunk, 30 + Math.random() * 25);
-                    });
-                }
-                typeChunk();
-            });
-        }
-
-        // ======= SEND =======
+        // SEND
         $('send-btn').addEventListener('click', sendMsg);
-        $('user-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
-                sendMsg(); } });
-        $('user-input').addEventListener('input', () => { $('user-input').style.height = 'auto';
-            $('user-input').style.height = Math.min($('user-input').scrollHeight, 110) + 'px'; });
+        $('user-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+        $('user-input').addEventListener('input', () => { $('user-input').style.height = 'auto'; $('user-input').style.height = Math.min($('user-input').scrollHeight, 100) + 'px'; });
 
         async function sendMsg() {
             if (S.streaming) return;
-            const text = $('user-input').value.trim();
-            if (!text || !S.stage || !S.subject || !S.user) return;
+            if (!S.stage || !S.subject) {
+                toastMsg('⚠️ اختر المرحلة والمادة أولًا قبل السؤال!');
+                $('stage-select').classList.add('pulse-guide');
+                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 2000);
+                return;
+            }
+            let text = $('user-input').value.trim();
+            if (!text || !S.user) return;
+            
+            // إذا طلب شرح درس بدون اسم درس
+            if (text.includes('اشرح لي درس') && text.length < 15) {
+                addUserMsg(text);
+                addAIMsg('📖 من فضلك اكتب اسم الدرس بعد عبارة "اشرح لي درس" مثل: اشرح لي درس الجمع');
+                $('user-input').value = '';
+                scrollDown();
+                return;
+            }
+            
             addUserMsg(text);
             $('user-input').value = '';
             $('user-input').style.height = 'auto';
@@ -1349,14 +1067,13 @@
                 const res = await fetch(API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'ask', phone: S.user.phone, name: S.user.name,
-                        stage: S.stage, subject: S.subject, text })
+                    body: JSON.stringify({ action: 'ask', phone: S.user.phone, name: S.user.name, stage: S.stage, subject: S.subject, text })
                 });
                 if (!res.ok) {
                     removeTyping();
                     const e = await res.json().catch(() => ({}));
                     if (e.code === 'LIMIT_REACHED') addLimitBanner(e.error + '<br>' + e.message);
-                    else addAIMsg('⚠️ ' + (e.error || 'خطأ'));
+                    else addAIMsg('⚠️ ' + (e.error || 'حدث خطأ'));
                     S.streaming = false;
                     $('send-btn').disabled = false;
                     await refreshStatus();
@@ -1379,70 +1096,56 @@
                             if (!d || d === '[DONE]') continue;
                             try {
                                 const p = JSON.parse(d);
-                                if (p.text) {
-                                    full += p.text;
-                                    m.innerHTML = formatMsg(full);
-                                    renderMath(m);
-                                    scrollDown();
-                                }
+                                if (p.text) { full += p.text; m.innerHTML = formatMsg(full); renderMath(m); scrollDown(); }
                                 if (p.error) m.innerHTML = '⚠️ ' + p.error;
-                            } catch (e) {}
+                            } catch(e) {}
                         }
                     }
                 }
-                if (!full) m.innerHTML = '⚠️ مقدرتش أوصل للخدمة.';
+                if (!full) m.innerHTML = '⚠️ لم نستطع الوصول للخدمة.';
                 await refreshStatus();
             } catch (e) {
                 removeTyping();
-                addAIMsg('⚠️ ' + (e.message || 'خطأ'));
+                addAIMsg('⚠️ ' + (e.message || 'خطأ في الاتصال'));
             } finally {
                 S.streaming = false;
                 $('send-btn').disabled = false;
+                enableInputIfReady();
                 $('user-input').focus();
             }
         }
 
-        // ======= CAMERA =======
+        // Camera
         $('camera-btn').addEventListener('click', () => {
+            if (!S.stage || !S.subject) { toastMsg('⚠️ اختر المرحلة والمادة أولاً'); return; }
             const inp = document.createElement('input');
-            inp.type = 'file';
-            inp.accept = 'image/*';
-            inp.capture = 'environment';
+            inp.type = 'file'; inp.accept = 'image/*'; inp.capture = 'environment';
             inp.onchange = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                addUserMsg('📷 صورة');
-                S.streaming = true;
-                $('send-btn').disabled = true;
-                addTyping();
+                addUserMsg('📷 صورة مرفوعة');
+                S.streaming = true; $('send-btn').disabled = true; addTyping();
                 let full = '';
                 try {
-                    const b64 = await new Promise(r => { const fr = new FileReader();
-                        fr.onload = () => r(fr.result.split(',')[1]);
-                        fr.readAsDataURL(file); });
+                    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(file); });
                     const res = await fetch(API, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'image', phone: S.user.phone, stage: S.stage,
-                            subject: S.subject, image: b64 })
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'image', phone: S.user.phone, stage: S.stage, subject: S.subject, image: b64 })
                     });
                     if (!res.ok) {
                         removeTyping();
-                        const e = await res.json().catch(() => ({}));
-                        if (e.code === 'PREMIUM_ONLY' || e.code === 'LIMIT_REACHED') addLimitBanner(e.error +
-                            '<br>' + e.message);
-                        else addAIMsg('⚠️ ' + (e.error || 'خطأ'));
-                        S.streaming = false;
-                        $('send-btn').disabled = false;
-                        return;
+                        const err = await res.json().catch(() => ({}));
+                        if (err.code === 'PREMIUM_ONLY' || err.code === 'LIMIT_REACHED') addLimitBanner(err.error + '<br>' + err.message);
+                        else addAIMsg('⚠️ ' + (err.error || 'خطأ'));
+                        S.streaming = false; $('send-btn').disabled = false; return;
                     }
                     removeTyping();
                     const { m } = addAIMsgContainer();
-                    const sr = res.body.getReader();
+                    const reader = res.body.getReader();
                     const dec = new TextDecoder();
                     let buf = '';
                     while (true) {
-                        const { done, value } = await sr.read();
+                        const { done, value } = await reader.read();
                         if (done) break;
                         buf += dec.decode(value, { stream: true });
                         const lines = buf.split('\n');
@@ -1453,47 +1156,39 @@
                                 if (!d || d === '[DONE]') continue;
                                 try {
                                     const p = JSON.parse(d);
-                                    if (p.text) { full += p.text;
-                                        m.innerHTML = formatMsg(full);
-                                        renderMath(m);
-                                        scrollDown(); }
+                                    if (p.text) { full += p.text; m.innerHTML = formatMsg(full); renderMath(m); scrollDown(); }
                                     if (p.error) m.innerHTML = '⚠️ ' + p.error;
-                                } catch (e) {}
+                                } catch(e) {}
                             }
                         }
                     }
                     await refreshStatus();
-                } catch (e) { removeTyping();
-                    addAIMsg('⚠️ خطأ'); } finally { S.streaming = false;
-                    $('send-btn').disabled = false; }
+                } catch (er) { removeTyping(); addAIMsg('⚠️ فشل رفع الصورة'); } finally { S.streaming = false; $('send-btn').disabled = false; enableInputIfReady(); }
             };
             inp.click();
         });
 
-        // ======= ACTIVATION =======
+        // Activation
         $('activate-btn').addEventListener('click', async () => {
             const code = $('activation-code').value.trim();
-            if (!code || code.length < 8) return toastMsg('⚠️ الكود 8 حروف');
-            if (!S.user?.phone) return toastMsg('⚠️ سجل الأول');
-            $('activate-btn').disabled = true;
-            $('activate-btn').textContent = '⏳';
+            if (!code || code.length < 8) return toastMsg('⚠️ الكود غير صالح');
+            if (!S.user?.phone) return toastMsg('⚠️ سجل بياناتك أولاً');
+            $('activate-btn').disabled = true; $('activate-btn').textContent = '⏳';
             try {
                 const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'activate', phone: S.user.phone, activationCode: code })
                 });
                 const data = await res.json();
                 if (res.ok && data.success) {
-                    S.subscribed = true;
-                    S.user.status = 'active';
+                    S.subscribed = true; S.user.status = 'active';
                     localStorage.setItem('mo3alem_user_v4', JSON.stringify(S.user));
                     $('code-area').classList.add('hidden');
                     $('chip-premium').classList.add('show');
                     toastMsg('🎉 تم التفعيل!');
                     await refreshStatus();
-                } else toastMsg('⚠️ ' + (data.error || 'كود خطأ'));
-            } catch (e) { toastMsg('⚠️ خطأ'); } finally {
+                } else toastMsg('⚠️ ' + (data.error || 'كود غير صحيح'));
+            } catch (e) { toastMsg('⚠️ خطأ في التفعيل'); } finally {
                 $('activate-btn').disabled = false;
                 $('activate-btn').textContent = 'تفعيل';
                 $('activation-code').value = '';
@@ -1501,26 +1196,13 @@
         });
 
         function toastMsg(m) {
-            const t = $('toast');
-            t.textContent = m;
-            t.classList.remove('hidden');
-            t.style.animation = 'none';
-            t.offsetHeight;
-            t.style.animation =
-                'toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), toastOut 0.35s ease 2.2s forwards';
+            const t = $('toast'); t.textContent = m; t.classList.remove('hidden');
+            t.style.animation = 'none'; t.offsetHeight;
+            t.style.animation = 'toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), toastOut 0.35s ease 2.2s forwards';
             setTimeout(() => t.classList.add('hidden'), 2600);
         }
 
-        // ======= INIT =======
         async function init() {
-            const ss = localStorage.getItem('mo3alem_stage_v4'),
-                sb = localStorage.getItem('mo3alem_subject_v4');
-            if (ss) {
-                $('stage-select').value = ss;
-                $('stage-select').dispatchEvent(new Event('change'));
-                if (sb) setTimeout(() => { $('subject-select').value = sb;
-                    $('subject-select').dispatchEvent(new Event('change')); }, 150);
-            }
             showWelcome();
             await checkUser();
         }
