@@ -70,7 +70,7 @@
             position: relative;
         }
 
-        /* ======= SPLASH - RESPONSIVE (صورة مرنة على جميع الهواتف، مدة 5 ثواني ثم تختفي للأبد) ======= */
+        /* ======= SPLASH - RESPONSIVE ======= */
         #splash {
             position: fixed;
             inset: 0;
@@ -79,13 +79,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: splashFadeOut 0.8s ease 5s forwards; /* 5 ثواني عرض + fade خفيف */
+            animation: splashFadeOut 1s ease 4.5s forwards;
         }
         #splash img {
             width: 100%;
             height: 100%;
-            object-fit: cover;     /* تغطي كامل الشاشة بشكل جيد مع مراعاة جميع الأبعاد */
-            display: block;
+            object-fit: contain;
         }
         @keyframes splashFadeOut {
             0% { opacity: 1; visibility: visible; }
@@ -123,17 +122,6 @@
             border: 2px solid var(--accent);
             object-fit: cover;
             background: var(--primary-soft);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* صورة الشعار المصغرة داخل الأفاتار i.JPG */
-        .h-avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
         }
         .h-online {
             width: 10px;
@@ -408,13 +396,6 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
-        }
-        /* صورة i.JPG صغيرة بجانب الردود */
-        .ai-avatar-small-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
         }
         .ai-msg {
             background: var(--ai-bubble);
@@ -735,18 +716,19 @@
             top: 70px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 8px 20px;
+            background: #e2b13b;
+            color: #0a1a1f;
+            padding: 6px 16px;
             border-radius: var(--radius-full);
             font-size: 0.7rem;
+            font-weight: 700;
             z-index: 3000;
-            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
+            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards;
             pointer-events: none;
             white-space: nowrap;
             max-width: 85vw;
             overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         @keyframes toastIn {
             from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
@@ -764,9 +746,8 @@
 </head>
 <body>
 
-    <!-- انترو بصورة ismail.JPG بحيث تغطي الشاشة بمرونة 5 ثواني ثم تختفي للأبد -->
     <div id="splash">
-        <img src="ismail.JPG" alt="ترحيب">
+        <img src="ا">
     </div>
 
     <div id="toast" class="hidden"></div>
@@ -775,15 +756,12 @@
         <div class="h-top">
             <div class="h-teacher">
                 <div class="h-avatar-wrap">
-                    <!-- الأفاتار الرئيسي مع صورة i.JPG (شعار داخل الشات) -->
-                    <div class="h-avatar">
-                        <img class="h-avatar-img" src="i.JPG" alt="logo" onerror="this.style.display='none'; this.parentElement.textContent='👨‍🏫'">
-                    </div>
+                    <div class="h-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👨‍🏫</div>
                     <span class="h-online"></span>
                 </div>
                 <div>
-                    <div class="h-name">أ/ إسماعيل عماد01122104596</div>
-                    <div class="h-status">🟢 بيجاوبك الان </div>
+                    <div class="h-name">أ/ إسماعيل عماد</div>
+                    <div class="h-status">🟢 متصل الآن</div>
                 </div>
             </div>
             <div class="h-actions">
@@ -879,16 +857,15 @@
         
         const $ = id => document.getElementById(id);
 
-        // معالجة الانترو: 5 ثواني ثم تخزين عدم الظهور للأبد
+        // Splash
         (function() {
-            const splashDiv = document.getElementById('splash');
             if (localStorage.getItem('splash_v3')) {
-                splashDiv.style.display = 'none';
+                document.getElementById('splash').style.display = 'none';
             } else {
                 setTimeout(() => {
-                    if (splashDiv) splashDiv.style.display = 'none';
+                    document.getElementById('splash').style.display = 'none';
                     localStorage.setItem('splash_v3', '1');
-                }, 5000); // 5 ثواني بالضبط ثم إخفاء
+                }, 4500);
             }
         })();
 
@@ -1025,7 +1002,7 @@
                 <div class="welcome-bubble">
                     <div class="wb-icon">📚✨</div>
                     <div class="wb-title">${S.user ? 'أهلًا ' + S.user.name : 'أهلًا بك'}</div>
-                    <div class="wb-sub">👈 اختار المرحلة والمادة من الأعلى<br>بعد كدا اسأل أي سؤال 📖</div>
+                    <div class="wb-sub">✏️ اختر المرحلة والمادة من الأعلى ثم اكتب سؤالك</div>
                     <div class="wb-actions">
                         <button class="wb-chip" onclick="quickAsk('اشرح لي درس ')">📖 شرح درس</button>
                         <button class="wb-chip" onclick="quickAsk('حل المسألة: ')">✍️ حل مسألة</button>
@@ -1036,9 +1013,9 @@
 
         function quickAsk(p) {
             if (!S.stage || !S.subject) {
-                toastMsg('⚠️ اختار المرحلة والمادة أولًا');
+                toastMsg('⚠️ أولاً اختر المرحلة والمادة من الأعلى');
                 $('stage-select').classList.add('pulse-guide');
-                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 2000);
+                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 1500);
                 return;
             }
             $('user-input').value = p;
@@ -1055,7 +1032,7 @@
             S.subject = null;
             $('send-btn').disabled = true;
             localStorage.setItem('mo3alem_stage_v8', S.stage);
-            addGuide('✅ تم اختيار ' + S.stage);
+            addGuide('✅ تم اختيار ' + S.stage + ' 👈 الآن اختر المادة');
             enableInputIfReady();
         });
 
@@ -1063,7 +1040,7 @@
             S.subject = $('subject-select').value;
             localStorage.setItem('mo3alem_subject_v8', S.subject);
             enableInputIfReady();
-            addGuide('🎯 ' + S.stage + ' - ' + S.subject);
+            addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' 🟢 يمكنك الآن كتابة سؤالك');
         });
 
         function addUserMsg(t) {
@@ -1077,8 +1054,7 @@
         function addAIMsgContainer() {
             const w = document.createElement('div');
             w.className = 'ai-msg-wrap';
-            // إضافة صورة i.JPG إلى الـ avatar بجانب كل ردود الذكاء الاصطناعي
-            w.innerHTML = `<div class="ai-avatar-small"><img class="ai-avatar-small-img" src="i.JPG" alt="i" onerror="this.style.display='none'; this.parentElement.textContent='👨‍🏫'"></div><div class="ai-msg"></div>`;
+            w.innerHTML = `<div class="ai-avatar-small">👨‍🏫</div><div class="ai-msg"></div>`;
             $('chat-container').appendChild(w);
             return { m: w.querySelector('.ai-msg') };
         }
@@ -1154,7 +1130,7 @@
         async function generateQuizOnce(btn) {
             if (S.quizActive) return;
             if (!S.stage || !S.subject || !S.lastQuestion) {
-                toastMsg('⚠️ اسأل سؤال شرح أولاً');
+                toastMsg('⚠️ اسأل سؤالاً أولاً');
                 return;
             }
             
@@ -1245,9 +1221,13 @@
         async function sendMsg() {
             if (S.streaming || S.cooldown) return;
             if (!S.stage || !S.subject) {
-                toastMsg('⚠️ اختار المرحلة والمادة أولًا');
+                toastMsg('⚠️ يجب اختيار المرحلة والمادة أولاً');
                 $('stage-select').classList.add('pulse-guide');
-                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 2000);
+                $('subject-select').classList.add('pulse-guide');
+                setTimeout(() => {
+                    $('stage-select').classList.remove('pulse-guide');
+                    $('subject-select').classList.remove('pulse-guide');
+                }, 1500);
                 return;
             }
             
@@ -1356,7 +1336,13 @@
 
         $('camera-btn').addEventListener('click', () => {
             if (!S.stage || !S.subject) {
-                toastMsg('⚠️ اختار المرحلة والمادة أولاً');
+                toastMsg('⚠️ اختر المرحلة والمادة أولاً');
+                $('stage-select').classList.add('pulse-guide');
+                $('subject-select').classList.add('pulse-guide');
+                setTimeout(() => {
+                    $('stage-select').classList.remove('pulse-guide');
+                    $('subject-select').classList.remove('pulse-guide');
+                }, 1500);
                 return;
             }
             
@@ -1497,8 +1483,8 @@
             t.classList.remove('hidden');
             t.style.animation = 'none';
             t.offsetHeight;
-            t.style.animation = 'toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards';
-            setTimeout(() => t.classList.add('hidden'), 2800);
+            t.style.animation = 'toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards';
+            setTimeout(() => t.classList.add('hidden'), 2200);
         }
 
         window.quickAsk = quickAsk;
