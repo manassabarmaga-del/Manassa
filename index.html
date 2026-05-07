@@ -70,7 +70,7 @@
             position: relative;
         }
 
-        /* ======= SPLASH - RESPONSIVE ======= */
+        /* ======= SPLASH - RESPONSIVE (صورة مرنة على جميع الهواتف، مدة 5 ثواني ثم تختفي للأبد) ======= */
         #splash {
             position: fixed;
             inset: 0;
@@ -79,12 +79,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: splashFadeOut 1s ease 4.5s forwards;
+            animation: splashFadeOut 0.8s ease 5s forwards; /* 5 ثواني عرض + fade خفيف */
         }
         #splash img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;     /* تغطي كامل الشاشة بشكل جيد مع مراعاة جميع الأبعاد */
+            display: block;
         }
         @keyframes splashFadeOut {
             0% { opacity: 1; visibility: visible; }
@@ -122,6 +123,17 @@
             border: 2px solid var(--accent);
             object-fit: cover;
             background: var(--primary-soft);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* صورة الشعار المصغرة داخل الأفاتار i.JPG */
+        .h-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
         }
         .h-online {
             width: 10px;
@@ -396,6 +408,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
+        }
+        /* صورة i.JPG صغيرة بجانب الردود */
+        .ai-avatar-small-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
         }
         .ai-msg {
             background: var(--ai-bubble);
@@ -745,8 +764,9 @@
 </head>
 <body>
 
+    <!-- انترو بصورة ismail.JPG بحيث تغطي الشاشة بمرونة 5 ثواني ثم تختفي للأبد -->
     <div id="splash">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%230a1a1f'/%3E%3Ctext x='200' y='300' font-size='24' text-anchor='middle' fill='%232d9cdb' font-family='Arial'%3Eأ/ إسماعيل عماد%3C/text%3E%3C/svg%3E" alt="أ/ إسماعيل عماد">
+        <img src="ismail.JPG" alt="ترحيب">
     </div>
 
     <div id="toast" class="hidden"></div>
@@ -755,7 +775,10 @@
         <div class="h-top">
             <div class="h-teacher">
                 <div class="h-avatar-wrap">
-                    <div class="h-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👨‍🏫</div>
+                    <!-- الأفاتار الرئيسي مع صورة i.JPG (شعار داخل الشات) -->
+                    <div class="h-avatar">
+                        <img class="h-avatar-img" src="i.JPG" alt="logo" onerror="this.style.display='none'; this.parentElement.textContent='👨‍🏫'">
+                    </div>
                     <span class="h-online"></span>
                 </div>
                 <div>
@@ -856,15 +879,16 @@
         
         const $ = id => document.getElementById(id);
 
-        // Splash
+        // معالجة الانترو: 5 ثواني ثم تخزين عدم الظهور للأبد
         (function() {
+            const splashDiv = document.getElementById('splash');
             if (localStorage.getItem('splash_v3')) {
-                document.getElementById('splash').style.display = 'none';
+                splashDiv.style.display = 'none';
             } else {
                 setTimeout(() => {
-                    document.getElementById('splash').style.display = 'none';
+                    if (splashDiv) splashDiv.style.display = 'none';
                     localStorage.setItem('splash_v3', '1');
-                }, 4500);
+                }, 5000); // 5 ثواني بالضبط ثم إخفاء
             }
         })();
 
@@ -1053,7 +1077,8 @@
         function addAIMsgContainer() {
             const w = document.createElement('div');
             w.className = 'ai-msg-wrap';
-            w.innerHTML = `<div class="ai-avatar-small">👨‍🏫</div><div class="ai-msg"></div>`;
+            // إضافة صورة i.JPG إلى الـ avatar بجانب كل ردود الذكاء الاصطناعي
+            w.innerHTML = `<div class="ai-avatar-small"><img class="ai-avatar-small-img" src="i.JPG" alt="i" onerror="this.style.display='none'; this.parentElement.textContent='👨‍🏫'"></div><div class="ai-msg"></div>`;
             $('chat-container').appendChild(w);
             return { m: w.querySelector('.ai-msg') };
         }
