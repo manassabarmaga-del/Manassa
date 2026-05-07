@@ -1084,7 +1084,7 @@
         function addLimitBanner(m) {
             const d = document.createElement('div');
             d.className = 'limit-banner';
-            d.innerHTML = m + '<br><button onclick="alert(\'للاشتراك تواصل 01000000000\')">💎 اشترك</button>';
+            d.innerHTML = m + '<br><button onclick="window.location.href=\'payment.html\'">💎 اشترك الآن</button>';
             $('chat-container').appendChild(d);
             scrollToBottom();
         }
@@ -1346,6 +1346,12 @@
                 return;
             }
             
+            // لو المستخدم مجاني ومشتركش -> يتحول على طول لصفحة الدفع
+            if (!S.subscribed) {
+                window.location.href = 'payment.html';
+                return;
+            }
+            
             const inp = document.createElement('input');
             inp.type = 'file';
             inp.accept = 'image/*';
@@ -1383,7 +1389,7 @@
                         removeTyping();
                         const err = await res.json().catch(() => ({}));
                         if (err.code === 'PREMIUM_ONLY') {
-                            addLimitBanner('🔒 تصوير الأسئلة للمشتركين فقط');
+                            window.location.href = 'payment.html';
                         } else {
                             addAIMsg('⚠️ ' + (err.error || 'خطأ'));
                         }
