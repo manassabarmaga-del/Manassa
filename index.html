@@ -13,11 +13,18 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         :root {
             --bg-deep: #0a1a1f;
             --bg-surface: #0f2a2f;
             --bg-elevated: #1a3a3f;
-            --bg-glass: rgba(15, 42, 47, 0.75);
+            --bg-glass: rgba(15, 42, 47, 0.85);
             --primary: #2d9cdb;
             --primary-glow: #5dbcdb;
             --primary-soft: rgba(45, 156, 219, 0.12);
@@ -33,23 +40,18 @@
             --border-gold: rgba(242, 201, 76, 0.35);
             --shadow-glow: 0 0 30px rgba(45, 156, 219, 0.12);
             --shadow-gold: 0 0 25px rgba(242, 201, 76, 0.2);
-            --radius-lg: 24px;
-            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
             --radius-sm: 10px;
             --radius-full: 999px;
             --font-ar: 'El Messiri', system-ui, sans-serif;
             --font-en: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', 'Cascadia Code', monospace;
-            --transition-smooth: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            --backdrop-blur: blur(20px) saturate(180%);
+            --transition-smooth: 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --backdrop-blur: blur(16px) saturate(180%);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --safe-top: env(safe-area-inset-top, 0px);
         }
 
         body {
@@ -64,13 +66,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            max-width: 100vw;
-            margin: 0 auto;
-            -webkit-tap-highlight-color: transparent;
             position: relative;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
         }
 
         body::before {
@@ -80,36 +76,46 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(45, 156, 219, 0.04) 2px, rgba(45, 156, 219, 0.04) 4px);
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(45, 156, 219, 0.04) 2px, rgba(45, 156, 219, 0.04) 4px);
             pointer-events: none;
             z-index: 0;
             opacity: 0.3;
         }
 
-        /* ======= SPLASH FULL SCREEN - RESPONSIVE FIX ======= */
+        /* ======= SPLASH - RESPONSIVE FIXED ======= */
         #splash {
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: #000;
+            background: #000000;
             display: flex;
             align-items: center;
             justify-content: center;
             animation: splashFadeOut 1s ease 5s forwards;
         }
+        
         #splash img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
             display: block;
-            margin: auto;
         }
+        
         @keyframes splashFadeOut {
-            0% { opacity: 1; }
+            0% { opacity: 1; visibility: visible; }
+            99% { opacity: 0; visibility: visible; }
             100% { opacity: 0; visibility: hidden; pointer-events: none; }
+        }
+
+        /* ======= MAIN LAYOUT - FLEXIBLE ======= */
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: 0;
         }
 
         /* ======= HEADER ======= */
@@ -117,95 +123,113 @@
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
             -webkit-backdrop-filter: var(--backdrop-blur);
-            border: 1px solid var(--border-subtle);
-            padding: 6px 10px 8px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 8px 12px;
             flex-shrink: 0;
             z-index: 10;
-            box-shadow: var(--shadow-glow);
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-            margin: 0;
         }
+        
         .h-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+        
         .h-teacher {
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-shrink: 1;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
         }
+        
         .h-avatar-wrap {
             position: relative;
             flex-shrink: 0;
         }
+        
         .h-avatar {
-            width: 34px;
-            height: 34px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 2px solid var(--accent);
             object-fit: cover;
             box-shadow: var(--shadow-gold);
         }
+        
         .h-online {
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             background: #4ade80;
             border-radius: 50%;
             border: 2px solid #0f2a2f;
             position: absolute;
             bottom: 0px;
-            right: -1px;
-            box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+            right: -2px;
         }
+        
+        .h-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
         .h-name {
-            font-size: clamp(0.7rem, 3.5vw, 0.85rem);
+            font-size: clamp(0.75rem, 4vw, 0.9rem);
             font-weight: 700;
             background: linear-gradient(135deg, #eaf7f9 0%, #c4e2e6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+        
         .h-status {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
         }
+        
         .h-actions {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             flex-shrink: 0;
         }
+        
         .h-btn {
-            width: 30px;
-            height: 30px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 1px solid var(--border-subtle);
             background: rgba(45, 156, 219, 0.1);
             color: var(--text-primary);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition-smooth);
-            -webkit-tap-highlight-color: transparent;
         }
+        
         .h-btn:active {
             background: rgba(45, 156, 219, 0.3);
-            transform: scale(0.9);
+            transform: scale(0.92);
         }
+        
         .h-selects {
             display: flex;
-            gap: 5px;
-            margin-top: 6px;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
+        
         .h-selects select {
             flex: 1;
-            padding: 6px 5px;
-            font-size: clamp(0.55rem, 2.5vw, 0.7rem);
+            min-width: 120px;
+            padding: 8px 10px;
+            font-size: clamp(0.6rem, 3vw, 0.75rem);
             font-family: var(--font-ar);
             background: var(--bg-elevated);
             color: var(--text-primary);
@@ -216,176 +240,202 @@
             text-align: center;
             transition: var(--transition-smooth);
             appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d9cdb' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d9cdb' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: left 6px center;
+            background-position: left 8px center;
             font-weight: 500;
         }
+        
         .h-selects select:focus {
             border-color: var(--accent);
             box-shadow: var(--shadow-gold);
         }
+        
         .h-selects select.pulse-guide {
             animation: pulseSelect 0.8s ease-in-out 3;
             border-color: var(--accent);
             box-shadow: 0 0 18px rgba(242, 201, 76, 0.5);
         }
+        
         @keyframes pulseSelect {
             0%, 100% { border-color: var(--accent); box-shadow: 0 0 8px rgba(242, 201, 76, 0.3); }
             50% { border-color: #f5d76e; box-shadow: 0 0 22px rgba(242, 201, 76, 0.7); }
         }
 
-        /* ======= STATS BAR - responsive scroll ======= */
+        /* ======= STATS BAR - SCROLLABLE ======= */
         #stats-bar {
             display: flex;
-            gap: clamp(4px, 2vw, 8px);
-            padding: 6px 8px;
+            gap: 6px;
+            padding: 8px 12px;
             overflow-x: auto;
+            overflow-y: hidden;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
             -webkit-backdrop-filter: var(--backdrop-blur);
-            border: 1px solid var(--border-subtle);
-            margin: 4px 6px;
-            border-radius: var(--radius-full);
-            box-shadow: var(--shadow-glow);
+            border-bottom: 1px solid var(--border-subtle);
             flex-shrink: 0;
-            align-items: center;
             scrollbar-width: thin;
-            justify-content: space-between;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
         }
-        #stats-bar::-webkit-scrollbar { height: 2px; }
-        #stats-bar::-webkit-scrollbar-track { background: transparent; }
-        #stats-bar::-webkit-scrollbar-thumb { background: rgba(45, 156, 219, 0.3); border-radius: 10px; }
+        
+        #stats-bar::-webkit-scrollbar {
+            height: 2px;
+        }
+        
+        #stats-bar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #stats-bar::-webkit-scrollbar-thumb {
+            background: rgba(45, 156, 219, 0.4);
+            border-radius: 10px;
+        }
+        
         .stat-chip {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 8px;
-            background: rgba(26, 58, 63, 0.7);
+            gap: 5px;
+            padding: 5px 12px;
+            background: rgba(26, 58, 63, 0.8);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            font-size: clamp(0.55rem, 2.2vw, 0.65rem);
-            white-space: nowrap;
-            flex-shrink: 0;
+            font-size: 0.65rem;
             font-weight: 500;
             color: var(--text-secondary);
+            flex-shrink: 0;
         }
+        
         .stat-chip .sc-val {
             color: var(--accent);
             font-weight: 700;
             font-family: var(--font-en);
         }
+        
         .stat-chip.code-btn {
             background: var(--accent-soft);
             border-color: var(--border-gold);
             cursor: pointer;
             color: var(--accent);
             font-weight: 600;
-            -webkit-tap-highlight-color: transparent;
         }
+        
         .stat-chip.code-btn:active {
             background: var(--accent);
             color: #0a1a1f;
-            box-shadow: var(--shadow-gold);
+            transform: scale(0.95);
         }
+        
         .stat-chip.premium {
             background: rgba(74, 222, 128, 0.12);
             border-color: rgba(74, 222, 128, 0.4);
             color: #4ade80;
             display: none;
         }
-        .stat-chip.premium.show { display: flex; }
+        
+        .stat-chip.premium.show {
+            display: inline-flex;
+        }
 
-        /* ======= CHAT - FLEXIBLE SCROLLING ======= */
+        /* ======= CHAT CONTAINER - FLEXIBLE SCROLLING ======= */
         #chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 8px 8px 4px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            position: relative;
-            z-index: 1;
-            overscroll-behavior: contain;
+            min-height: 0;
         }
-        #chat-container::-webkit-scrollbar { width: 3px; }
-        #chat-container::-webkit-scrollbar-track { background: transparent; }
-        #chat-container::-webkit-scrollbar-thumb { background: rgba(45, 156, 219, 0.3); border-radius: 10px; }
+        
+        #chat-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        #chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #chat-container::-webkit-scrollbar-thumb {
+            background: rgba(45, 156, 219, 0.4);
+            border-radius: 10px;
+        }
 
+        /* ======= BUBBLES ======= */
         .welcome-bubble {
             align-self: center;
             text-align: center;
-            padding: 18px 12px;
+            padding: 20px 16px;
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-glow);
             max-width: 95%;
-            margin: 6px 0;
-            animation: cardReveal 0.6s ease both;
+            margin: 10px 0;
+            animation: cardReveal 0.5s ease both;
         }
+        
         .welcome-bubble .wb-icon {
-            font-size: 2.5rem;
-            margin-bottom: 6px;
+            font-size: 2.8rem;
+            margin-bottom: 8px;
         }
+        
         .welcome-bubble .wb-title {
             font-weight: 700;
-            font-size: clamp(0.85rem, 4vw, 1rem);
+            font-size: clamp(0.9rem, 5vw, 1.1rem);
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
+        
         .welcome-bubble .wb-sub {
-            font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+            font-size: clamp(0.65rem, 3vw, 0.75rem);
             color: var(--text-secondary);
-            margin: 6px 0 12px;
+            margin: 8px 0 15px;
             line-height: 1.6;
         }
+        
         .wb-actions {
             display: flex;
-            gap: 5px;
+            gap: 8px;
             flex-wrap: wrap;
             justify-content: center;
         }
+        
         .wb-chip {
-            padding: 5px 10px;
+            padding: 6px 14px;
             background: var(--primary-soft);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            font-size: clamp(0.6rem, 2.5vw, 0.7rem);
+            font-size: clamp(0.6rem, 2.8vw, 0.7rem);
             cursor: pointer;
             transition: var(--transition-bounce);
-            white-space: nowrap;
             font-family: var(--font-ar);
             color: var(--text-primary);
             font-weight: 500;
-            -webkit-tap-highlight-color: transparent;
         }
+        
         .wb-chip:active {
             background: var(--primary);
             color: #fff;
-            transform: scale(0.93);
-            box-shadow: 0 0 20px rgba(45, 156, 219, 0.5);
+            transform: scale(0.94);
         }
 
         .guide-bubble {
             align-self: center;
             text-align: center;
-            padding: 6px 12px;
+            padding: 6px 14px;
             background: var(--accent-soft);
             border: 1px solid var(--border-gold);
             border-radius: var(--radius-full);
-            font-size: clamp(0.55rem, 2.5vw, 0.65rem);
+            font-size: 0.65rem;
             color: var(--accent);
             max-width: 90%;
-            animation: cardReveal 0.4s ease both;
+            animation: cardReveal 0.3s ease both;
             font-weight: 500;
         }
 
@@ -393,120 +443,127 @@
             background: var(--accent-soft);
             border: 1px solid var(--border-gold);
             border-radius: var(--radius-md);
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            font-size: clamp(0.6rem, 2.8vw, 0.7rem);
+            font-size: 0.7rem;
             color: var(--accent);
-            margin: 4px 0;
+            margin: 8px 0;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             font-weight: 500;
         }
+        
         .limit-banner button {
             background: var(--gold-gradient);
             color: #0a1a1f;
             border: none;
             border-radius: var(--radius-full);
-            padding: 7px 18px;
+            padding: 8px 20px;
             font-weight: 700;
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 10px;
             font-family: var(--font-ar);
-            box-shadow: var(--shadow-gold);
-            -webkit-tap-highlight-color: transparent;
         }
-        .limit-banner button:active { transform: scale(0.94); }
+        
+        .limit-banner button:active {
+            transform: scale(0.95);
+        }
 
         .user-msg-wrap {
             display: flex;
             justify-content: flex-end;
             animation: msgSlideInRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-            padding: 0 2px;
         }
+        
         .user-msg {
             background: var(--user-bubble);
             color: #eaf7f9;
-            padding: 8px 14px;
-            border-radius: 18px 18px 5px 18px;
+            padding: 10px 16px;
+            border-radius: 20px 20px 5px 20px;
             max-width: 82%;
-            font-size: clamp(0.7rem, 3vw, 0.8rem);
+            font-size: clamp(0.7rem, 3.5vw, 0.8rem);
             line-height: 1.6;
             word-break: break-word;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border: 1px solid rgba(45, 156, 219, 0.3);
         }
 
         .ai-msg-wrap {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             animation: msgSlideInLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
             align-items: flex-start;
-            padding: 0 2px;
         }
+        
         .ai-avatar-small {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             flex-shrink: 0;
             object-fit: cover;
             border: 2px solid var(--accent);
-            box-shadow: var(--shadow-gold);
             margin-top: 2px;
         }
+        
         .ai-msg {
             background: var(--ai-bubble);
             color: var(--text-primary);
-            padding: 8px 14px;
-            border-radius: 18px 18px 18px 5px;
-            font-size: clamp(0.7rem, 3vw, 0.8rem);
+            padding: 10px 16px;
+            border-radius: 20px 20px 20px 5px;
+            font-size: clamp(0.7rem, 3.5vw, 0.8rem);
             line-height: 1.7;
             word-break: break-word;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border: 1px solid var(--border-subtle);
             max-width: 86%;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
+        
         .ai-msg pre {
             background: #051214;
             color: #c4e2e6;
             border-radius: var(--radius-sm);
-            padding: 10px;
+            padding: 12px;
             overflow-x: auto;
             font-family: var(--font-mono);
-            font-size: 0.62rem;
+            font-size: 0.65rem;
             direction: ltr;
             text-align: left;
-            margin: 6px 0;
+            margin: 8px 0;
             border: 1px solid rgba(45, 156, 219, 0.3);
             -webkit-overflow-scrolling: touch;
         }
-        .ai-msg code { font-family: var(--font-mono); font-size: 0.62rem; }
+        
+        .ai-msg code {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+        }
 
-        /* ======= QUIZ SYSTEM ======= */
+        /* ======= QUIZ ======= */
         .quiz-container {
             background: var(--bg-elevated);
             border: 1.5px solid var(--primary);
             border-radius: var(--radius-md);
-            padding: 12px;
-            margin: 6px 0;
-            box-shadow: 0 0 20px rgba(45, 156, 219, 0.2);
+            padding: 14px;
+            margin: 8px 0;
+            box-shadow: var(--shadow-glow);
             animation: cardReveal 0.5s ease both;
         }
+        
         .quiz-container .quiz-question {
             font-weight: 700;
-            font-size: clamp(0.7rem, 3vw, 0.8rem);
-            margin-bottom: 10px;
+            font-size: clamp(0.7rem, 3.5vw, 0.85rem);
+            margin-bottom: 12px;
             color: var(--text-primary);
             line-height: 1.6;
-            text-align: right;
         }
-        .quiz-container .quiz-options {
+        
+        .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
+        
         .quiz-option {
             width: 100%;
             padding: 10px 14px;
@@ -515,169 +572,168 @@
             border-radius: var(--radius-sm);
             color: var(--text-primary);
             font-family: var(--font-ar);
-            font-size: clamp(0.65rem, 2.8vw, 0.75rem);
+            font-size: clamp(0.65rem, 3vw, 0.75rem);
             font-weight: 500;
             cursor: pointer;
             text-align: right;
             transition: var(--transition-smooth);
             word-break: break-word;
-            -webkit-tap-highlight-color: transparent;
         }
+        
         .quiz-option:active {
             background: rgba(45, 156, 219, 0.3);
-            transform: scale(0.97);
+            transform: scale(0.98);
         }
+        
         .quiz-option.correct-answer {
             background: rgba(74, 222, 128, 0.3) !important;
             border-color: #4ade80 !important;
             color: #4ade80 !important;
             font-weight: 700;
-            animation: correctPulse 0.6s ease;
         }
+        
         .quiz-option.wrong-answer {
             background: rgba(239, 68, 68, 0.3) !important;
             border-color: #ef4444 !important;
             color: #ef4444 !important;
             font-weight: 700;
-            animation: shake 0.5s ease;
         }
+        
         .quiz-option:disabled {
             opacity: 0.7;
             cursor: not-allowed;
         }
+        
         .quiz-feedback {
             text-align: center;
             font-weight: 700;
-            font-size: clamp(0.65rem, 2.8vw, 0.75rem);
-            margin-top: 8px;
-            padding: 6px;
+            font-size: clamp(0.65rem, 3vw, 0.75rem);
+            margin-top: 10px;
+            padding: 8px;
             border-radius: var(--radius-sm);
-            animation: cardReveal 0.4s ease both;
+            animation: cardReveal 0.3s ease both;
         }
+        
         .quiz-feedback.feedback-correct {
             background: rgba(74, 222, 128, 0.15);
             color: #4ade80;
         }
+        
         .quiz-feedback.feedback-wrong {
             background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
         }
+        
         .quiz-generate-btn {
             display: inline-block;
-            padding: 6px 14px;
+            padding: 6px 16px;
             background: var(--primary-soft);
             border: 1px solid var(--primary);
             border-radius: var(--radius-full);
             color: var(--primary);
             font-family: var(--font-ar);
-            font-size: clamp(0.6rem, 2.5vw, 0.7rem);
+            font-size: clamp(0.6rem, 2.8vw, 0.7rem);
             font-weight: 600;
             cursor: pointer;
-            margin-top: 6px;
+            margin-top: 8px;
             transition: var(--transition-smooth);
-            -webkit-tap-highlight-color: transparent;
         }
+        
         .quiz-generate-btn:active {
             background: var(--primary);
             color: #fff;
-            transform: scale(0.93);
+            transform: scale(0.95);
         }
+        
         .quiz-generate-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-        @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
-        }
 
         .typing-indicator {
-            display: flex;
-            gap: 4px;
-            padding: 8px 14px;
+            display: inline-flex;
+            gap: 5px;
+            padding: 10px 16px;
             background: var(--ai-bubble);
-            border-radius: 18px 18px 18px 5px;
+            border-radius: 20px 20px 20px 5px;
             align-self: flex-start;
-            margin-right: 36px;
+            margin-right: 40px;
             border: 1px solid var(--border-subtle);
         }
+        
         .typing-indicator span {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             background: var(--text-muted);
             border-radius: 50%;
             animation: typeBounce 1.2s infinite;
         }
+        
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        
         @keyframes typeBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; background: var(--text-muted); }
-            30% { transform: translateY(-7px); opacity: 1; background: var(--accent); }
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-8px); opacity: 1; background: var(--accent); }
         }
+        
         @keyframes msgSlideInRight {
-            from { opacity: 0; transform: translateX(25px) scale(0.9); }
+            from { opacity: 0; transform: translateX(30px) scale(0.9); }
             to { opacity: 1; transform: translateX(0) scale(1); }
         }
+        
         @keyframes msgSlideInLeft {
-            from { opacity: 0; transform: translateX(-25px) scale(0.9); }
+            from { opacity: 0; transform: translateX(-30px) scale(0.9); }
             to { opacity: 1; transform: translateX(0) scale(1); }
         }
+        
         @keyframes cardReveal {
-            from { opacity: 0; transform: translateY(15px) scale(0.95); }
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* ======= INPUT AREA ======= */
         #input-area {
             flex-shrink: 0;
-            padding: 6px 8px;
-            padding-bottom: calc(6px + var(--safe-bottom));
+            padding: 10px 12px;
+            padding-bottom: calc(10px + var(--safe-bottom));
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
-            display: flex;
-            gap: 5px;
-            align-items: flex-end;
             border-top: 1px solid var(--border-subtle);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-            margin: 0;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
         }
+        
         #input-area textarea {
             flex: 1;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            padding: 8px 14px;
+            padding: 10px 16px;
             color: var(--text-primary);
             font-family: var(--font-ar);
-            font-size: clamp(0.7rem, 3vw, 0.8rem);
+            font-size: clamp(0.7rem, 3.5vw, 0.8rem);
             resize: none;
             outline: none;
-            max-height: 90px;
-            min-height: 38px;
+            max-height: 100px;
+            min-height: 42px;
             line-height: 1.5;
-            -webkit-appearance: none;
         }
+        
         #input-area textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 16px rgba(45, 156, 219, 0.2);
+            box-shadow: 0 0 12px rgba(45, 156, 219, 0.2);
         }
+        
         #send-btn {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--gold-gradient);
             border: none;
             color: #0a1a1f;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             flex-shrink: 0;
             display: flex;
@@ -685,33 +741,38 @@
             justify-content: center;
             transition: var(--transition-bounce);
             box-shadow: var(--shadow-gold);
-            -webkit-tap-highlight-color: transparent;
         }
-        #send-btn:active { transform: scale(0.85); }
+        
+        #send-btn:active {
+            transform: scale(0.88);
+        }
+        
         #send-btn:disabled {
             background: rgba(100, 120, 110, 0.4);
             box-shadow: none;
             color: var(--text-muted);
         }
+        
         #camera-btn {
-            width: 34px;
-            height: 34px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             color: var(--primary);
-            font-size: 0.85rem;
+            font-size: 1rem;
             cursor: pointer;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-tap-highlight-color: transparent;
         }
+        
         #camera-btn:active {
             background: var(--primary-soft);
-            transform: scale(0.9);
+            transform: scale(0.92);
         }
+        
         #camera-btn:disabled {
             opacity: 0.4;
         }
@@ -720,214 +781,258 @@
         #code-area {
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 6px 8px;
-            padding-bottom: calc(6px + var(--safe-bottom));
+            gap: 8px;
+            padding: 8px 12px;
+            padding-bottom: calc(8px + var(--safe-bottom));
             background: var(--bg-glass);
             backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border-top: 1px solid var(--border-subtle);
-            margin: 0;
-            border-radius: 0;
+            flex-shrink: 0;
         }
-        #code-area.hidden { display: none; }
+        
+        #code-area.hidden {
+            display: none;
+        }
+        
         #code-area label {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             white-space: nowrap;
             font-weight: 600;
         }
+        
         #code-area input {
             flex: 1;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            padding: 5px 10px;
-            font-size: 0.65rem;
+            padding: 8px 12px;
+            font-size: 0.7rem;
             font-family: var(--font-en);
             background: var(--bg-elevated);
             color: var(--text-primary);
             outline: none;
             text-align: center;
-            -webkit-appearance: none;
         }
-        #code-area input:focus { border-color: var(--accent); box-shadow: var(--shadow-gold); }
+        
+        #code-area input:focus {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-gold);
+        }
+        
         #code-area button {
             background: var(--gold-gradient);
             color: #0a1a1f;
             border: none;
             border-radius: var(--radius-full);
-            padding: 5px 12px;
-            font-size: 0.62rem;
+            padding: 8px 16px;
+            font-size: 0.7rem;
             font-weight: 700;
             cursor: pointer;
             font-family: var(--font-ar);
-            -webkit-tap-highlight-color: transparent;
         }
-        #code-area button:active { transform: scale(0.94); }
+        
+        #code-area button:active {
+            transform: scale(0.95);
+        }
 
+        /* ======= MODAL ======= */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5, 20, 22, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(5, 20, 22, 0.9);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
             animation: fadeIn 0.3s ease;
+            padding: 20px;
         }
+        
         .modal {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-            padding: 22px 18px 28px;
+            border-radius: var(--radius-lg);
+            padding: 25px 20px;
             width: 100%;
-            max-width: 100vw;
+            max-width: 350px;
             text-align: center;
         }
-        .modal h3 { font-size: 1rem; margin-bottom: 4px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .modal p { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 12px; }
+        
+        .modal h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .modal p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        
         .modal input {
             width: 100%;
-            padding: 10px;
-            margin: 4px 0;
+            padding: 12px;
+            margin: 6px 0;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
             font-family: var(--font-ar);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             outline: none;
             text-align: center;
             color: var(--text-primary);
-            -webkit-appearance: none;
         }
-        .modal input:focus { border-color: var(--primary); box-shadow: 0 0 12px rgba(45, 156, 219, 0.2); }
+        
+        .modal input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(45, 156, 219, 0.2);
+        }
+        
         .modal button {
             width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+            padding: 12px;
+            margin-top: 12px;
             background: var(--gold-gradient);
             color: #0a1a1f;
             border: none;
             border-radius: var(--radius-full);
             font-family: var(--font-ar);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            box-shadow: var(--shadow-gold);
-            -webkit-tap-highlight-color: transparent;
         }
-        .modal button:active { transform: scale(0.96); }
+        
+        .modal button:active {
+            transform: scale(0.97);
+        }
 
         #toast {
             position: fixed;
-            top: 16px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
-            padding: 8px 18px;
+            padding: 10px 20px;
             border-radius: var(--radius-full);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             z-index: 3000;
-            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards;
+            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
             pointer-events: none;
             max-width: 90%;
             text-align: center;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-glow);
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 85vw;
         }
+        
         @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+            from { opacity: 0; transform: translateX(-50%) translateY(-25px) scale(0.9); }
             to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
         }
-        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .hidden { display: none !important; }
+        
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-    <!-- SPLASH FULL SCREEN IMAGE - fully responsive with contain -->
     <div id="splash">
-        <img src="ismail.jpg" alt="أ/ إسماعيل عماد">
+        <img src="ismail.jpg" alt="أ/ إسماعيل عماد" onerror="this.src='https://via.placeholder.com/400x600?text=Ismail+Emad'">
     </div>
 
     <div id="toast" class="hidden"></div>
 
-    <header id="main-header">
-        <div class="h-top">
-            <div class="h-teacher">
-                <div class="h-avatar-wrap">
-                    <img src="ismail.jpg" alt="أ/ إسماعيل" class="h-avatar" onerror="this.style.display='none';">
-                    <span class="h-online"></span>
+    <div id="app">
+        <header id="main-header">
+            <div class="h-top">
+                <div class="h-teacher">
+                    <div class="h-avatar-wrap">
+                        <img src="ismail.jpg" alt="أ/ إسماعيل" class="h-avatar" onerror="this.src='https://via.placeholder.com/40x40?text=IE'">
+                        <span class="h-online"></span>
+                    </div>
+                    <div class="h-info">
+                        <div class="h-name">أ/ إسماعيل عماد</div>
+                        <div class="h-status">🟢 متصل الآن</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="h-name">أ/ إسماعيل عماد</div>
-                    <div class="h-status">🟢 متصل الآن</div>
+                <div class="h-actions">
+                    <button class="h-btn" onclick="logoutUser()" title="تسجيل خروج">🚪</button>
                 </div>
             </div>
-            <div class="h-actions">
-                <button class="h-btn" onclick="logoutUser()" title="تسجيل خروج">🚪</button>
+            <div class="h-selects">
+                <select id="stage-select">
+                    <option value="" disabled selected>📚 المرحلة</option>
+                    <optgroup label="ابتدائي">
+                        <option value="أولى ابتدائي">أولى ابتدائي</option>
+                        <option value="تانية ابتدائي">تانية ابتدائي</option>
+                        <option value="تالتة ابتدائي">تالتة ابتدائي</option>
+                        <option value="رابعة ابتدائي">رابعة ابتدائي</option>
+                        <option value="خامسة ابتدائي">خامسة ابتدائي</option>
+                        <option value="سادسة ابتدائي">سادسة ابتدائي</option>
+                    </optgroup>
+                    <optgroup label="إعدادي">
+                        <option value="أولى إعدادي">أولى إعدادي</option>
+                        <option value="تانية إعدادي">تانية إعدادي</option>
+                        <option value="تالتة إعدادي">تالتة إعدادي</option>
+                    </optgroup>
+                    <optgroup label="ثانوي">
+                        <option value="أولى ثانوي">أولى ثانوي</option>
+                        <option value="تانية ثانوي">تانية ثانوي</option>
+                        <option value="تالتة ثانوي">تالتة ثانوي</option>
+                    </optgroup>
+                </select>
+                <select id="subject-select" disabled>
+                    <option value="" disabled selected>📖 المادة</option>
+                </select>
             </div>
+        </header>
+
+        <div id="stats-bar">
+            <div class="stat-chip">📊 المتاح: <span class="sc-val" id="words-left">--</span> كلمة</div>
+            <div class="stat-chip premium" id="chip-premium">⭐ مميّز</div>
+            <div class="stat-chip code-btn" id="chip-code" onclick="toggleCodeArea()">🔑 كود التفعيل</div>
         </div>
-        <div class="h-selects">
-            <select id="stage-select">
-                <option value="" disabled selected>📚 المرحلة</option>
-                <optgroup label="ابتدائي">
-                    <option value="أولى ابتدائي">أولى</option>
-                    <option value="تانية ابتدائي">تانية</option>
-                    <option value="تالتة ابتدائي">تالتة</option>
-                    <option value="رابعة ابتدائي">رابعة</option>
-                    <option value="خامسة ابتدائي">خامسة</option>
-                    <option value="سادسة ابتدائي">سادسة</option>
-                </optgroup>
-                <optgroup label="إعدادي">
-                    <option value="أولى إعدادي">أولى إعدادي</option>
-                    <option value="تانية إعدادي">تانية إعدادي</option>
-                    <option value="تالتة إعدادي">تالتة إعدادي</option>
-                </optgroup>
-                <optgroup label="ثانوي">
-                    <option value="أولى ثانوي">أولى ثانوي</option>
-                    <option value="تانية ثانوي">تانية ثانوي</option>
-                    <option value="تالتة ثانوي">تالتة ثانوي</option>
-                </optgroup>
-            </select>
-            <select id="subject-select" disabled>
-                <option value="" disabled selected>📖 المادة</option>
-            </select>
+
+        <div id="chat-container"></div>
+
+        <div id="input-area">
+            <button id="camera-btn" title="تصوير سؤال">📷</button>
+            <textarea id="user-input" placeholder="اكتب سؤالك..." rows="1" disabled></textarea>
+            <button id="send-btn" disabled>➤</button>
         </div>
-    </header>
 
-    <div id="stats-bar">
-        <div class="stat-chip">📊 المتاح: <span class="sc-val" id="words-left">--</span> كلمة</div>
-        <div class="stat-chip premium" id="chip-premium">⭐ مميّز</div>
-        <div class="stat-chip code-btn" id="chip-code" onclick="toggleCodeArea()">🔑 كود التفعيل</div>
-    </div>
-
-    <div id="chat-container"></div>
-
-    <div id="input-area">
-        <button id="camera-btn" title="تصوير سؤال">📷</button>
-        <textarea id="user-input" placeholder="اكتب سؤالك..." rows="1" disabled></textarea>
-        <button id="send-btn" disabled>➤</button>
-    </div>
-
-    <div id="code-area" class="hidden">
-        <label>🔑 الكود:</label>
-        <input type="text" id="activation-code" placeholder="ACT-XXXXXX" maxlength="10">
-        <button id="activate-btn">تفعيل</button>
+        <div id="code-area" class="hidden">
+            <label>🔑 الكود:</label>
+            <input type="text" id="activation-code" placeholder="ACT-XXXXXX" maxlength="10">
+            <button id="activate-btn">تفعيل</button>
+        </div>
     </div>
 
     <div id="user-modal" class="modal-overlay hidden">
         <div class="modal">
             <h3>👋 أهلًا بيك</h3>
             <p>سجل بياناتك عشان نبدأ الرحلة</p>
-            <input type="text" id="user-name" placeholder="اسمك">
-            <input type="tel" id="user-phone" placeholder="رقم الهاتف (01xxxxxxxxx)">
+            <input type="text" id="user-name" placeholder="الاسم كاملاً">
+            <input type="tel" id="user-phone" placeholder="رقم الهاتف 01xxxxxxxxx">
             <button id="save-user-btn">🚀 ابدأ</button>
         </div>
     </div>
@@ -948,26 +1053,43 @@
             'تانية ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'تاريخ', 'فلسفة', 'لغة ثانية'],
             'تالتة ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'أحياء', 'جيولوجيا', 'تاريخ', 'جغرافيا', 'فلسفة', 'لغة ثانية']
         };
-        const S = { user: null, stage: null, subject: null, subscribed: false, streaming: false, lastQuestion: '', cooldown: false, quizActive: false };
+        
+        const S = {
+            user: null,
+            stage: null,
+            subject: null,
+            subscribed: false,
+            streaming: false,
+            lastQuestion: '',
+            cooldown: false,
+            quizActive: false,
+            hasExplanation: false
+        };
+        
         const $ = id => document.getElementById(id);
 
-        // ======= SPLASH - always responsive by CSS now =======
+        // Splash handler
         (function() {
-            if (!localStorage.getItem('splash_shown_v1')) {
-                setTimeout(() => {
-                    localStorage.setItem('splash_shown_v1', '1');
-                }, 5500);
+            const splash = document.getElementById('splash');
+            if (localStorage.getItem('mo3alem_splash_v2')) {
+                splash.style.display = 'none';
             } else {
-                const splash = document.getElementById('splash');
-                if (splash) {
+                setTimeout(() => {
                     splash.style.display = 'none';
-                }
+                    localStorage.setItem('mo3alem_splash_v2', '1');
+                }, 5000);
             }
         })();
 
         function logoutUser() {
-            ['mo3alem_user_v6', 'mo3alem_stage_v6', 'mo3alem_subject_v6'].forEach(k => localStorage.removeItem(k));
-            S.user = null; S.subscribed = false; S.stage = null; S.subject = null; S.lastQuestion = ''; S.quizActive = false;
+            ['mo3alem_user_v7', 'mo3alem_stage_v7', 'mo3alem_subject_v7'].forEach(k => localStorage.removeItem(k));
+            S.user = null;
+            S.subscribed = false;
+            S.stage = null;
+            S.subject = null;
+            S.lastQuestion = '';
+            S.quizActive = false;
+            S.hasExplanation = false;
             $('code-area').classList.add('hidden');
             $('chip-premium').classList.remove('show');
             $('chat-container').innerHTML = '';
@@ -989,38 +1111,45 @@
         }
 
         async function checkUser() {
-            const saved = localStorage.getItem('mo3alem_user_v6');
+            const saved = localStorage.getItem('mo3alem_user_v7');
             if (saved) {
                 S.user = JSON.parse(saved);
                 await refreshStatus();
-                if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
+                if (S.subscribed) {
+                    $('code-area').classList.add('hidden');
+                    $('chip-premium').classList.add('show');
+                }
                 enableInputIfReady();
                 restoreStageSubject();
                 return;
             }
-            const splash = document.getElementById('splash');
-            const splashVisible = splash && splash.style.display !== 'none';
-            setTimeout(() => $('user-modal').classList.remove('hidden'), splashVisible ? 5500 : 400);
+            setTimeout(() => $('user-modal').classList.remove('hidden'), 500);
         }
 
         function restoreStageSubject() {
-            const ss = localStorage.getItem('mo3alem_stage_v6');
-            const sb = localStorage.getItem('mo3alem_subject_v6');
+            const ss = localStorage.getItem('mo3alem_stage_v7');
+            const sb = localStorage.getItem('mo3alem_subject_v7');
             if (ss) {
                 $('stage-select').value = ss;
                 $('stage-select').dispatchEvent(new Event('change'));
-                if (sb) setTimeout(() => {
-                    $('subject-select').value = sb;
-                    $('subject-select').dispatchEvent(new Event('change'));
-                }, 200);
+                if (sb) {
+                    setTimeout(() => {
+                        $('subject-select').value = sb;
+                        $('subject-select').dispatchEvent(new Event('change'));
+                    }, 200);
+                }
             }
         }
 
         $('save-user-btn').addEventListener('click', async () => {
-            const name = $('user-name').value.trim(), phone = $('user-phone').value.trim();
+            const name = $('user-name').value.trim();
+            const phone = $('user-phone').value.trim();
             if (!name || !phone) return toastMsg('محتاجين اسمك ورقمك');
             if (!/^01[0-9]{9}$/.test(phone)) return toastMsg('رقم غير صحيح');
-            $('save-user-btn').disabled = true; $('save-user-btn').textContent = '⏳';
+            
+            $('save-user-btn').disabled = true;
+            $('save-user-btn').textContent = '⏳';
+            
             try {
                 const res = await fetch(API, {
                     method: 'POST',
@@ -1029,16 +1158,24 @@
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error);
+                
                 S.user = { name, phone, status: data.student?.status || 'free' };
                 S.subscribed = data.student?.status === 'active';
-                localStorage.setItem('mo3alem_user_v6', JSON.stringify(S.user));
+                localStorage.setItem('mo3alem_user_v7', JSON.stringify(S.user));
                 $('user-modal').classList.add('hidden');
-                if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
+                
+                if (S.subscribed) {
+                    $('code-area').classList.add('hidden');
+                    $('chip-premium').classList.add('show');
+                }
+                
                 enableInputIfReady();
                 showWelcome();
                 toastMsg('👋 نورتنا يا ' + name + '! 🌟');
                 restoreStageSubject();
-            } catch (e) { toastMsg('⚠️ ' + (e.message || 'خطأ')); } finally {
+            } catch (e) {
+                toastMsg('⚠️ ' + (e.message || 'خطأ'));
+            } finally {
                 $('save-user-btn').disabled = false;
                 $('save-user-btn').textContent = '🚀 ابدأ';
             }
@@ -1056,10 +1193,15 @@
                     const data = await res.json();
                     S.subscribed = data.isSubscribed;
                     S.user.status = data.status;
+                    S.hasExplanation = data.hasReceivedExplanation === true;
                     if (data.remaining) $('words-left').textContent = (data.remaining.total || 0).toLocaleString();
-                    if (S.subscribed) { $('code-area').classList.add('hidden'); $('chip-premium').classList.add('show'); }
-                    else $('chip-premium').classList.remove('show');
-                    localStorage.setItem('mo3alem_user_v6', JSON.stringify(S.user));
+                    if (S.subscribed) {
+                        $('code-area').classList.add('hidden');
+                        $('chip-premium').classList.add('show');
+                    } else {
+                        $('chip-premium').classList.remove('show');
+                    }
+                    localStorage.setItem('mo3alem_user_v7', JSON.stringify(S.user));
                 }
             } catch (e) {}
         }
@@ -1078,8 +1220,7 @@
                     <div class="wb-sub">👈 أولًا: اختار المرحلة والمادة من الأعلى<br>بعد كدا اسأل أي سؤال أو اطلب شرح أي درس 📖</div>
                     <div class="wb-actions">
                         <button class="wb-chip" onclick="quickAsk('اشرح لي درس ')">📖 شرح درس</button>
-                        <button class="wb-chip" onclick="quickAsk('حل السؤال: ')">✍️ حل مسألة</button>
-                        <button class="wb-chip" onclick="quickAsk('اختبرني في ')">🎯 اختبار</button>
+                        <button class="wb-chip" onclick="quickAsk('حل المسألة: ')">✍️ حل مسألة</button>
                         <button class="wb-chip" onclick="quickAsk('لخص لي ')">📝 تلخيص</button>
                     </div>
                 </div>`;
@@ -1096,15 +1237,17 @@
             $('user-input').focus();
         }
 
-        // SELECTS
+        // Select handlers
         $('stage-select').addEventListener('change', () => {
             S.stage = $('stage-select').value;
             $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
             $('subject-select').disabled = false;
-            (SUBJECTS[S.stage] || []).forEach(s => $('subject-select').innerHTML += `<option value="${s}">${s}</option>`);
+            (SUBJECTS[S.stage] || []).forEach(s => {
+                $('subject-select').innerHTML += `<option value="${s}">${s}</option>`;
+            });
             S.subject = null;
             $('send-btn').disabled = true;
-            localStorage.setItem('mo3alem_stage_v6', S.stage);
+            localStorage.setItem('mo3alem_stage_v7', S.stage);
             addGuide('✅ تم اختيار ' + S.stage + '، اختر المادة الآن');
             $('subject-select').classList.add('pulse-guide');
             setTimeout(() => $('subject-select').classList.remove('pulse-guide'), 2500);
@@ -1113,58 +1256,118 @@
 
         $('subject-select').addEventListener('change', () => {
             S.subject = $('subject-select').value;
-            localStorage.setItem('mo3alem_subject_v6', S.subject);
+            localStorage.setItem('mo3alem_subject_v7', S.subject);
             enableInputIfReady();
             addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' | اسأل الآن!');
         });
 
         // Chat helpers
         function addUserMsg(t) {
-            const w = document.createElement('div'); w.className = 'user-msg-wrap';
-            const d = document.createElement('div'); d.className = 'user-msg'; d.textContent = t;
-            w.appendChild(d); $('chat-container').appendChild(w); scrollDown();
+            const w = document.createElement('div');
+            w.className = 'user-msg-wrap';
+            const d = document.createElement('div');
+            d.className = 'user-msg';
+            d.textContent = t;
+            w.appendChild(d);
+            $('chat-container').appendChild(w);
+            scrollDown();
         }
+        
         function addAIMsgContainer() {
-            const w = document.createElement('div'); w.className = 'ai-msg-wrap';
-            const a = document.createElement('img'); 
-            a.className = 'ai-avatar-small'; 
-            a.src = 'islam.jpg'; 
+            const w = document.createElement('div');
+            w.className = 'ai-msg-wrap';
+            const a = document.createElement('img');
+            a.className = 'ai-avatar-small';
+            a.src = 'ismail.jpg';
             a.alt = 'المعلم';
             a.onerror = function() { this.style.display = 'none'; };
-            const m = document.createElement('div'); m.className = 'ai-msg'; m.innerHTML = '';
-            w.appendChild(a); w.appendChild(m); $('chat-container').appendChild(w);
+            const m = document.createElement('div');
+            m.className = 'ai-msg';
+            m.innerHTML = '';
+            w.appendChild(a);
+            w.appendChild(m);
+            $('chat-container').appendChild(w);
             return { w, m, avatar: a };
         }
+        
         function addTyping() {
-            const e = document.createElement('div'); e.className = 'typing-indicator'; e.id = 'typing';
+            const e = document.createElement('div');
+            e.className = 'typing-indicator';
+            e.id = 'typing';
             e.innerHTML = '<span></span><span></span><span></span>';
-            $('chat-container').appendChild(e); scrollDown();
+            $('chat-container').appendChild(e);
+            scrollDown();
         }
-        function removeTyping() { const e = document.getElementById('typing'); if (e) e.remove(); }
+        
+        function removeTyping() {
+            const e = document.getElementById('typing');
+            if (e) e.remove();
+        }
+        
         function addGuide(t) {
-            const d = document.createElement('div'); d.className = 'guide-bubble'; d.textContent = t;
-            $('chat-container').appendChild(d); scrollDown();
+            const d = document.createElement('div');
+            d.className = 'guide-bubble';
+            d.textContent = t;
+            $('chat-container').appendChild(d);
+            scrollDown();
         }
+        
         function addLimitBanner(m) {
-            const d = document.createElement('div'); d.className = 'limit-banner';
+            const d = document.createElement('div');
+            d.className = 'limit-banner';
             d.innerHTML = m + '<br><button onclick="location.href=\'payment.html\'">💎 اشترك - 70ج شهريًا</button>';
-            $('chat-container').appendChild(d); scrollDown();
+            $('chat-container').appendChild(d);
+            scrollDown();
         }
-        function scrollDown() { requestAnimationFrame(() => { $('chat-container').scrollTop = $('chat-container').scrollHeight; }); }
+        
+        function scrollDown() {
+            requestAnimationFrame(() => {
+                const container = $('chat-container');
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+        
         function formatMsg(text) {
             let out = text;
-            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => { try { return katex.renderToString(tex.trim(), { throwOnError: false, displayMode: true }); } catch(e) { return _; } });
-            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => { try { return katex.renderToString(tex.trim(), { throwOnError: false }); } catch(e) { return _; } });
-            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => `<pre>${lang?`<span style="position:absolute;top:3px;right:6px;font-size:0.5rem;color:var(--text-muted);">${lang}</span>`:''}<code>${code.trim().replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></pre>`);
+            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => {
+                try {
+                    return katex.renderToString(tex.trim(), { throwOnError: false, displayMode: true });
+                } catch(e) {
+                    return _;
+                }
+            });
+            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => {
+                try {
+                    return katex.renderToString(tex.trim(), { throwOnError: false });
+                } catch(e) {
+                    return _;
+                }
+            });
+            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+                return `<pre>${lang ? `<span style="position:absolute;top:3px;right:6px;font-size:0.5rem;color:var(--text-muted);">${lang}</span>` : ''}<code>${code.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+            });
             return out;
         }
-        function renderMath(el) { try { renderMathInElement(el, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); } catch(e) {} }
+        
+        function renderMath(el) {
+            try {
+                renderMathInElement(el, {
+                    delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
+                    throwOnError: false
+                });
+            } catch(e) {}
+        }
 
-        // ======= QUIZ SYSTEM =======
+        // Quiz system
         async function generateQuizOnce(btn) {
             if (S.quizActive) return;
-            if (!S.stage || !S.subject || !S.lastQuestion) {
-                toastMsg('⚠️ اسأل سؤال الأول');
+            if (!S.stage || !S.subject) {
+                toastMsg('⚠️ اختر المرحلة والمادة أولاً');
+                return;
+            }
+            
+            if (!S.hasExplanation && !S.lastQuestion) {
+                toastMsg('📚 اسأل سؤال شرح أولاً عشان أقدر أختبرك');
                 return;
             }
             
@@ -1218,12 +1421,15 @@
             scrollDown();
         }
 
-        function selectQuizAnswer(btn, selectedIndex, correctIndex, correctAnswerText) {
+        window.selectQuizAnswer = function(btn, selectedIndex, correctIndex, correctAnswerText) {
             const container = btn.closest('.quiz-container');
             const allOptions = container.querySelectorAll('.quiz-option');
             const feedback = container.querySelector('.quiz-feedback');
 
-            allOptions.forEach(o => { o.disabled = true; o.style.pointerEvents = 'none'; });
+            allOptions.forEach(o => {
+                o.disabled = true;
+                o.style.pointerEvents = 'none';
+            });
             allOptions[correctIndex].classList.add('correct-answer');
 
             if (selectedIndex === correctIndex) {
@@ -1237,21 +1443,31 @@
             feedback.classList.remove('hidden');
             S.quizActive = false;
             scrollDown();
-        }
+        };
 
         function getRandomCorrectFeedback() {
             const items = ['✅ أحسنت! إجابة صحيحة.', '✅ ممتاز! شغلك تمام.', '✅ مظبوط! مستواك كويس.', '✅ برافو! إجابتك مية مية.'];
             return items[Math.floor(Math.random() * items.length)];
         }
+        
         function getRandomWrongFeedback() {
-            const items = ['متقلقش، بنتعلم من أخطائنا.', 'عادي جداً، المهم فهمت دلوقتي.', 'دي فرصة تتعلم أكتر.'];
+            const items = ['📚 متقلقش، بنتعلم من أخطائنا.', '💪 عادي جداً، المهم فهمت دلوقتي.', '🎯 دي فرصة تتعلم أكتر.'];
             return items[Math.floor(Math.random() * items.length)];
         }
 
-        // ======= SEND =======
+        // Send message
         $('send-btn').addEventListener('click', sendMsg);
-        $('user-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
-        $('user-input').addEventListener('input', () => { $('user-input').style.height = 'auto'; $('user-input').style.height = Math.min($('user-input').scrollHeight, 90) + 'px'; });
+        $('user-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMsg();
+            }
+        });
+        
+        $('user-input').addEventListener('input', () => {
+            $('user-input').style.height = 'auto';
+            $('user-input').style.height = Math.min($('user-input').scrollHeight, 100) + 'px';
+        });
 
         async function sendMsg() {
             if (S.streaming || S.cooldown) return;
@@ -1261,6 +1477,7 @@
                 setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 2000);
                 return;
             }
+            
             let text = $('user-input').value.trim();
             if (!text || !S.user) return;
             
@@ -1275,28 +1492,42 @@
             $('send-btn').disabled = true;
             S.streaming = true;
             addTyping();
+            
             let full = '';
             try {
                 const res = await fetch(API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'ask', phone: S.user.phone, name: S.user.name, stage: S.stage, subject: S.subject, text })
+                    body: JSON.stringify({
+                        action: 'ask',
+                        phone: S.user.phone,
+                        name: S.user.name,
+                        stage: S.stage,
+                        subject: S.subject,
+                        text
+                    })
                 });
+                
                 if (!res.ok) {
                     removeTyping();
                     const e = await res.json().catch(() => ({}));
-                    if (e.code === 'LIMIT_REACHED') addLimitBanner(e.error + '<br>' + e.message);
-                    else addAIMsg('⚠️ ' + (e.error || 'حدث خطأ'));
+                    if (e.code === 'LIMIT_REACHED') {
+                        addLimitBanner(e.error + '<br>' + e.message);
+                    } else {
+                        addAIMsg('⚠️ ' + (e.error || 'حدث خطأ'));
+                    }
                     S.streaming = false;
                     $('send-btn').disabled = false;
                     await refreshStatus();
                     return;
                 }
+                
                 removeTyping();
                 const { m } = addAIMsgContainer();
                 const reader = res.body.getReader();
                 const dec = new TextDecoder();
                 let buf = '';
+                
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
@@ -1309,20 +1540,32 @@
                             if (!d || d === '[DONE]') continue;
                             try {
                                 const p = JSON.parse(d);
-                                if (p.text) { full += p.text; m.innerHTML = formatMsg(full); renderMath(m); scrollDown(); }
+                                if (p.text) {
+                                    full += p.text;
+                                    m.innerHTML = formatMsg(full);
+                                    renderMath(m);
+                                    scrollDown();
+                                }
                                 if (p.error) m.innerHTML = '⚠️ ' + p.error;
                             } catch(e) {}
                         }
                     }
                 }
+                
                 if (!full) m.innerHTML = '⚠️ لم نستطع الوصول للخدمة.';
                 
-                if (full && full.length > 20 && !S.quizActive) {
-                    const quizBtn = document.createElement('button');
-                    quizBtn.className = 'quiz-generate-btn';
-                    quizBtn.textContent = '🎯 اختبر نفسك';
-                    quizBtn.onclick = function() { generateQuizOnce(this); };
-                    m.appendChild(quizBtn);
+                // تحديث hasExplanation بناءً على الرد
+                if (full && full.length > 30 && (text.includes('اشرح') || text.includes('شرح'))) {
+                    S.hasExplanation = true;
+                    // إضافة زر الاختبار فقط عند وجود شرح حقيقي
+                    const existingQuizBtn = m.querySelector('.quiz-generate-btn');
+                    if (!existingQuizBtn && full.length > 100) {
+                        const quizBtn = document.createElement('button');
+                        quizBtn.className = 'quiz-generate-btn';
+                        quizBtn.textContent = '🎯 اختبر نفسك';
+                        quizBtn.onclick = function() { generateQuizOnce(this); };
+                        m.appendChild(quizBtn);
+                    }
                 }
                 
                 await refreshStatus();
@@ -1337,35 +1580,73 @@
             }
         }
 
-        // Camera
+        function addAIMsg(text) {
+            const { m } = addAIMsgContainer();
+            m.innerHTML = formatMsg(text);
+            renderMath(m);
+            scrollDown();
+        }
+
+        // Camera handler
         $('camera-btn').addEventListener('click', () => {
-            if (!S.stage || !S.subject) { toastMsg('⚠️ اختر المرحلة والمادة أولاً'); return; }
+            if (!S.stage || !S.subject) {
+                toastMsg('⚠️ اختر المرحلة والمادة أولاً');
+                return;
+            }
+            
             const inp = document.createElement('input');
-            inp.type = 'file'; inp.accept = 'image/*'; inp.capture = 'environment';
+            inp.type = 'file';
+            inp.accept = 'image/*';
+            inp.capture = 'environment';
             inp.onchange = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
+                
                 addUserMsg('📷 صورة مرفوعة');
-                S.streaming = true; $('send-btn').disabled = true; addTyping(); S.quizActive = false;
+                S.streaming = true;
+                $('send-btn').disabled = true;
+                addTyping();
+                S.quizActive = false;
+                
                 let full = '';
                 try {
-                    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(file); });
-                    const res = await fetch(API, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'image', phone: S.user.phone, stage: S.stage, subject: S.subject, image: b64 })
+                    const b64 = await new Promise(r => {
+                        const fr = new FileReader();
+                        fr.onload = () => r(fr.result.split(',')[1]);
+                        fr.readAsDataURL(file);
                     });
+                    
+                    const res = await fetch(API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'image',
+                            phone: S.user.phone,
+                            stage: S.stage,
+                            subject: S.subject,
+                            image: b64
+                        })
+                    });
+                    
                     if (!res.ok) {
                         removeTyping();
                         const err = await res.json().catch(() => ({}));
-                        if (err.code === 'PREMIUM_ONLY' || err.code === 'LIMIT_REACHED') addLimitBanner(err.error + '<br>' + err.message);
-                        else addAIMsg('⚠️ ' + (err.error || 'خطأ'));
-                        S.streaming = false; $('send-btn').disabled = false; return;
+                        if (err.code === 'PREMIUM_ONLY' || err.code === 'LIMIT_REACHED') {
+                            addLimitBanner(err.error + '<br>' + err.message);
+                        } else {
+                            addAIMsg('⚠️ ' + (err.error || 'خطأ'));
+                        }
+                        S.streaming = false;
+                        $('send-btn').disabled = false;
+                        return;
                     }
+                    
                     removeTyping();
                     const { m } = addAIMsgContainer();
                     const reader = res.body.getReader();
                     const dec = new TextDecoder();
                     let buf = '';
+                    
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
@@ -1378,21 +1659,35 @@
                                 if (!d || d === '[DONE]') continue;
                                 try {
                                     const p = JSON.parse(d);
-                                    if (p.text) { full += p.text; m.innerHTML = formatMsg(full); renderMath(m); scrollDown(); }
+                                    if (p.text) {
+                                        full += p.text;
+                                        m.innerHTML = formatMsg(full);
+                                        renderMath(m);
+                                        scrollDown();
+                                    }
                                     if (p.error) m.innerHTML = '⚠️ ' + p.error;
                                 } catch(e) {}
                             }
                         }
                     }
-                    if (full && full.length > 20 && !S.quizActive) {
+                    
+                    if (full && full.length > 100 && !S.quizActive) {
                         const quizBtn = document.createElement('button');
                         quizBtn.className = 'quiz-generate-btn';
                         quizBtn.textContent = '🎯 اختبر نفسك';
                         quizBtn.onclick = function() { generateQuizOnce(this); };
                         m.appendChild(quizBtn);
                     }
+                    
                     await refreshStatus();
-                } catch (er) { removeTyping(); addAIMsg('⚠️ فشل رفع الصورة'); } finally { S.streaming = false; $('send-btn').disabled = false; enableInputIfReady(); }
+                } catch (er) {
+                    removeTyping();
+                    addAIMsg('⚠️ فشل رفع الصورة');
+                } finally {
+                    S.streaming = false;
+                    $('send-btn').disabled = false;
+                    enableInputIfReady();
+                }
             };
             inp.click();
         });
@@ -1402,22 +1697,31 @@
             const code = $('activation-code').value.trim();
             if (!code || code.length < 8) return toastMsg('⚠️ الكود غير صالح');
             if (!S.user?.phone) return toastMsg('⚠️ سجل بياناتك أولاً');
-            $('activate-btn').disabled = true; $('activate-btn').textContent = '⏳';
+            
+            $('activate-btn').disabled = true;
+            $('activate-btn').textContent = '⏳';
+            
             try {
                 const res = await fetch(API, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'activate', phone: S.user.phone, activationCode: code })
                 });
                 const data = await res.json();
                 if (res.ok && data.success) {
-                    S.subscribed = true; S.user.status = 'active';
-                    localStorage.setItem('mo3alem_user_v6', JSON.stringify(S.user));
+                    S.subscribed = true;
+                    S.user.status = 'active';
+                    localStorage.setItem('mo3alem_user_v7', JSON.stringify(S.user));
                     $('code-area').classList.add('hidden');
                     $('chip-premium').classList.add('show');
                     toastMsg('🎉 تم التفعيل!');
                     await refreshStatus();
-                } else toastMsg('⚠️ ' + (data.error || 'كود غير صحيح'));
-            } catch (e) { toastMsg('⚠️ خطأ في التفعيل'); } finally {
+                } else {
+                    toastMsg('⚠️ ' + (data.error || 'كود غير صحيح'));
+                }
+            } catch (e) {
+                toastMsg('⚠️ خطأ في التفعيل');
+            } finally {
                 $('activate-btn').disabled = false;
                 $('activate-btn').textContent = 'تفعيل';
                 $('activation-code').value = '';
@@ -1425,18 +1729,23 @@
         });
 
         function toastMsg(m) {
-            const t = $('toast'); t.textContent = m; t.classList.remove('hidden');
-            t.style.animation = 'none'; t.offsetHeight;
-            t.style.animation = 'toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), toastOut 0.35s ease 2.2s forwards';
-            setTimeout(() => t.classList.add('hidden'), 2600);
+            const t = $('toast');
+            t.textContent = m;
+            t.classList.remove('hidden');
+            t.style.animation = 'none';
+            t.offsetHeight;
+            t.style.animation = 'toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards';
+            setTimeout(() => t.classList.add('hidden'), 2800);
         }
 
+        // Expose global functions
         window.selectQuizAnswer = selectQuizAnswer;
         window.quickAsk = quickAsk;
         window.logoutUser = logoutUser;
         window.toggleCodeArea = toggleCodeArea;
         window.generateQuizOnce = generateQuizOnce;
 
+        // Initialize
         async function init() {
             showWelcome();
             await checkUser();
