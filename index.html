@@ -2,1508 +2,579 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>أ/ إسماعيل عماد | منصة التعليم الذكية</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>استطلاع رأي | أ. إسماعيل عماد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         :root {
-            --bg-deep: #0a1a1f;
-            --bg-surface: #0f2a2f;
-            --bg-elevated: #1a3a3f;
-            --bg-glass: rgba(15, 42, 47, 0.85);
-            --primary: #2d9cdb;
-            --primary-glow: #5dbcdb;
-            --primary-soft: rgba(45, 156, 219, 0.12);
-            --accent: #f2c94c;
-            --accent-soft: rgba(242, 201, 76, 0.15);
-            --gold-gradient: linear-gradient(135deg, #f2c94c 0%, #f5d76e 50%, #e2b13b 100%);
-            --text-primary: #eaf7f9;
-            --text-secondary: #b0d4d9;
-            --text-muted: #6b9ea3;
-            --user-bubble: linear-gradient(135deg, #1e5555 0%, #143a3a 100%);
-            --ai-bubble: linear-gradient(135deg, #0f2a2f 0%, #0a1f22 100%);
-            --border-subtle: rgba(45, 156, 219, 0.2);
-            --border-gold: rgba(242, 201, 76, 0.35);
-            --shadow-glow: 0 0 30px rgba(45, 156, 219, 0.12);
-            --shadow-gold: 0 0 25px rgba(242, 201, 76, 0.2);
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --radius-sm: 10px;
-            --radius-full: 999px;
-            --font-ar: 'El Messiri', system-ui, sans-serif;
-            --font-en: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', 'Cascadia Code', monospace;
-            --transition-smooth: 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-            --backdrop-blur: blur(16px) saturate(180%);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-top: env(safe-area-inset-top, 0px);
-            --header-height: 115px;
-            --stats-height: 44px;
-            --input-height: 70px;
+            --primary-light: #DCFCE7;
+            --primary-main: #22C55E;
+            --white: #FFFFFF;
+            --black: #1F2937;
+            --border-light: #E5E7EB;
+            --red-error: #EF4444;
         }
-
-        body {
-            font-family: var(--font-ar);
-            background: var(--bg-deep);
-            background-image:
-                radial-gradient(ellipse at 20% 10%, rgba(45, 156, 219, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 90%, rgba(242, 201, 76, 0.06) 0%, transparent 60%);
-            color: var(--text-primary);
-            height: 100dvh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        
+        * { font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background: var(--primary-light);
+            min-height: 100vh;
+            padding: 1rem;
         }
-
-        /* ======= SPLASH - RESPONSIVE ======= */
-        #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: splashFadeOut 1s ease 4.5s forwards;
+        
+        .survey-card {
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-light);
         }
-        #splash img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        @keyframes splashFadeOut {
-            0% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; pointer-events: none; }
-        }
-
-        /* ======= HEADER - FIXED TOP ======= */
-        #main-header {
-            background: var(--bg-glass);
-            backdrop-filter: var(--backdrop-blur);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 8px 12px;
-            flex-shrink: 0;
-            z-index: 20;
-        }
-        .h-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .h-teacher {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
-        .h-avatar-wrap {
-            position: relative;
-        }
-        .h-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            object-fit: cover;
-            background: var(--primary-soft);
-        }
-        .h-online {
-            width: 10px;
-            height: 10px;
-            background: #4ade80;
-            border-radius: 50%;
-            border: 2px solid #0f2a2f;
-            position: absolute;
-            bottom: 0;
-            right: -2px;
-        }
-        .h-name {
-            font-size: 0.85rem;
+        
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
             font-weight: 700;
-            background: linear-gradient(135deg, #eaf7f9 0%, #c4e2e6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .h-status {
-            font-size: 0.6rem;
-            color: var(--text-muted);
-        }
-        .h-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .h-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 1px solid var(--border-subtle);
-            background: rgba(45, 156, 219, 0.1);
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-smooth);
-        }
-        .h-btn:active {
-            background: rgba(45, 156, 219, 0.3);
-            transform: scale(0.92);
-        }
-        .h-selects {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .h-selects select {
-            flex: 1;
-            padding: 8px 10px;
-            font-size: 0.7rem;
-            font-family: var(--font-ar);
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            outline: none;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 500;
-        }
-        .h-selects select:focus {
-            border-color: var(--accent);
-            box-shadow: var(--shadow-gold);
-        }
-        .h-selects select.pulse-guide {
-            animation: pulseSelect 0.8s ease-in-out 3;
-            border-color: var(--accent);
-        }
-        @keyframes pulseSelect {
-            0%, 100% { border-color: var(--accent); }
-            50% { border-color: #f5d76e; box-shadow: 0 0 18px rgba(242, 201, 76, 0.5); }
-        }
-
-        /* ======= STATS BAR - FIXED ======= */
-        #stats-bar {
-            display: flex;
-            gap: 8px;
-            padding: 8px 12px;
-            overflow-x: auto;
-            background: var(--bg-glass);
-            backdrop-filter: var(--backdrop-blur);
-            border-bottom: 1px solid var(--border-subtle);
-            flex-shrink: 0;
-            scrollbar-width: thin;
-        }
-        #stats-bar::-webkit-scrollbar {
-            height: 2px;
-        }
-        .stat-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 14px;
-            background: rgba(26, 58, 63, 0.8);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            flex-shrink: 0;
-        }
-        .stat-chip .sc-val {
-            color: var(--accent);
-            font-weight: 700;
-        }
-        .stat-chip.code-btn {
-            background: var(--accent-soft);
-            border-color: var(--border-gold);
-            cursor: pointer;
-            color: var(--accent);
-        }
-        .stat-chip.code-btn:active {
-            background: var(--accent);
-            color: #0a1a1f;
-            transform: scale(0.95);
-        }
-        .stat-chip.premium {
-            background: rgba(74, 222, 128, 0.12);
-            border-color: rgba(74, 222, 128, 0.4);
-            color: #4ade80;
-            display: none;
-        }
-        .stat-chip.premium.show {
-            display: inline-flex;
-        }
-
-        /* ======= CHAT CONTAINER - SCROLLABLE AREA ======= */
-        #chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            min-height: 0;
-        }
-        #chat-container::-webkit-scrollbar {
-            width: 3px;
-        }
-        #chat-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #chat-container::-webkit-scrollbar-thumb {
-            background: rgba(45, 156, 219, 0.4);
-            border-radius: 10px;
-        }
-
-        /* ======= MESSAGES ======= */
-        .welcome-bubble {
-            align-self: center;
-            text-align: center;
-            padding: 20px 16px;
-            background: var(--bg-glass);
-            backdrop-filter: var(--backdrop-blur);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            max-width: 95%;
-            margin: 10px 0;
-        }
-        .welcome-bubble .wb-icon {
-            font-size: 2.8rem;
-            margin-bottom: 8px;
-        }
-        .welcome-bubble .wb-title {
-            font-weight: 700;
-            font-size: 1rem;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-        .welcome-bubble .wb-sub {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin: 8px 0 15px;
-        }
-        .wb-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .wb-chip {
-            padding: 6px 14px;
-            background: var(--primary-soft);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
-            font-size: 0.65rem;
-            cursor: pointer;
-            font-family: var(--font-ar);
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        .wb-chip:active {
-            background: var(--primary);
-            transform: scale(0.94);
-        }
-
-        .guide-bubble {
-            align-self: center;
-            padding: 6px 14px;
-            background: var(--accent-soft);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-full);
-            font-size: 0.65rem;
-            color: var(--accent);
-            max-width: 90%;
-            font-weight: 500;
-        }
-
-        .limit-banner {
-            background: var(--accent-soft);
-            border: 1px solid var(--border-gold);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--accent);
-            margin: 8px 0;
-        }
-        .limit-banner button {
-            background: var(--gold-gradient);
-            color: #0a1a1f;
+            border-radius: 24px;
+            padding: 12px 28px;
+            transition: background 0.2s ease;
             border: none;
-            border-radius: var(--radius-full);
-            padding: 8px 20px;
-            font-weight: 700;
-            font-size: 0.7rem;
             cursor: pointer;
-            margin-top: 10px;
         }
-        .limit-banner button:active {
-            transform: scale(0.95);
-        }
-
-        .user-msg-wrap {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .user-msg {
-            background: var(--user-bubble);
-            color: #eaf7f9;
-            padding: 10px 16px;
-            border-radius: 20px 20px 5px 20px;
-            max-width: 82%;
-            font-size: 0.75rem;
-            line-height: 1.6;
-            word-break: break-word;
-            border: 1px solid rgba(45, 156, 219, 0.3);
-        }
-
-        .ai-msg-wrap {
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
-        }
-        .ai-avatar-small {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-            background: var(--primary-soft);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-        .ai-msg {
-            background: var(--ai-bubble);
-            color: var(--text-primary);
-            padding: 10px 16px;
-            border-radius: 20px 20px 20px 5px;
-            font-size: 0.75rem;
-            line-height: 1.7;
-            word-break: break-word;
-            border: 1px solid var(--border-subtle);
-            max-width: 86%;
-        }
-        .ai-msg pre {
-            background: #051214;
-            color: #c4e2e6;
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            overflow-x: auto;
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            margin: 8px 0;
-        }
-        .ai-msg code {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-        }
-
-        /* ======= QUIZ ======= */
-        .quiz-container {
-            background: var(--bg-elevated);
-            border: 1.5px solid var(--primary);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            margin: 8px 0;
-        }
-        .quiz-question {
-            font-weight: 700;
-            font-size: 0.75rem;
-            margin-bottom: 12px;
-        }
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .quiz-option {
-            padding: 10px 14px;
-            background: rgba(45, 156, 219, 0.1);
-            border: 1.5px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-size: 0.7rem;
-            font-weight: 500;
-            cursor: pointer;
-            text-align: right;
-        }
-        .quiz-option:active {
-            background: rgba(45, 156, 219, 0.3);
-            transform: scale(0.98);
-        }
-        .quiz-option.correct-answer {
-            background: rgba(74, 222, 128, 0.3) !important;
-            border-color: #4ade80 !important;
-            color: #4ade80;
-        }
-        .quiz-option.wrong-answer {
-            background: rgba(239, 68, 68, 0.3) !important;
-            border-color: #ef4444 !important;
-            color: #ef4444;
-        }
-        .quiz-option:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        .quiz-feedback {
-            text-align: center;
-            font-size: 0.7rem;
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: var(--radius-sm);
-        }
-        .quiz-feedback.feedback-correct {
-            background: rgba(74, 222, 128, 0.15);
-            color: #4ade80;
-        }
-        .quiz-feedback.feedback-wrong {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-        .quiz-generate-btn {
-            display: inline-block;
-            padding: 5px 14px;
-            background: var(--primary-soft);
-            border: 1px solid var(--primary);
-            border-radius: var(--radius-full);
-            color: var(--primary);
-            font-size: 0.65rem;
+        
+        .btn-primary:hover { background: #16A34A; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .btn-secondary {
+            background: #F3F4F6;
+            color: var(--black);
             font-weight: 600;
+            border-radius: 24px;
+            padding: 12px 24px;
             cursor: pointer;
-            margin-top: 8px;
         }
-        .quiz-generate-btn:active {
-            background: var(--primary);
-            color: #fff;
-            transform: scale(0.95);
+        
+        .btn-secondary:hover { background: #E5E7EB; }
+        
+        .input-field, .select-field, .textarea-field {
+            background: var(--white);
+            border: 1.5px solid var(--border-light);
+            border-radius: 20px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            width: 100%;
+            transition: border 0.2s;
         }
-
-        .typing-indicator {
-            display: inline-flex;
-            gap: 5px;
-            padding: 10px 16px;
-            background: var(--ai-bubble);
-            border-radius: 20px 20px 20px 5px;
-            align-self: flex-start;
-            margin-right: 40px;
-        }
-        .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            background: var(--text-muted);
-            border-radius: 50%;
-            animation: typeBounce 1.2s infinite;
-        }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typeBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
-            30% { transform: translateY(-8px); opacity: 1; background: var(--accent); }
-        }
-
-        /* ======= INPUT AREA - FIXED BOTTOM ======= */
-        #input-area {
-            flex-shrink: 0;
-            padding: 10px 12px;
-            padding-bottom: calc(10px + var(--safe-bottom));
-            background: var(--bg-glass);
-            backdrop-filter: var(--backdrop-blur);
-            border-top: 1px solid var(--border-subtle);
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-        }
-        #input-area textarea {
-            flex: 1;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
-            padding: 10px 16px;
-            color: var(--text-primary);
-            font-family: var(--font-ar);
-            font-size: 0.75rem;
-            resize: none;
+        
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            border-color: var(--primary-main);
             outline: none;
-            max-height: 100px;
-            min-height: 42px;
-            line-height: 1.5;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
         }
-        #input-area textarea:focus {
-            border-color: var(--primary);
+        
+        .textarea-field { min-height: 110px; resize: vertical; }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        #send-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--gold-gradient);
-            border: none;
-            color: #0a1a1f;
-            font-size: 1rem;
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 40px;
             cursor: pointer;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--white);
+            flex: 1 1 calc(33% - 12px);
+            min-width: 170px;
+            transition: all 0.2s;
         }
-        #send-btn:active {
-            transform: scale(0.88);
+        
+        .checkbox-item:hover {
+            background: #F0FDF4;
+            border-color: var(--primary-main);
         }
-        #send-btn:disabled {
-            background: rgba(100, 120, 110, 0.4);
+        
+        .checkbox-item.selected {
+            border-color: var(--primary-main);
+            background: #F0FDF4;
         }
-        #camera-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--primary);
-            font-size: 1rem;
+        
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-main);
+            margin: 0;
             cursor: pointer;
-            flex-shrink: 0;
+        }
+        
+        .step-indicator {
             display: flex;
-            align-items: center;
             justify-content: center;
+            gap: 10px;
+            margin-bottom: 28px;
         }
-        #camera-btn:active {
-            background: var(--primary-soft);
-            transform: scale(0.92);
+        
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D5DB;
         }
-        #camera-btn:disabled {
-            opacity: 0.4;
+        
+        .step-dot.active {
+            background: var(--primary-main);
+            width: 12px;
+            height: 12px;
         }
-
-        /* ======= CODE AREA - FIXED BOTTOM ======= */
-        #code-area {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            padding-bottom: calc(8px + var(--safe-bottom));
-            background: var(--bg-glass);
-            backdrop-filter: var(--backdrop-blur);
-            border-top: 1px solid var(--border-subtle);
-            flex-shrink: 0;
+        
+        .step-dot.completed {
+            background: var(--primary-main);
+            opacity: 0.6;
         }
-        #code-area.hidden {
+        
+        .error-message {
+            color: var(--red-error);
+            font-size: 0.75rem;
+            margin-top: 5px;
             display: none;
         }
-        #code-area label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-        #code-area input {
-            flex: 1;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
-            padding: 8px 12px;
-            font-size: 0.7rem;
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-            outline: none;
-            text-align: center;
-        }
-        #code-area input:focus {
-            border-color: var(--accent);
-        }
-        #code-area button {
-            background: var(--gold-gradient);
-            color: #0a1a1f;
-            border: none;
-            border-radius: var(--radius-full);
-            padding: 8px 16px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        #code-area button:active {
-            transform: scale(0.95);
-        }
-
-        /* ======= MODAL ======= */
-        .modal-overlay {
+        
+        .error-message.show { display: block; }
+        
+        .toast {
             position: fixed;
-            inset: 0;
-            background: rgba(5, 20, 22, 0.95);
-            backdrop-filter: blur(12px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 25px 20px;
-            width: 100%;
-            max-width: 320px;
-            text-align: center;
-        }
-        .modal h3 {
-            font-size: 1rem;
-            margin-bottom: 6px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .modal p {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-        .modal input {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            font-family: var(--font-ar);
-            font-size: 0.75rem;
-            outline: none;
-            text-align: center;
-            color: var(--text-primary);
-        }
-        .modal input:focus {
-            border-color: var(--primary);
-        }
-        .modal button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 12px;
-            background: var(--gold-gradient);
-            color: #0a1a1f;
-            border: none;
-            border-radius: var(--radius-full);
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-        .modal button:active {
-            transform: scale(0.97);
-        }
-
-        #toast {
-            position: fixed;
-            top: 70px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #e2b13b;
-            color: #0a1a1f;
-            padding: 6px 16px;
-            border-radius: var(--radius-full);
-            font-size: 0.7rem;
-            font-weight: 700;
-            z-index: 3000;
-            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards;
-            pointer-events: none;
-            white-space: nowrap;
-            max-width: 85vw;
-            overflow-x: auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: var(--black);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        @keyframes toastOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+        
+        [x-cloak] { display: none !important; }
+        
+        .message-bubble {
+            background: var(--primary-light);
+            color: var(--black);
+            padding: 24px 20px;
+            border-radius: 32px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--primary-main);
         }
-
-        .hidden {
-            display: none !important;
+        
+        button:active {
+            transform: scale(0.97);
         }
     </style>
 </head>
-<body>
-
-    <div id="splash">
-        <img src="ا">
+<body class="flex items-center justify-center" x-cloak x-data="surveyApp()">
+    
+    <div x-show="loading" class="loading-overlay">
+        <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+            <i class="fas fa-spinner fa-pulse text-3xl" style="color: var(--primary-main)"></i>
+            <p class="mt-3 font-bold">جاري الإرسال...</p>
+        </div>
     </div>
 
-    <div id="toast" class="hidden"></div>
+    <div x-show="toastMessage" x-text="toastMessage" class="toast"></div>
 
-    <header id="main-header">
-        <div class="h-top">
-            <div class="h-teacher">
-                <div class="h-avatar-wrap">
-                    <div class="h-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👨‍🏫</div>
-                    <span class="h-online"></span>
-                </div>
+    <div class="max-w-2xl mx-auto w-full">
+        
+        <!-- الخطوة 1: ترحيب - تظهر دائماً -->
+        <div x-show="currentStep === 1" class="survey-card p-6 md:p-8 text-center">
+            <div class="text-7xl mb-4">🎯</div>
+            <div class="message-bubble">
+                <h2 class="text-2xl font-black mb-2">أهلاً وسهلاً بك! 🌟</h2>
+                <p class="text-lg font-semibold">أزيك عامل إيه؟ معاك أ/ إسماعيل عماد</p>
+                <p class="text-base mt-2">عشان أنت شخص مهم ورأيك مهم بالنسبة ليا، حابب إنك تشارك برأيك في الاستطلاع ده 📋</p>
+            </div>
+            <p class="text-gray-700 text-base mt-2">هيساعدني رأيك في تحسين المحتوى التعليمي وتطوير التعليم</p>
+            <p class="text-sm text-gray-500 mt-1">الاستطلاع هياخد من وقتك 3 دقايق بس ⏱️</p>
+            <button @click="nextStep" class="btn-primary mt-6 inline-flex items-center gap-2">
+                <span>التالي</span>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+
+        <!-- الخطوة 2: البيانات الشخصية -->
+        <div x-show="currentStep === 2" class="survey-card p-6 md:p-8">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+                <span class="step-dot"></span>
+                <span class="step-dot"></span>
+            </div>
+            <h2 class="text-2xl font-black text-center mb-6" style="color: var(--black)">
+                <i class="fas fa-user-edit ml-2" style="color: var(--primary-main)"></i>
+                بياناتك الشخصية
+            </h2>
+            
+            <div class="space-y-5">
                 <div>
-                    <div class="h-name">أ/ إسماعيل عماد</div>
-                    <div class="h-status">🟢 متصل الآن</div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-user ml-1"></i> الاسم الكامل *
+                    </label>
+                    <input type="text" x-model="formData.name" maxlength="50"
+                           @input="formData.name = formData.name.replace(/[^\u0621-\u064A\s]/g, '')"
+                           class="input-field" placeholder="اكتب اسمك الثلاثي">
+                    <p class="error-message" :class="{'show': errors.name}" x-text="errors.name"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-phone ml-1"></i> رقم الهاتف *
+                    </label>
+                    <input type="tel" x-model="formData.phone" maxlength="11"
+                           @input="formData.phone = formData.phone.replace(/[^0-9]/g, '')"
+                           class="input-field" placeholder="أدخل رقم هاتفك" dir="ltr">
+                    <p class="text-xs text-gray-500 mt-1">11 رقم (مثال: 01123456789)</p>
+                    <p class="error-message" :class="{'show': errors.phone}" x-text="errors.phone"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-graduation-cap ml-1"></i> المرحلة الدراسية *
+                    </label>
+                    <select x-model="formData.grade" class="select-field">
+                        <option value="">اختر المرحلة الدراسية</option>
+                        <option value="الصف الرابع الابتدائي">الصف الرابع الابتدائي</option>
+                        <option value="الصف الخامس الابتدائي">الصف الخامس الابتدائي</option>
+                        <option value="الصف السادس الابتدائي">الصف السادس الابتدائي</option>
+                        <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                        <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                        <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                        <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                        <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                        <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                    </select>
+                    <p class="error-message" :class="{'show': errors.grade}" x-text="errors.grade"></p>
                 </div>
             </div>
-            <div class="h-actions">
-                <button class="h-btn" onclick="logoutUser()">🚪</button>
+            
+            <div class="flex justify-between mt-8 gap-3">
+                <button @click="prevStep" class="btn-secondary">
+                    <i class="fas fa-arrow-right ml-1"></i> السابق
+                </button>
+                <button @click="validateAndProceed" class="btn-primary">
+                    التالي <i class="fas fa-arrow-left mr-1"></i>
+                </button>
             </div>
         </div>
-        <div class="h-selects">
-            <select id="stage-select">
-                <option value="" disabled selected>📚 المرحلة</option>
-                <optgroup label="ابتدائي">
-                    <option value="أولى ابتدائي">أولى ابتدائي</option>
-                    <option value="تانية ابتدائي">تانية ابتدائي</option>
-                    <option value="تالتة ابتدائي">تالتة ابتدائي</option>
-                    <option value="رابعة ابتدائي">رابعة ابتدائي</option>
-                    <option value="خامسة ابتدائي">خامسة ابتدائي</option>
-                    <option value="سادسة ابتدائي">سادسة ابتدائي</option>
-                </optgroup>
-                <optgroup label="إعدادي">
-                    <option value="أولى إعدادي">أولى إعدادي</option>
-                    <option value="تانية إعدادي">تانية إعدادي</option>
-                    <option value="تالتة إعدادي">تالتة إعدادي</option>
-                </optgroup>
-                <optgroup label="ثانوي">
-                    <option value="أولى ثانوي">أولى ثانوي</option>
-                    <option value="تانية ثانوي">تانية ثانوي</option>
-                    <option value="تالتة ثانوي">تالتة ثانوي</option>
-                </optgroup>
-            </select>
-            <select id="subject-select" disabled>
-                <option value="" disabled selected>📖 المادة</option>
-            </select>
-        </div>
-    </header>
 
-    <div id="stats-bar">
-        <div class="stat-chip">📊 المتاح: <span class="sc-val" id="words-left">--</span></div>
-        <div class="stat-chip premium" id="chip-premium">⭐ مميّز</div>
-        <div class="stat-chip code-btn" id="chip-code" onclick="toggleCodeArea()">🔑 كود التفعيل</div>
-    </div>
-
-    <div id="chat-container"></div>
-
-    <div id="input-area">
-        <button id="camera-btn" title="تصوير سؤال">📷</button>
-        <textarea id="user-input" placeholder="اكتب سؤالك..." rows="1" disabled></textarea>
-        <button id="send-btn" disabled>➤</button>
-    </div>
-
-    <div id="code-area" class="hidden">
-        <label>🔑 الكود:</label>
-        <input type="text" id="activation-code" placeholder="ACT-XXXXXX" maxlength="10">
-        <button id="activate-btn">تفعيل</button>
-    </div>
-
-    <div id="user-modal" class="modal-overlay hidden">
-        <div class="modal">
-            <h3>👋 أهلًا بيك</h3>
-            <p>سجل بياناتك عشان نبدأ الرحلة</p>
-            <input type="text" id="user-name" placeholder="الاسم كاملاً">
-            <input type="tel" id="user-phone" placeholder="رقم الهاتف 01xxxxxxxxx">
-            <button id="save-user-btn">🚀 ابدأ</button>
-        </div>
-    </div>
-
-    <script>
-        const API = 'https://mo3alem.islammanassa1.workers.dev/api/chat';
-        const SUBJECTS = {
-            'أولى ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'دين'],
-            'تانية ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'دين'],
-            'تالتة ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'دين'],
-            'رابعة ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'خامسة ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'سادسة ابتدائي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'أولى إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'تانية إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'تالتة إعدادي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم', 'دراسات', 'دين'],
-            'أولى ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'علوم متكاملة', 'برمجة', 'تاريخ', 'فلسفة ومنطق', 'لغة ثانية'],
-            'تانية ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'تاريخ', 'فلسفة', 'لغة ثانية'],
-            'تالتة ثانوي': ['عربي', 'إنجليزي', 'رياضيات', 'فيزياء', 'كيمياء', 'أحياء', 'جيولوجيا', 'تاريخ', 'جغرافيا', 'فلسفة', 'لغة ثانية']
-        };
-        
-        const S = {
-            user: null,
-            stage: null,
-            subject: null,
-            subscribed: false,
-            streaming: false,
-            lastQuestion: '',
-            cooldown: false,
-            quizActive: false,
-            hasExplanation: false
-        };
-        
-        const $ = id => document.getElementById(id);
-
-        // Splash
-        (function() {
-            if (localStorage.getItem('splash_v3')) {
-                document.getElementById('splash').style.display = 'none';
-            } else {
-                setTimeout(() => {
-                    document.getElementById('splash').style.display = 'none';
-                    localStorage.setItem('splash_v3', '1');
-                }, 4500);
-            }
-        })();
-
-        function logoutUser() {
-            ['mo3alem_user_v8', 'mo3alem_stage_v8', 'mo3alem_subject_v8'].forEach(k => localStorage.removeItem(k));
-            S.user = null;
-            S.subscribed = false;
-            S.stage = null;
-            S.subject = null;
-            S.lastQuestion = '';
-            S.quizActive = false;
-            $('code-area').classList.add('hidden');
-            $('chip-premium').classList.remove('show');
-            $('chat-container').innerHTML = '';
-            $('stage-select').value = '';
-            $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
-            $('subject-select').disabled = true;
-            $('user-input').disabled = true;
-            $('send-btn').disabled = true;
-            $('words-left').textContent = '--';
-            showWelcome();
-            toastMsg('👋 تم تسجيل الخروج');
-            setTimeout(() => $('user-modal').classList.remove('hidden'), 500);
-        }
-
-        function toggleCodeArea() {
-            $('code-area').classList.toggle('hidden');
-        }
-
-        async function checkUser() {
-            const saved = localStorage.getItem('mo3alem_user_v8');
-            if (saved) {
-                S.user = JSON.parse(saved);
-                await refreshStatus();
-                if (S.subscribed) {
-                    $('code-area').classList.add('hidden');
-                    $('chip-premium').classList.add('show');
-                }
-                enableInputIfReady();
-                restoreStageSubject();
-                return;
-            }
-            setTimeout(() => $('user-modal').classList.remove('hidden'), 500);
-        }
-
-        function restoreStageSubject() {
-            const ss = localStorage.getItem('mo3alem_stage_v8');
-            const sb = localStorage.getItem('mo3alem_subject_v8');
-            if (ss) {
-                $('stage-select').value = ss;
-                $('stage-select').dispatchEvent(new Event('change'));
-                if (sb) {
-                    setTimeout(() => {
-                        $('subject-select').value = sb;
-                        $('subject-select').dispatchEvent(new Event('change'));
-                    }, 200);
-                }
-            }
-        }
-
-        $('save-user-btn').addEventListener('click', async () => {
-            const name = $('user-name').value.trim();
-            const phone = $('user-phone').value.trim();
-            if (!name || !phone) return toastMsg('محتاجين اسمك ورقمك');
-            if (!/^01[0-9]{9}$/.test(phone)) return toastMsg('رقم غير صحيح');
+        <!-- الخطوة 3: الأسئلة -->
+        <div x-show="currentStep === 3" class="survey-card p-6 md:p-8">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+                <span class="step-dot"></span>
+            </div>
+            <h2 class="text-2xl font-black text-center mb-6" style="color: var(--black)">
+                <i class="fas fa-question-circle ml-2" style="color: var(--primary-main)"></i>
+                أسئلة الاستطلاع
+            </h2>
             
-            $('save-user-btn').disabled = true;
-            $('save-user-btn').textContent = '⏳';
-            
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'register', name, phone, stage: S.stage || '' })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error);
+            <div class="space-y-7">
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">1</span>
+                        إيه أكتر حاجة صعبة بتواجهك في دراستك في أي مادة؟
+                    </label>
+                    <textarea x-model="formData.question1" class="textarea-field" placeholder="اكتب إجابتك هنا"></textarea>
+                    <p class="error-message" :class="{'show': errors.question1}" x-text="errors.question1"></p>
+                </div>
                 
-                S.user = { name, phone, status: data.student?.status || 'free' };
-                S.subscribed = data.student?.status === 'active';
-                localStorage.setItem('mo3alem_user_v8', JSON.stringify(S.user));
-                $('user-modal').classList.add('hidden');
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">2</span>
+                        إيه الحاجة اللي لو اتوفرت ليك تخليك أفضل في مذاكرتك وفهمك؟
+                    </label>
+                    <textarea x-model="formData.question2" class="textarea-field" placeholder="اكتب إجابتك هنا"></textarea>
+                    <p class="error-message" :class="{'show': errors.question2}" x-text="errors.question2"></p>
+                </div>
                 
-                if (S.subscribed) {
-                    $('code-area').classList.add('hidden');
-                    $('chip-premium').classList.add('show');
-                }
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">3</span>
+                        لو اتعاملت مع شرحي في أي مادة (علوم أو برمجة)، شايف إيه اللي ناقص أو إيه محتاج يحصل عشان نكون أفضل؟
+                    </label>
+                    <textarea x-model="formData.question3" class="textarea-field" placeholder="اكتب رأيك هنا (اختياري)"></textarea>
+                </div>
                 
-                enableInputIfReady();
-                showWelcome();
-                toastMsg('👋 نورتنا يا ' + name);
-                restoreStageSubject();
-            } catch (e) {
-                toastMsg('⚠️ ' + (e.message || 'خطأ'));
-            } finally {
-                $('save-user-btn').disabled = false;
-                $('save-user-btn').textContent = '🚀 ابدأ';
-            }
-        });
-
-        async function refreshStatus() {
-            if (!S.user?.phone) return;
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'status', phone: S.user.phone })
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    S.subscribed = data.isSubscribed;
-                    S.user.status = data.status;
-                    S.hasExplanation = data.hasReceivedExplanation === true;
-                    if (data.remaining) $('words-left').textContent = (data.remaining.total || 0).toLocaleString();
-                    if (S.subscribed) {
-                        $('code-area').classList.add('hidden');
-                        $('chip-premium').classList.add('show');
-                    } else {
-                        $('chip-premium').classList.remove('show');
-                    }
-                    localStorage.setItem('mo3alem_user_v8', JSON.stringify(S.user));
-                }
-            } catch (e) {}
-        }
-
-        function enableInputIfReady() {
-            if (S.user) $('user-input').disabled = false;
-            if (S.stage && S.subject && S.user) $('send-btn').disabled = false;
-            else $('send-btn').disabled = true;
-        }
-
-        function showWelcome() {
-            $('chat-container').innerHTML = `
-                <div class="welcome-bubble">
-                    <div class="wb-icon">📚✨</div>
-                    <div class="wb-title">${S.user ? 'أهلًا ' + S.user.name : 'أهلًا بك'}</div>
-                    <div class="wb-sub">✏️ اختر المرحلة والمادة من الأعلى ثم اكتب سؤالك</div>
-                    <div class="wb-actions">
-                        <button class="wb-chip" onclick="quickAsk('اشرح لي درس ')">📖 شرح درس</button>
-                        <button class="wb-chip" onclick="quickAsk('حل المسألة: ')">✍️ حل مسألة</button>
-                        <button class="wb-chip" onclick="quickAsk('لخص لي ')">📝 تلخيص</button>
+                <div>
+                    <label class="block font-bold mb-3" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">4</span>
+                        إيه الأدوات اللي ممكن تفيدك ويقدر أ/ إسماعيل يبرمجها ليك تساعدك في المذاكرة؟ <span class="text-sm text-gray-500">(تقدر تختار أكتر من حاجة)</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <template x-for="tool in toolsList" :key="tool.id">
+                            <label class="checkbox-item" :class="{'selected': formData.tools.includes(tool.id)}">
+                                <input type="checkbox" 
+                                       :checked="formData.tools.includes(tool.id)"
+                                       @click.stop="toggleTool(tool.id)">
+                                <span x-text="tool.name"></span>
+                            </label>
+                        </template>
                     </div>
-                </div>`;
-        }
-
-        function quickAsk(p) {
-            if (!S.stage || !S.subject) {
-                toastMsg('⚠️ أولاً اختر المرحلة والمادة من الأعلى');
-                $('stage-select').classList.add('pulse-guide');
-                setTimeout(() => $('stage-select').classList.remove('pulse-guide'), 1500);
-                return;
-            }
-            $('user-input').value = p;
-            $('user-input').focus();
-        }
-
-        $('stage-select').addEventListener('change', () => {
-            S.stage = $('stage-select').value;
-            $('subject-select').innerHTML = '<option value="" disabled selected>📖 المادة</option>';
-            $('subject-select').disabled = false;
-            (SUBJECTS[S.stage] || []).forEach(s => {
-                $('subject-select').innerHTML += `<option value="${s}">${s}</option>`;
-            });
-            S.subject = null;
-            $('send-btn').disabled = true;
-            localStorage.setItem('mo3alem_stage_v8', S.stage);
-            addGuide('✅ تم اختيار ' + S.stage + ' 👈 الآن اختر المادة');
-            enableInputIfReady();
-        });
-
-        $('subject-select').addEventListener('change', () => {
-            S.subject = $('subject-select').value;
-            localStorage.setItem('mo3alem_subject_v8', S.subject);
-            enableInputIfReady();
-            addGuide('🎯 ' + S.stage + ' - ' + S.subject + ' 🟢 يمكنك الآن كتابة سؤالك');
-        });
-
-        function addUserMsg(t) {
-            const w = document.createElement('div');
-            w.className = 'user-msg-wrap';
-            w.innerHTML = `<div class="user-msg">${escapeHtml(t)}</div>`;
-            $('chat-container').appendChild(w);
-            scrollToBottom();
-        }
-        
-        function addAIMsgContainer() {
-            const w = document.createElement('div');
-            w.className = 'ai-msg-wrap';
-            w.innerHTML = `<div class="ai-avatar-small">👨‍🏫</div><div class="ai-msg"></div>`;
-            $('chat-container').appendChild(w);
-            return { m: w.querySelector('.ai-msg') };
-        }
-        
-        function addTyping() {
-            const e = document.createElement('div');
-            e.className = 'typing-indicator';
-            e.id = 'typing';
-            e.innerHTML = '<span></span><span></span><span></span>';
-            $('chat-container').appendChild(e);
-            scrollToBottom();
-        }
-        
-        function removeTyping() {
-            const e = document.getElementById('typing');
-            if (e) e.remove();
-        }
-        
-        function addGuide(t) {
-            const d = document.createElement('div');
-            d.className = 'guide-bubble';
-            d.textContent = t;
-            $('chat-container').appendChild(d);
-            scrollToBottom();
-        }
-        
-        function addLimitBanner(m) {
-            const d = document.createElement('div');
-            d.className = 'limit-banner';
-            d.innerHTML = m + '<br><button onclick="window.location.href=\'payment.html\'">💎 اشترك الآن</button>';
-            $('chat-container').appendChild(d);
-            scrollToBottom();
-        }
-        
-        function scrollToBottom() {
-            const container = $('chat-container');
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
-        function formatMsg(text) {
-            let out = text;
-            out = out.replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => {
-                try { return katex.renderToString(tex.trim(), { throwOnError: false, displayMode: true }); } catch(e) { return _; }
-            });
-            out = out.replace(/\$([^\$]+)\$/g, (_, tex) => {
-                try { return katex.renderToString(tex.trim(), { throwOnError: false }); } catch(e) { return _; }
-            });
-            out = out.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-                return `<pre><code>${escapeHtml(code.trim())}</code></pre>`;
-            });
-            out = out.replace(/\n/g, '<br>');
-            return out;
-        }
-        
-        function renderMath(el) {
-            try {
-                renderMathInElement(el, {
-                    delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
-                    throwOnError: false
-                });
-            } catch(e) {}
-        }
-
-        async function generateQuizOnce(btn) {
-            if (S.quizActive) return;
-            if (!S.stage || !S.subject || !S.lastQuestion) {
-                toastMsg('⚠️ اسأل سؤالاً أولاً');
-                return;
-            }
-            
-            S.quizActive = true;
-            btn.disabled = true;
-            btn.textContent = '⏳';
-
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'generate_quiz',
-                        phone: S.user?.phone || 'guest',
-                        stage: S.stage,
-                        subject: S.subject,
-                        lastQuestion: S.lastQuestion
-                    })
-                });
-                const data = await res.json();
-                if (res.ok && data.success && data.quiz) {
-                    renderQuiz(data.quiz);
-                    btn.remove();
-                } else {
-                    S.quizActive = false;
-                    btn.disabled = false;
-                    btn.textContent = '🎯 اختبرني';
-                    toastMsg('⚠️ ' + (data.error || 'فشل'));
-                }
-            } catch (e) {
-                S.quizActive = false;
-                btn.disabled = false;
-                btn.textContent = '🎯 اختبرني';
-                toastMsg('⚠️ فشل');
-            }
-        }
-
-        function renderQuiz(quiz) {
-            const container = document.createElement('div');
-            container.className = 'quiz-container';
-            container.innerHTML = `
-                <div class="quiz-question">${escapeHtml(quiz.question)}</div>
-                <div class="quiz-options">
-                    ${quiz.options.map((opt, i) => `
-                        <button class="quiz-option" data-index="${i}" onclick="window.selectQuizAnswer(this, ${i}, ${quiz.correct}, '${escapeHtml(quiz.options[quiz.correct]).replace(/'/g, "\\'")}')">${escapeHtml(opt)}</button>
-                    `).join('')}
+                    <p class="error-message" :class="{'show': errors.tools}" x-text="errors.tools"></p>
                 </div>
-                <div class="quiz-feedback hidden"></div>
-            `;
-            $('chat-container').appendChild(container);
-            scrollToBottom();
-        }
+            </div>
+            
+            <div class="flex justify-between mt-8 gap-3">
+                <button @click="prevStep" class="btn-secondary">
+                    <i class="fas fa-arrow-right ml-1"></i> السابق
+                </button>
+                <button @click="validateAndSubmit" :disabled="submitting" class="btn-primary">
+                    <span x-show="!submitting">لو خلصت اختيار دوس هنا 🚀</span>
+                    <span x-show="submitting"><i class="fas fa-spinner fa-pulse"></i> جاري الإرسال...</span>
+                </button>
+            </div>
+        </div>
 
-        window.selectQuizAnswer = function(btn, selectedIndex, correctIndex, correctAnswerText) {
-            const container = btn.closest('.quiz-container');
-            const allOptions = container.querySelectorAll('.quiz-option');
-            const feedback = container.querySelector('.quiz-feedback');
+        <!-- الخطوة 4: شكراً -->
+        <div x-show="currentStep === 4" class="survey-card p-6 md:p-8 text-center">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+            </div>
+            <div class="text-7xl mb-4">✅</div>
+            <h2 class="text-3xl font-black mb-3" style="color: var(--primary-main)">شكراً جزيلاً ليك! 🎉</h2>
+            <div class="message-bubble" style="background: var(--primary-light); border-right: 4px solid var(--primary-main);">
+                <p class="text-lg font-semibold">بجد شكراً على مشاركتك القيمة!</p>
+                <p class="text-base mt-2">رأيك هيساعدني أطور المحتوى وأقدملك الأفضل دايمًا 💪</p>
+            </div>
+            <p class="text-gray-700 text-base">هتواصل معاك قريب على رقم الهاتف لو في تفاصيل إضافية 📱</p>
+            <button @click="resetForm" class="btn-primary mt-4 inline-flex items-center gap-2">
+                <i class="fas fa-plus ml-1"></i> عمل استبيان جديد
+            </button>
+        </div>
+    </div>
 
-            allOptions.forEach(o => { o.disabled = true; });
-            allOptions[correctIndex].classList.add('correct-answer');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { 
+            getFirestore, collection, addDoc, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-            if (selectedIndex === correctIndex) {
-                feedback.className = 'quiz-feedback feedback-correct';
-                feedback.textContent = '✅ أحسنت! إجابة صحيحة.';
-            } else {
-                btn.classList.add('wrong-answer');
-                feedback.className = 'quiz-feedback feedback-wrong';
-                feedback.textContent = `❌ الإجابة الصحيحة: ${correctAnswerText}`;
-            }
-            feedback.classList.remove('hidden');
-            S.quizActive = false;
-            scrollToBottom();
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
         };
 
-        $('send-btn').addEventListener('click', sendMsg);
-        $('user-input').addEventListener('keydown', e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMsg();
-            }
-        });
-        
-        $('user-input').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-        });
+        let db;
+        try {
+            const app = initializeApp(FIREBASE_CONFIG);
+            db = getFirestore(app);
+            console.log("✅ Firebase connected");
+        } catch(e) {
+            console.warn("Firebase connection issue:", e);
+        }
 
-        async function sendMsg() {
-            if (S.streaming || S.cooldown) return;
-            if (!S.stage || !S.subject) {
-                toastMsg('⚠️ يجب اختيار المرحلة والمادة أولاً');
-                $('stage-select').classList.add('pulse-guide');
-                $('subject-select').classList.add('pulse-guide');
-                setTimeout(() => {
-                    $('stage-select').classList.remove('pulse-guide');
-                    $('subject-select').classList.remove('pulse-guide');
-                }, 1500);
-                return;
-            }
-            
-            let text = $('user-input').value.trim();
-            if (!text || !S.user) return;
-            
-            S.cooldown = true;
-            setTimeout(() => { S.cooldown = false; }, 1500);
-            
-            S.lastQuestion = text;
-            S.quizActive = false;
-            addUserMsg(text);
-            $('user-input').value = '';
-            $('user-input').style.height = 'auto';
-            $('send-btn').disabled = true;
-            S.streaming = true;
-            addTyping();
-            
-            let full = '';
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'ask',
-                        phone: S.user.phone,
-                        name: S.user.name,
-                        stage: S.stage,
-                        subject: S.subject,
-                        text
-                    })
-                });
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('surveyApp', () => ({
+                loading: false,
+                currentStep: 1,
+                submitting: false,
+                toastMessage: '',
                 
-                if (!res.ok) {
-                    removeTyping();
-                    const e = await res.json().catch(() => ({}));
-                    if (e.code === 'LIMIT_REACHED') {
-                        addLimitBanner(e.error);
+                formData: {
+                    name: '',
+                    phone: '',
+                    grade: '',
+                    question1: '',
+                    question2: '',
+                    question3: '',
+                    tools: []
+                },
+                
+                errors: {
+                    name: '',
+                    phone: '',
+                    grade: '',
+                    question1: '',
+                    question2: '',
+                    tools: ''
+                },
+                
+                toolsList: [
+                    { id: 'ai', name: '🤖 أدوات ذكاء اصطناعي عبقرية (ب اشتراك رمزي)' },
+                    { id: 'organization', name: '📅 أدوات تنظيم المذاكرة والوقت' },
+                    { id: 'videos', name: '🎥 منصة فيديوهات تفاعلية' },
+                    { id: 'quiz', name: '📝 نظام اختبارات وتمارين ذكي' },
+                    { id: 'chat', name: '💬 شات تفاعلي للمساعدة الفورية' },
+                    { id: 'gamification', name: '🎮 ألعاب تعليمية تفاعلية' },
+                    { id: 'summaries', name: '📚 تلخيصات ذكية للمناهج' },
+                    { id: 'tracking', name: '📊 نظام متابعة التقدم الشخصي' },
+                    { id: 'community', name: '👥 مجتمع دراسي تفاعلي' },
+                    { id: 'notifications', name: '🔔 نظام تذكير وإشعارات ذكي' }
+                ],
+                
+                init() {
+                    console.log("✅ التطبيق جاهز - لا يوجد أي تحقق مسبق");
+                },
+                
+                showToast(msg) {
+                    this.toastMessage = msg;
+                    setTimeout(() => { this.toastMessage = ''; }, 3500);
+                },
+                
+                nextStep() { 
+                    if (this.currentStep < 4) this.currentStep++; 
+                },
+                
+                prevStep() { 
+                    if (this.currentStep > 1) this.currentStep--; 
+                },
+                
+                resetForm() {
+                    // إعادة تعيين النموذج للخطوة 1
+                    this.currentStep = 1;
+                    this.formData = {
+                        name: '',
+                        phone: '',
+                        grade: '',
+                        question1: '',
+                        question2: '',
+                        question3: '',
+                        tools: []
+                    };
+                    this.errors = {
+                        name: '',
+                        phone: '',
+                        grade: '',
+                        question1: '',
+                        question2: '',
+                        tools: ''
+                    };
+                },
+                
+                validateAndProceed() {
+                    let valid = true;
+                    if (!this.formData.name.trim() || this.formData.name.trim().length < 6) {
+                        this.errors.name = 'يرجى إدخال الاسم الثلاثي كاملاً';
+                        valid = false;
+                    } else this.errors.name = '';
+                    
+                    if (!this.formData.phone || this.formData.phone.length !== 11 || !this.formData.phone.startsWith('01')) {
+                        this.errors.phone = 'أدخل رقم هاتف صحيح مكون من 11 رقم يبدأ بـ 01';
+                        valid = false;
+                    } else this.errors.phone = '';
+                    
+                    if (!this.formData.grade) {
+                        this.errors.grade = 'اختر المرحلة الدراسية';
+                        valid = false;
+                    } else this.errors.grade = '';
+                    
+                    if (valid) this.nextStep();
+                    else this.showToast('⚠️ يرجى تصحيح الأخطاء قبل المتابعة');
+                },
+                
+                toggleTool(toolId) {
+                    const idx = this.formData.tools.indexOf(toolId);
+                    if (idx === -1) {
+                        this.formData.tools.push(toolId);
                     } else {
-                        addAIMsg('⚠️ ' + (e.error || 'حدث خطأ'));
+                        this.formData.tools.splice(idx, 1);
                     }
-                    S.streaming = false;
-                    $('send-btn').disabled = false;
-                    await refreshStatus();
-                    return;
-                }
+                },
                 
-                removeTyping();
-                const { m } = addAIMsgContainer();
-                const reader = res.body.getReader();
-                const dec = new TextDecoder();
-                let buf = '';
+                validateAndSubmit() {
+                    let valid = true;
+                    if (!this.formData.question1.trim() || this.formData.question1.trim().length < 5) {
+                        this.errors.question1 = 'يرجى كتابة إجابة مفصلة للسؤال الأول';
+                        valid = false;
+                    } else this.errors.question1 = '';
+                    
+                    if (!this.formData.question2.trim() || this.formData.question2.trim().length < 5) {
+                        this.errors.question2 = 'يرجى كتابة إجابة مفصلة للسؤال الثاني';
+                        valid = false;
+                    } else this.errors.question2 = '';
+                    
+                    if (this.formData.tools.length === 0) {
+                        this.errors.tools = 'يرجى اختيار أداة واحدة على الأقل';
+                        valid = false;
+                    } else this.errors.tools = '';
+                    
+                    if (valid) this.submitSurvey();
+                    else this.showToast('⚠️ يرجى إكمال جميع الإجابات المطلوبة');
+                },
                 
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    buf += dec.decode(value, { stream: true });
-                    const lines = buf.split('\n');
-                    buf = lines.pop() || '';
-                    for (const l of lines) {
-                        if (l.startsWith('data: ')) {
-                            const d = l.slice(6).trim();
-                            if (!d || d === '[DONE]') continue;
-                            try {
-                                const p = JSON.parse(d);
-                                if (p.text) {
-                                    full += p.text;
-                                    m.innerHTML = formatMsg(full);
-                                    renderMath(m);
-                                    scrollToBottom();
-                                }
-                                if (p.error) m.innerHTML = '⚠️ ' + p.error;
-                            } catch(e) {}
-                        }
-                    }
-                }
-                
-                if (!full) m.innerHTML = '⚠️ لم نستطع الوصول';
-                
-                if (full && full.length > 100) {
-                    const quizBtn = document.createElement('button');
-                    quizBtn.className = 'quiz-generate-btn';
-                    quizBtn.textContent = '🎯 اختبر نفسك';
-                    quizBtn.onclick = function() { generateQuizOnce(this); };
-                    m.appendChild(quizBtn);
-                }
-                
-                await refreshStatus();
-            } catch (e) {
-                removeTyping();
-                addAIMsg('⚠️ ' + (e.message || 'خطأ'));
-            } finally {
-                S.streaming = false;
-                $('send-btn').disabled = false;
-                enableInputIfReady();
-                $('user-input').focus();
-            }
-        }
-
-        function addAIMsg(text) {
-            const { m } = addAIMsgContainer();
-            m.innerHTML = formatMsg(text);
-            renderMath(m);
-            scrollToBottom();
-        }
-
-        $('camera-btn').addEventListener('click', () => {
-            if (!S.stage || !S.subject) {
-                toastMsg('⚠️ اختر المرحلة والمادة أولاً');
-                $('stage-select').classList.add('pulse-guide');
-                $('subject-select').classList.add('pulse-guide');
-                setTimeout(() => {
-                    $('stage-select').classList.remove('pulse-guide');
-                    $('subject-select').classList.remove('pulse-guide');
-                }, 1500);
-                return;
-            }
-            
-            // لو المستخدم مجاني ومشتركش -> يتحول على طول لصفحة الدفع
-            if (!S.subscribed) {
-                window.location.href = 'payment.html';
-                return;
-            }
-            
-            const inp = document.createElement('input');
-            inp.type = 'file';
-            inp.accept = 'image/*';
-            inp.capture = 'environment';
-            inp.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                addUserMsg('📷 صورة مرفوعة');
-                S.streaming = true;
-                $('send-btn').disabled = true;
-                addTyping();
-                
-                let full = '';
-                try {
-                    const b64 = await new Promise(r => {
-                        const fr = new FileReader();
-                        fr.onload = () => r(fr.result.split(',')[1]);
-                        fr.readAsDataURL(file);
+                async submitSurvey() {
+                    if (this.submitting) return;
+                    this.submitting = true;
+                    this.loading = true;
+                    
+                    const toolsNames = this.formData.tools.map(id => {
+                        const t = this.toolsList.find(tool => tool.id === id);
+                        return t ? t.name : id;
                     });
                     
-                    const res = await fetch(API, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            action: 'image',
-                            phone: S.user.phone,
-                            stage: S.stage,
-                            subject: S.subject,
-                            image: b64
-                        })
-                    });
+                    const payload = {
+                        name: this.formData.name.trim(),
+                        phone: this.formData.phone.trim(),
+                        grade: this.formData.grade,
+                        question1: this.formData.question1.trim(),
+                        question2: this.formData.question2.trim(),
+                        question3: this.formData.question3.trim(),
+                        tools: this.formData.tools,
+                        toolsNames: toolsNames,
+                        submittedAt: new Date().toISOString(),
+                        timestamp: serverTimestamp(),
+                        userAgent: navigator.userAgent
+                    };
                     
-                    if (!res.ok) {
-                        removeTyping();
-                        const err = await res.json().catch(() => ({}));
-                        if (err.code === 'PREMIUM_ONLY') {
-                            window.location.href = 'payment.html';
+                    try {
+                        if (db) {
+                            await addDoc(collection(db, 'StudentSurveys_V1'), payload);
+                            console.log("✅ تم حفظ الاستطلاع في Firebase");
                         } else {
-                            addAIMsg('⚠️ ' + (err.error || 'خطأ'));
+                            const offline = JSON.parse(localStorage.getItem('offline_surveys') || '[]');
+                            offline.push(payload);
+                            localStorage.setItem('offline_surveys', JSON.stringify(offline));
                         }
-                        S.streaming = false;
-                        $('send-btn').disabled = false;
-                        return;
+                        
+                        this.currentStep = 4;
+                        this.showToast('🎉 تم إرسال استطلاع الرأي بنجاح! شكراً لمشاركتك');
+                        
+                    } catch(err) {
+                        console.error("❌ خطأ في الإرسال:", err);
+                        this.showToast('❌ حدث خطأ أثناء الإرسال. حاول مرة أخرى');
+                    } finally {
+                        this.submitting = false;
+                        this.loading = false;
                     }
-                    
-                    removeTyping();
-                    const { m } = addAIMsgContainer();
-                    const reader = res.body.getReader();
-                    const dec = new TextDecoder();
-                    let buf = '';
-                    
-                    while (true) {
-                        const { done, value } = await reader.read();
-                        if (done) break;
-                        buf += dec.decode(value, { stream: true });
-                        const lines = buf.split('\n');
-                        buf = lines.pop() || '';
-                        for (const l of lines) {
-                            if (l.startsWith('data: ')) {
-                                const d = l.slice(6).trim();
-                                if (!d || d === '[DONE]') continue;
-                                try {
-                                    const p = JSON.parse(d);
-                                    if (p.text) {
-                                        full += p.text;
-                                        m.innerHTML = formatMsg(full);
-                                        renderMath(m);
-                                        scrollToBottom();
-                                    }
-                                } catch(e) {}
-                            }
-                        }
-                    }
-                    
-                    if (full && full.length > 100) {
-                        const quizBtn = document.createElement('button');
-                        quizBtn.className = 'quiz-generate-btn';
-                        quizBtn.textContent = '🎯 اختبر نفسك';
-                        quizBtn.onclick = function() { generateQuizOnce(this); };
-                        m.appendChild(quizBtn);
-                    }
-                    
-                    await refreshStatus();
-                } catch (er) {
-                    removeTyping();
-                    addAIMsg('⚠️ فشل رفع الصورة');
-                } finally {
-                    S.streaming = false;
-                    $('send-btn').disabled = false;
-                    enableInputIfReady();
                 }
-            };
-            inp.click();
+            }));
         });
-
-        $('activate-btn').addEventListener('click', async () => {
-            const code = $('activation-code').value.trim();
-            if (!code || code.length < 8) return toastMsg('⚠️ الكود غير صالح');
-            if (!S.user?.phone) return toastMsg('⚠️ سجل بياناتك أولاً');
-            
-            $('activate-btn').disabled = true;
-            $('activate-btn').textContent = '⏳';
-            
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'activate', phone: S.user.phone, activationCode: code })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    S.subscribed = true;
-                    S.user.status = 'active';
-                    localStorage.setItem('mo3alem_user_v8', JSON.stringify(S.user));
-                    $('code-area').classList.add('hidden');
-                    $('chip-premium').classList.add('show');
-                    toastMsg('🎉 تم التفعيل!');
-                    await refreshStatus();
-                } else {
-                    toastMsg('⚠️ ' + (data.error || 'كود غير صحيح'));
-                }
-            } catch (e) {
-                toastMsg('⚠️ خطأ في التفعيل');
-            } finally {
-                $('activate-btn').disabled = false;
-                $('activate-btn').textContent = 'تفعيل';
-                $('activation-code').value = '';
-            }
-        });
-
-        function toastMsg(m) {
-            const t = $('toast');
-            t.textContent = m;
-            t.classList.remove('hidden');
-            t.style.animation = 'none';
-            t.offsetHeight;
-            t.style.animation = 'toastIn 0.35s ease, toastOut 0.35s ease 2.2s forwards';
-            setTimeout(() => t.classList.add('hidden'), 2200);
-        }
-
-        window.quickAsk = quickAsk;
-        window.logoutUser = logoutUser;
-        window.toggleCodeArea = toggleCodeArea;
-        window.generateQuizOnce = generateQuizOnce;
-        window.selectQuizAnswer = selectQuizAnswer;
-
-        async function init() {
-            showWelcome();
-            await checkUser();
-        }
-        init();
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
