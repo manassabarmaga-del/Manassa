@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>استطلاع رأي | أ. إسماعيل عماد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-light: #DCFCE7;
+            --primary-main: #22C55E;
+            --white: #FFFFFF;
+            --black: #1F2937;
+            --border-light: #E5E7EB;
+            --red-error: #EF4444;
+        }
+        
+        * { font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background: var(--primary-light);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .survey-card {
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+            font-weight: 700;
+            border-radius: 24px;
+            padding: 12px 28px;
+            transition: background 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover { background: #16A34A; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .btn-secondary {
+            background: #F3F4F6;
+            color: var(--black);
+            font-weight: 600;
+            border-radius: 24px;
+            padding: 12px 24px;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover { background: #E5E7EB; }
+        
+        .input-field, .select-field, .textarea-field {
+            background: var(--white);
+            border: 1.5px solid var(--border-light);
+            border-radius: 20px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            width: 100%;
+            transition: border 0.2s;
+        }
+        
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            border-color: var(--primary-main);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .textarea-field { min-height: 110px; resize: vertical; }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 40px;
+            cursor: pointer;
+            background: var(--white);
+            flex: 1 1 calc(33% - 12px);
+            min-width: 170px;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            background: #F0FDF4;
+            border-color: var(--primary-main);
+        }
+        
+        .checkbox-item.selected {
+            border-color: var(--primary-main);
+            background: #F0FDF4;
+        }
+        
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-main);
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D5DB;
+        }
+        
+        .step-dot.active {
+            background: var(--primary-main);
+            width: 12px;
+            height: 12px;
+        }
+        
+        .step-dot.completed {
+            background: var(--primary-main);
+            opacity: 0.6;
+        }
+        
+        .error-message {
+            color: var(--red-error);
+            font-size: 0.75rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show { display: block; }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        [x-cloak] { display: none !important; }
+        
+        .message-bubble {
+            background: var(--primary-light);
+            color: var(--black);
+            padding: 24px 20px;
+            border-radius: 32px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--primary-main);
+        }
+        
+        button:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center" x-cloak x-data="surveyApp()">
+    
+    <div x-show="loading" class="loading-overlay">
+        <div class="bg-white p-6 rounded-2xl shadow-md text-center">
+            <i class="fas fa-spinner fa-pulse text-3xl" style="color: var(--primary-main)"></i>
+            <p class="mt-3 font-bold">جاري الإرسال...</p>
+        </div>
+    </div>
+
+    <div x-show="toastMessage" x-text="toastMessage" class="toast"></div>
+
+    <div class="max-w-2xl mx-auto w-full">
+        
+        <!-- الخطوة 1: ترحيب - تظهر دائماً -->
+        <div x-show="currentStep === 1" class="survey-card p-6 md:p-8 text-center">
+            <div class="text-7xl mb-4">🎯</div>
+            <div class="message-bubble">
+                <h2 class="text-2xl font-black mb-2">أهلاً وسهلاً بك! 🌟</h2>
+                <p class="text-lg font-semibold">أزيك عامل إيه؟ معاك أ/ إسماعيل عماد</p>
+                <p class="text-base mt-2">عشان أنت شخص مهم ورأيك مهم بالنسبة ليا، حابب إنك تشارك برأيك في الاستطلاع ده 📋</p>
+            </div>
+            <p class="text-gray-700 text-base mt-2">هيساعدني رأيك في تحسين المحتوى التعليمي وتطوير التعليم</p>
+            <p class="text-sm text-gray-500 mt-1">الاستطلاع هياخد من وقتك 3 دقايق بس ⏱️</p>
+            <button @click="nextStep" class="btn-primary mt-6 inline-flex items-center gap-2">
+                <span>التالي</span>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+
+        <!-- الخطوة 2: البيانات الشخصية -->
+        <div x-show="currentStep === 2" class="survey-card p-6 md:p-8">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+                <span class="step-dot"></span>
+                <span class="step-dot"></span>
+            </div>
+            <h2 class="text-2xl font-black text-center mb-6" style="color: var(--black)">
+                <i class="fas fa-user-edit ml-2" style="color: var(--primary-main)"></i>
+                بياناتك الشخصية
+            </h2>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-user ml-1"></i> الاسم الكامل *
+                    </label>
+                    <input type="text" x-model="formData.name" maxlength="50"
+                           @input="formData.name = formData.name.replace(/[^\u0621-\u064A\s]/g, '')"
+                           class="input-field" placeholder="اكتب اسمك الثلاثي">
+                    <p class="error-message" :class="{'show': errors.name}" x-text="errors.name"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-phone ml-1"></i> رقم الهاتف *
+                    </label>
+                    <input type="tel" x-model="formData.phone" maxlength="11"
+                           @input="formData.phone = formData.phone.replace(/[^0-9]/g, '')"
+                           class="input-field" placeholder="أدخل رقم هاتفك" dir="ltr">
+                    <p class="text-xs text-gray-500 mt-1">11 رقم (مثال: 01123456789)</p>
+                    <p class="error-message" :class="{'show': errors.phone}" x-text="errors.phone"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <i class="fas fa-graduation-cap ml-1"></i> المرحلة الدراسية *
+                    </label>
+                    <select x-model="formData.grade" class="select-field">
+                        <option value="">اختر المرحلة الدراسية</option>
+                        <option value="الصف الرابع الابتدائي">الصف الرابع الابتدائي</option>
+                        <option value="الصف الخامس الابتدائي">الصف الخامس الابتدائي</option>
+                        <option value="الصف السادس الابتدائي">الصف السادس الابتدائي</option>
+                        <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                        <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                        <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                        <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                        <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                        <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                    </select>
+                    <p class="error-message" :class="{'show': errors.grade}" x-text="errors.grade"></p>
+                </div>
+            </div>
+            
+            <div class="flex justify-between mt-8 gap-3">
+                <button @click="prevStep" class="btn-secondary">
+                    <i class="fas fa-arrow-right ml-1"></i> السابق
+                </button>
+                <button @click="validateAndProceed" class="btn-primary">
+                    التالي <i class="fas fa-arrow-left mr-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 3: الأسئلة -->
+        <div x-show="currentStep === 3" class="survey-card p-6 md:p-8">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+                <span class="step-dot"></span>
+            </div>
+            <h2 class="text-2xl font-black text-center mb-6" style="color: var(--black)">
+                <i class="fas fa-question-circle ml-2" style="color: var(--primary-main)"></i>
+                أسئلة الاستطلاع
+            </h2>
+            
+            <div class="space-y-7">
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">1</span>
+                        إيه أكتر حاجة صعبة بتواجهك في دراستك في أي مادة؟
+                    </label>
+                    <textarea x-model="formData.question1" class="textarea-field" placeholder="اكتب إجابتك هنا"></textarea>
+                    <p class="error-message" :class="{'show': errors.question1}" x-text="errors.question1"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">2</span>
+                        إيه الحاجة اللي لو اتوفرت ليك تخليك أفضل في مذاكرتك وفهمك؟
+                    </label>
+                    <textarea x-model="formData.question2" class="textarea-field" placeholder="اكتب إجابتك هنا"></textarea>
+                    <p class="error-message" :class="{'show': errors.question2}" x-text="errors.question2"></p>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-2" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">3</span>
+                        لو اتعاملت مع شرحي في أي مادة (علوم أو برمجة)، شايف إيه اللي ناقص أو إيه محتاج يحصل عشان نكون أفضل؟
+                    </label>
+                    <textarea x-model="formData.question3" class="textarea-field" placeholder="اكتب رأيك هنا (اختياري)"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block font-bold mb-3" style="color: var(--black)">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-white font-bold ml-2" style="background: var(--primary-main);">4</span>
+                        إيه الأدوات اللي ممكن تفيدك ويقدر أ/ إسماعيل يبرمجها ليك تساعدك في المذاكرة؟ <span class="text-sm text-gray-500">(تقدر تختار أكتر من حاجة)</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <template x-for="tool in toolsList" :key="tool.id">
+                            <label class="checkbox-item" :class="{'selected': formData.tools.includes(tool.id)}">
+                                <input type="checkbox" 
+                                       :checked="formData.tools.includes(tool.id)"
+                                       @click.stop="toggleTool(tool.id)">
+                                <span x-text="tool.name"></span>
+                            </label>
+                        </template>
+                    </div>
+                    <p class="error-message" :class="{'show': errors.tools}" x-text="errors.tools"></p>
+                </div>
+            </div>
+            
+            <div class="flex justify-between mt-8 gap-3">
+                <button @click="prevStep" class="btn-secondary">
+                    <i class="fas fa-arrow-right ml-1"></i> السابق
+                </button>
+                <button @click="validateAndSubmit" :disabled="submitting" class="btn-primary">
+                    <span x-show="!submitting">لو خلصت اختيار دوس هنا 🚀</span>
+                    <span x-show="submitting"><i class="fas fa-spinner fa-pulse"></i> جاري الإرسال...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 4: شكراً -->
+        <div x-show="currentStep === 4" class="survey-card p-6 md:p-8 text-center">
+            <div class="step-indicator">
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot completed"></span>
+                <span class="step-dot active"></span>
+            </div>
+            <div class="text-7xl mb-4">✅</div>
+            <h2 class="text-3xl font-black mb-3" style="color: var(--primary-main)">شكراً جزيلاً ليك! 🎉</h2>
+            <div class="message-bubble" style="background: var(--primary-light); border-right: 4px solid var(--primary-main);">
+                <p class="text-lg font-semibold">بجد شكراً على مشاركتك القيمة!</p>
+                <p class="text-base mt-2">رأيك هيساعدني أطور المحتوى وأقدملك الأفضل دايمًا 💪</p>
+            </div>
+            <p class="text-gray-700 text-base">هتواصل معاك قريب على رقم الهاتف لو في تفاصيل إضافية 📱</p>
+            <button @click="resetForm" class="btn-primary mt-4 inline-flex items-center gap-2">
+                <i class="fas fa-plus ml-1"></i> عمل استبيان جديد
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { 
+            getFirestore, collection, addDoc, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBPgtF_GqT95QkMwwoJMGiZWFPjHFdA_N0",
+            authDomain: "manassa-oloom.firebaseapp.com",
+            databaseURL: "https://manassa-oloom-default-rtdb.firebaseio.com",
+            projectId: "manassa-oloom",
+            storageBucket: "manassa-oloom.firebasestorage.app",
+            messagingSenderId: "475047988456",
+            appId: "1:475047988456:web:ab25a9b01b5c77483b0d5d",
+            measurementId: "G-F0N011WQB9"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(FIREBASE_CONFIG);
+            db = getFirestore(app);
+            console.log("✅ Firebase connected");
+        } catch(e) {
+            console.warn("Firebase connection issue:", e);
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('surveyApp', () => ({
+                loading: false,
+                currentStep: 1,
+                submitting: false,
+                toastMessage: '',
+                
+                formData: {
+                    name: '',
+                    phone: '',
+                    grade: '',
+                    question1: '',
+                    question2: '',
+                    question3: '',
+                    tools: []
+                },
+                
+                errors: {
+                    name: '',
+                    phone: '',
+                    grade: '',
+                    question1: '',
+                    question2: '',
+                    tools: ''
+                },
+                
+                toolsList: [
+                    { id: 'ai', name: '🤖 أدوات ذكاء اصطناعي عبقرية (ب اشتراك رمزي)' },
+                    { id: 'organization', name: '📅 أدوات تنظيم المذاكرة والوقت' },
+                    { id: 'videos', name: '🎥 منصة فيديوهات تفاعلية' },
+                    { id: 'quiz', name: '📝 نظام اختبارات وتمارين ذكي' },
+                    { id: 'chat', name: '💬 شات تفاعلي للمساعدة الفورية' },
+                    { id: 'gamification', name: '🎮 ألعاب تعليمية تفاعلية' },
+                    { id: 'summaries', name: '📚 تلخيصات ذكية للمناهج' },
+                    { id: 'tracking', name: '📊 نظام متابعة التقدم الشخصي' },
+                    { id: 'community', name: '👥 مجتمع دراسي تفاعلي' },
+                    { id: 'notifications', name: '🔔 نظام تذكير وإشعارات ذكي' }
+                ],
+                
+                init() {
+                    console.log("✅ التطبيق جاهز - لا يوجد أي تحقق مسبق");
+                },
+                
+                showToast(msg) {
+                    this.toastMessage = msg;
+                    setTimeout(() => { this.toastMessage = ''; }, 3500);
+                },
+                
+                nextStep() { 
+                    if (this.currentStep < 4) this.currentStep++; 
+                },
+                
+                prevStep() { 
+                    if (this.currentStep > 1) this.currentStep--; 
+                },
+                
+                resetForm() {
+                    // إعادة تعيين النموذج للخطوة 1
+                    this.currentStep = 1;
+                    this.formData = {
+                        name: '',
+                        phone: '',
+                        grade: '',
+                        question1: '',
+                        question2: '',
+                        question3: '',
+                        tools: []
+                    };
+                    this.errors = {
+                        name: '',
+                        phone: '',
+                        grade: '',
+                        question1: '',
+                        question2: '',
+                        tools: ''
+                    };
+                },
+                
+                validateAndProceed() {
+                    let valid = true;
+                    if (!this.formData.name.trim() || this.formData.name.trim().length < 6) {
+                        this.errors.name = 'يرجى إدخال الاسم الثلاثي كاملاً';
+                        valid = false;
+                    } else this.errors.name = '';
+                    
+                    if (!this.formData.phone || this.formData.phone.length !== 11 || !this.formData.phone.startsWith('01')) {
+                        this.errors.phone = 'أدخل رقم هاتف صحيح مكون من 11 رقم يبدأ بـ 01';
+                        valid = false;
+                    } else this.errors.phone = '';
+                    
+                    if (!this.formData.grade) {
+                        this.errors.grade = 'اختر المرحلة الدراسية';
+                        valid = false;
+                    } else this.errors.grade = '';
+                    
+                    if (valid) this.nextStep();
+                    else this.showToast('⚠️ يرجى تصحيح الأخطاء قبل المتابعة');
+                },
+                
+                toggleTool(toolId) {
+                    const idx = this.formData.tools.indexOf(toolId);
+                    if (idx === -1) {
+                        this.formData.tools.push(toolId);
+                    } else {
+                        this.formData.tools.splice(idx, 1);
+                    }
+                },
+                
+                validateAndSubmit() {
+                    let valid = true;
+                    if (!this.formData.question1.trim() || this.formData.question1.trim().length < 5) {
+                        this.errors.question1 = 'يرجى كتابة إجابة مفصلة للسؤال الأول';
+                        valid = false;
+                    } else this.errors.question1 = '';
+                    
+                    if (!this.formData.question2.trim() || this.formData.question2.trim().length < 5) {
+                        this.errors.question2 = 'يرجى كتابة إجابة مفصلة للسؤال الثاني';
+                        valid = false;
+                    } else this.errors.question2 = '';
+                    
+                    if (this.formData.tools.length === 0) {
+                        this.errors.tools = 'يرجى اختيار أداة واحدة على الأقل';
+                        valid = false;
+                    } else this.errors.tools = '';
+                    
+                    if (valid) this.submitSurvey();
+                    else this.showToast('⚠️ يرجى إكمال جميع الإجابات المطلوبة');
+                },
+                
+                async submitSurvey() {
+                    if (this.submitting) return;
+                    this.submitting = true;
+                    this.loading = true;
+                    
+                    const toolsNames = this.formData.tools.map(id => {
+                        const t = this.toolsList.find(tool => tool.id === id);
+                        return t ? t.name : id;
+                    });
+                    
+                    const payload = {
+                        name: this.formData.name.trim(),
+                        phone: this.formData.phone.trim(),
+                        grade: this.formData.grade,
+                        question1: this.formData.question1.trim(),
+                        question2: this.formData.question2.trim(),
+                        question3: this.formData.question3.trim(),
+                        tools: this.formData.tools,
+                        toolsNames: toolsNames,
+                        submittedAt: new Date().toISOString(),
+                        timestamp: serverTimestamp(),
+                        userAgent: navigator.userAgent
+                    };
+                    
+                    try {
+                        if (db) {
+                            await addDoc(collection(db, 'StudentSurveys_V1'), payload);
+                            console.log("✅ تم حفظ الاستطلاع في Firebase");
+                        } else {
+                            const offline = JSON.parse(localStorage.getItem('offline_surveys') || '[]');
+                            offline.push(payload);
+                            localStorage.setItem('offline_surveys', JSON.stringify(offline));
+                        }
+                        
+                        this.currentStep = 4;
+                        this.showToast('🎉 تم إرسال استطلاع الرأي بنجاح! شكراً لمشاركتك');
+                        
+                    } catch(err) {
+                        console.error("❌ خطأ في الإرسال:", err);
+                        this.showToast('❌ حدث خطأ أثناء الإرسال. حاول مرة أخرى');
+                    } finally {
+                        this.submitting = false;
+                        this.loading = false;
+                    }
+                }
+            }));
+        });
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+</html>
